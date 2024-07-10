@@ -1,11 +1,11 @@
 // lib/app_router.dart
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icoc_admin_pannel/ui/bible_study/bible_study_screen.dart';
-import 'package:icoc_admin_pannel/ui/feedback/feedbacks_screen.dart';
-import 'package:icoc_admin_pannel/ui/notifications/notifications_screen.dart';
-import 'package:icoc_admin_pannel/ui/root/root_screen.dart';
-import 'package:icoc_admin_pannel/ui/songs/songs_screen.dart';
+import 'package:icoc_admin_pannel/ui/screens/bible_study/bible_study_screen.dart';
+import 'package:icoc_admin_pannel/ui/screens/feedback/feedbacks_screen.dart';
+import 'package:icoc_admin_pannel/ui/screens/notifications/notifications_screen.dart';
+import 'package:icoc_admin_pannel/ui/screens/root/root_screen.dart';
+import 'package:icoc_admin_pannel/ui/screens/songs/songs_screen.dart';
 import 'package:icoc_admin_pannel/ui/video/video_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =

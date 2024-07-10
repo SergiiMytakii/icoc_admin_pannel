@@ -26,7 +26,6 @@ class _RootScreenState extends State<RootScreen> {
               setState(() {
                 _selectedIndex = index;
               });
-              print('index $index');
               switch (index) {
                 case 0:
                   context.go('/notifications');
