@@ -15,7 +15,7 @@ final GlobalKey<NavigatorState> _shellNavigatorKey =
 final GoRouter router = GoRouter(
   debugLogDiagnostics: true,
   navigatorKey: _rootNavigatorKey,
-  initialLocation: '/notifications',
+  initialLocation: '/songs',
   routes: <RouteBase>[
     ShellRoute(
       navigatorKey: _shellNavigatorKey,

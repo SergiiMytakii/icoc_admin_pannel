@@ -1,0 +1,110 @@
+import 'dart:async';
+import 'dart:math';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
+import 'package:icoc_admin_pannel/domain/helpers/get_video_id.dart';
+import 'package:icoc_admin_pannel/domain/model/resources.dart';
+import 'package:icoc_admin_pannel/domain/repository/songs_repository.dart';
+import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:icoc_admin_pannel/domain/repository/video_repository.dart';
+import 'package:injectable/injectable.dart';
+part 'songs_event.dart';
+part 'songs_state.dart';
+part 'songs_bloc.freezed.dart';
+
+@singleton
+class SongsBloc extends Bloc<SongsEvent, SongsState> {
+  SongsBloc(this.songsRepositoryImpl, this.videoRepositoryImpl)
+      : super(const SongsState.initial()) {
+    on<SongsGet>(_onSongsRequested);
+    on<SongsSearch>(_onSearchSongRequested);
+    on<SongsUpdate>(_onSongUpdateRequested);
+  }
+  final SongsRepository songsRepositoryImpl;
+  final VideoRepository videoRepositoryImpl;
+
+  Future<void> _onSongsRequested(
+    SongsGet event,
+    Emitter<SongsState> emit,
+  ) async {
+    emit(const SongsState.loading());
+    try {
+      final songs = await songsRepositoryImpl.getSongs();
+      songs.sort((a, b) => a.id.compareTo(b.id));
+
+      emit(SongsState.success(songs));
+    } catch (error, stackTrace) {
+      logError(error, stackTrace);
+      emit(SongsState.error(error.toString()));
+    }
+  }
+
+  Future<void> _onSearchSongRequested(
+    SongsSearch event,
+    Emitter<SongsState> emit,
+  ) async {
+    try {
+      emit(const SongsState.loading());
+      final songs = await songsRepositoryImpl.getSongs();
+      emit(SongsState.success(songs));
+    } catch (error, stackTrace) {
+      logError(error, stackTrace);
+      emit(SongsState.error(error.toString()));
+    }
+  }
+
+  FutureOr<void> _onSongUpdateRequested(
+      SongsUpdate event, Emitter<SongsState> emit) async {
+    SongDetail song = event.song;
+    //check if version on the same lang exists
+    String textKey = '';
+    final textKeys = song.getAllTextKeys();
+    final sameLangKeys = textKeys.where((key) => key.contains(event.lang));
+    if (sameLangKeys.isEmpty) {
+      textKey = '${event.lang}1';
+    } else {
+      //remove lang and convert to numbers
+      final List<int> versions =
+          sameLangKeys.map((key) => int.parse(key.substring(2))).toList();
+      final maximum = versions.reduce(max);
+      textKey = '${event.lang}${maximum + 1}';
+    }
+
+    song.title[event.lang] = event.title;
+    if (event.description != null) {
+      song.description?[event.lang] = event.description;
+    }
+    song.text[textKey] = event.text;
+    if (event.link != null) {
+      //trying to get data from youtube api
+      final videoId = getVideoId(event.link!);
+      final resources = await videoRepositoryImpl.fetchVideoDetails(videoId);
+
+      if (resources != null) {
+        song.resources
+            ?.add(resources.copyWith(lang: event.lang, link: event.link));
+      } else {
+        song.resources?.add(
+            Resources(lang: event.lang, link: event.link!, title: event.title));
+      }
+    }
+
+    final Map<String, dynamic> data = {
+      'title': song.title,
+      'description': song.description,
+      'text': song.text,
+      'resources': song.resources?.map((resource) => resource.toJson()).toList()
+    };
+
+    try {
+      emit(const SongsState.loading());
+      final songs = await songsRepositoryImpl.updateSong(event.song.id, data);
+      emit(SongsState.success(songs));
+    } catch (error, stackTrace) {
+      logError(error, stackTrace);
+      emit(SongsState.error(error.toString()));
+    }
+  }
+}

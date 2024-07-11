@@ -1,3 +1,3 @@
 # icoc_admin_pannel
 
-A new Flutter project.
+* to run project: flutter run -d chrome --web-renderer html

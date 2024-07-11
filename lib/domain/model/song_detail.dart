@@ -76,48 +76,6 @@ class SongDetail {
     return allKeys.toList();
   }
 
-  SongDetail filterAndOrderLanguages(List<String> orderLanguages) {
-    final Map filteredTitle = Map.fromEntries(title.entries
-        .where((entry) => orderLanguages.contains(entry.key))
-        .toList()
-      ..sort((a, b) => orderLanguages
-          .indexOf(a.key)
-          .compareTo(orderLanguages.indexOf(b.key))));
-
-    final Map filteredText = Map.fromEntries(text.entries
-        .where((entry) =>
-            orderLanguages.contains(entry.key.toString().substring(0, 2)))
-        .toList()
-      ..sort((a, b) => orderLanguages
-          .indexOf(a.key.toString().substring(0, 2))
-          .compareTo(
-              orderLanguages.indexOf(b.key.toString().substring(0, 2)))));
-
-    return SongDetail(
-      id: id,
-      title: filteredTitle,
-      description: description,
-      text: filteredText,
-      chords: chords,
-      resources: resources,
-      searchLang: searchLang,
-      searchText: searchText,
-      searchTitle: searchTitle,
-    );
-  }
-
-  SongDetail orderByLanguage(List<String> orderLanguages) {
-    return SongDetail(
-      id: id,
-      title: _orderByLanguageInMap(title, orderLanguages),
-      description: _orderByLanguageInMap(description, orderLanguages),
-      text: _orderByLanguageInMap(text, orderLanguages),
-      chords: _orderByLanguageInMap(chords, orderLanguages),
-      resources:
-          resources != null ? _sortResources(resources!, orderLanguages) : null,
-    );
-  }
-
   List<Resources> _sortResources(
       List<Resources> resources, List<String> orderLanguages) {
     resources.sort((a, b) {

@@ -14,11 +14,11 @@ import 'package:icoc_admin_pannel/data/data_sources_impl/remote/firebase_data_so
 import 'package:icoc_admin_pannel/data/data_sources_impl/remote/http_client_impl.dart'
     as _i6;
 import 'package:icoc_admin_pannel/data/repository_impl/bible_study_repository_impl.dart'
-    as _i14;
+    as _i15;
 import 'package:icoc_admin_pannel/data/repository_impl/feedback_repository_impl.dart'
     as _i10;
 import 'package:icoc_admin_pannel/data/repository_impl/notifications_repository_impl.dart'
-    as _i16;
+    as _i17;
 import 'package:icoc_admin_pannel/data/repository_impl/songs_repository_impl.dart'
     as _i12;
 import 'package:icoc_admin_pannel/data/repository_impl/video_repository_impl.dart'
@@ -27,15 +27,16 @@ import 'package:icoc_admin_pannel/domain/data_sources/firebase_data_source.dart'
     as _i3;
 import 'package:icoc_admin_pannel/domain/data_sources/http_client.dart' as _i5;
 import 'package:icoc_admin_pannel/domain/repository/bible_study_repository.dart'
-    as _i13;
+    as _i14;
 import 'package:icoc_admin_pannel/domain/repository/feedback_repository.dart'
     as _i9;
 import 'package:icoc_admin_pannel/domain/repository/notifications_repository.dart'
-    as _i15;
+    as _i16;
 import 'package:icoc_admin_pannel/domain/repository/songs_repository.dart'
     as _i11;
 import 'package:icoc_admin_pannel/domain/repository/video_repository.dart'
     as _i7;
+import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart' as _i13;
 import 'package:injectable/injectable.dart' as _i2;
 
 const String _dev = 'dev';
@@ -91,16 +92,20 @@ extension GetItInjectableX on _i1.GetIt {
         _prod,
       },
     );
-    gh.factory<_i13.BibleStudyRepository>(
-      () => _i14.BibleStudyRepositoryImpl(
+    gh.singleton<_i13.SongsBloc>(() => _i13.SongsBloc(
+          gh<_i11.SongsRepository>(),
+          gh<_i7.VideoRepository>(),
+        ));
+    gh.factory<_i14.BibleStudyRepository>(
+      () => _i15.BibleStudyRepositoryImpl(
           firebaseDataSource: gh<_i3.FirebaseDataSource>()),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.factory<_i15.NotificationsRepository>(
-      () => _i16.NotificationsRepositoryImpl(gh<_i3.FirebaseDataSource>()),
+    gh.factory<_i16.NotificationsRepository>(
+      () => _i17.NotificationsRepositoryImpl(gh<_i3.FirebaseDataSource>()),
       registerFor: {
         _dev,
         _prod,

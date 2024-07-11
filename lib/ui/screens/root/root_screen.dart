@@ -15,7 +15,7 @@ class _RootScreenState extends State<RootScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ICOC Admin Panel'),
+        toolbarHeight: 16,
       ),
       body: Row(
         children: [

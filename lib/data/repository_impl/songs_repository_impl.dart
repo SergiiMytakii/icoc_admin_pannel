@@ -17,8 +17,27 @@ class SongsRepositoryImpl implements SongsRepository {
   });
   @override
   Future<List<SongDetail>> getSongs() async {
-    final QuerySnapshot snapshot = await firebaseDataSource
-        .getFromFirebase(FirebaseCollections.Songs.name);
+    final QuerySnapshot snapshot = await firebaseDataSource.getFromFirebase(
+      FirebaseCollections.Songs.name,
+    );
+    final List<SongDetail> songList = _songListFromSnapshot(snapshot);
+    return songList;
+  }
+
+  @override
+  Future<List<SongDetail>> addSong() async {
+    final QuerySnapshot snapshot = await firebaseDataSource.getFromFirebase(
+      FirebaseCollections.Songs.name,
+    );
+    final List<SongDetail> songList = _songListFromSnapshot(snapshot);
+    return songList;
+  }
+
+  @override
+  Future<List<SongDetail>> updateSong(
+      int songId, Map<String, dynamic> data) async {
+    final QuerySnapshot snapshot = await firebaseDataSource.updateToFirebase(
+        FirebaseCollections.Songs.name, songId, data);
     final List<SongDetail> songList = _songListFromSnapshot(snapshot);
     return songList;
   }

@@ -8,14 +8,14 @@ import 'package:icoc_admin_pannel/domain/model/playlist.dart';
 import 'package:icoc_admin_pannel/domain/model/resources.dart';
 import 'package:icoc_admin_pannel/domain/repository/video_repository.dart';
 import 'package:injectable/injectable.dart';
-import 'package:icoc_admin_pannel/domain/data_sources/http_client.dart' as http;
+import 'package:icoc_admin_pannel/domain/data_sources/http_client.dart';
 
 @dev
 @prod
 @Injectable(as: VideoRepository)
 class VideoRepositoryImpl extends VideoRepository {
   final FirebaseDataSource firebaseDataSource;
-  final http.HttpClient httpClient;
+  final HttpClient httpClient;
   VideoRepositoryImpl(this.firebaseDataSource, this.httpClient);
   @override
   Future<List<Playlist>> getVideoList() async {
@@ -62,9 +62,37 @@ class VideoRepositoryImpl extends VideoRepository {
     }
     return null;
   }
-}
 
-class HttpClient {}
+  @override
+  Future<Resources?> fetchVideoDetails(String videoId) async {
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
+    };
+    final url = Uri.parse(
+        'https://www.googleapis.com/youtube/v3/videos?id=$videoId&key=$YOUTUBE_API_KEY&part=snippet');
+
+    try {
+      final response = await httpClient.get(
+        url,
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        return Resources.fromJsonYoutobeLink(data);
+      } else {
+        logError(
+            json.decode(response.body)['error']['message'] ??
+                'youtube api error',
+            null);
+        return null;
+      }
+    } on Exception catch (e, stackTrace) {
+      logError(e, stackTrace);
+    }
+    return null;
+  }
+}
 
 List<Playlist> _listFromSnapshot(QuerySnapshot snapshot) {
   final List<Playlist> playlists = snapshot.docs.map((doc) {

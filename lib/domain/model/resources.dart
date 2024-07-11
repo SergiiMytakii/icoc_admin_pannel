@@ -47,4 +47,58 @@ class Resources {
         playlistId: json['playlistId'],
         artist: json['artist']);
   }
+  factory Resources.fromJsonYoutobeLink(Map json) {
+    final items = json['items'] as List<dynamic>;
+    if (items.isNotEmpty) {
+      final videoData = items[0]['snippet'] as Map<String, dynamic>;
+      final title = videoData['title'] as String;
+      final thumbnailUrl = (videoData['thumbnails']
+          as Map<String, dynamic>)['high']['url'] as String;
+      final channelTitle = videoData['channelTitle'] as String;
+
+      return Resources(
+        title: title,
+        lang: '',
+        link: '',
+        thumbnail: thumbnailUrl,
+      );
+    } else {
+      return Resources.defaultResource();
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'lang': lang,
+      'title': title,
+      'link': link,
+      'thumbnail': thumbnail,
+      'artist': artist,
+      'publishedAt': publishedAt,
+      'description': description,
+      'playlistId': playlistId,
+    };
+  }
+
+  Resources copyWith({
+    String? lang,
+    String? title,
+    String? link,
+    String? thumbnail,
+    String? artist,
+    String? publishedAt,
+    String? description,
+    String? playlistId,
+  }) {
+    return Resources(
+      lang: lang ?? this.lang,
+      title: title ?? this.title,
+      link: link ?? this.link,
+      thumbnail: thumbnail ?? this.thumbnail,
+      artist: artist ?? this.artist,
+      publishedAt: publishedAt ?? this.publishedAt,
+      description: description ?? this.description,
+      playlistId: playlistId ?? this.playlistId,
+    );
+  }
 }
