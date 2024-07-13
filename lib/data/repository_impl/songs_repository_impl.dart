@@ -1,6 +1,7 @@
 import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/data_sources/firebase_data_source.dart';
+import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
 import 'package:icoc_admin_pannel/domain/model/resources.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:icoc_admin_pannel/domain/repository/songs_repository.dart';
@@ -25,10 +26,9 @@ class SongsRepositoryImpl implements SongsRepository {
   }
 
   @override
-  Future<List<SongDetail>> addSong() async {
-    final QuerySnapshot snapshot = await firebaseDataSource.getFromFirebase(
-      FirebaseCollections.Songs.name,
-    );
+  Future<List<SongDetail>> addSong(Map<String, dynamic> data) async {
+    final QuerySnapshot snapshot = await firebaseDataSource.postToFirebase(
+        FirebaseCollections.Songs.name, data);
     final List<SongDetail> songList = _songListFromSnapshot(snapshot);
     return songList;
   }
@@ -53,32 +53,7 @@ class SongsRepositoryImpl implements SongsRepository {
     final List<SongDetail> songs = snapshot.docs.map(
       (doc) {
         Map data = doc.data() as Map;
-        data =
-            Map.fromEntries(data.entries.where((entry) => entry.value != null));
-        data.forEach(
-          (key, value) {
-            if (value is Map) {
-              data[key] = Map.fromEntries(
-                  value.entries.where((entry) => entry.value != null));
-            }
-          },
-        );
-        final List resourses =
-            data['resources'] != null && data['resources'] is Iterable<dynamic>
-                ? List.from(doc.get('resources'))
-                : [];
-        final song = SongDetail(
-            id: int.parse(doc.id),
-            description: data['description'] ?? {},
-            text: data['text'] ?? {},
-            title: data['title'] ?? {},
-            chords: data['chords'] ?? {},
-            resources: resourses.isNotEmpty
-                ? resourses.map((item) {
-                    //log.e(item);
-                    return Resources.fromJson(item);
-                  }).toList()
-                : []);
+        final song = SongDetail.fromJson(data, int.parse(doc.id));
         return song;
       },
     ).toList();

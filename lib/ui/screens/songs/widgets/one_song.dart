@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/helpers/count_song_tabs.dart';
+import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
 import 'package:icoc_admin_pannel/domain/model/resources.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/add_version_tab.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/song_text_on_song_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/video_card.dart';
+import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class OneSong extends StatefulWidget {
-  SongDetail song;
+  final SongDetail song;
+  final int songCount;
+
   OneSong({
     super.key,
     required this.song,
+    required this.songCount,
   });
 
   @override
@@ -31,9 +37,6 @@ class _OneSongState extends State<OneSong> with TickerProviderStateMixin {
   late Animation<double> _animation;
   @override
   void initState() {
-    tabsKeys = getAllKeys(widget.song)..add('+');
-    tabController =
-        TabController(length: countTabs(widget.song) + 1, vsync: this);
     _controller = AnimationController(
         duration: const Duration(
             milliseconds: 500), // Set the duration of the animation
@@ -58,6 +61,9 @@ class _OneSongState extends State<OneSong> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    tabsKeys = getAllKeys(widget.song)..add('+');
+    tabController =
+        TabController(length: countTabs(widget.song) + 1, vsync: this);
     return DefaultTabController(
       length: countTabs(widget.song),
       child: Scaffold(
@@ -84,6 +90,14 @@ class _OneSongState extends State<OneSong> with TickerProviderStateMixin {
   ) {
     return AppBar(
       toolbarHeight: 45,
+      actions: [
+        MyTextButton(
+          label: 'Add a new song',
+          onPressed: () {
+            context.go('/songs/addsong', extra: widget.songCount);
+          },
+        ),
+      ],
       bottom: TabBar(
           isScrollable: true,
           controller: tabController,
@@ -113,7 +127,6 @@ class _OneSongState extends State<OneSong> with TickerProviderStateMixin {
   }
 
   Widget _miniPlayerBuilder() {
-    final screenSize = MediaQuery.of(context).size;
     return Column(mainAxisAlignment: MainAxisAlignment.end, children: [
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -167,10 +180,12 @@ class _OneSongState extends State<OneSong> with TickerProviderStateMixin {
     return TabBarView(
       controller: tabController,
       children: [
-        for (final item in song.text.keys)
+        for (final String item in song.text.keys)
           SongTextOnSongScreen(
+            textVersion: item,
+            song: song,
             title: song.title[item.substring(0, 2)] ?? '',
-            textVersion: song.text[item] ?? '',
+            text: song.text[item] ?? '',
             description: song.description != null
                 ? song.description![item.substring(0, 2)] ?? ''
                 : '',
@@ -178,9 +193,11 @@ class _OneSongState extends State<OneSong> with TickerProviderStateMixin {
         if (song.chords != null)
           for (final item in song.chords!.keys)
             SongTextOnSongScreen(
+              textVersion: item,
+              song: song,
               title: '',
               description: '',
-              textVersion: song.chords![item] ?? '',
+              text: song.chords![item] ?? '',
             ),
         AddVersionTab(song)
       ],

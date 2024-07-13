@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/helpers/extract_text_from_html.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
+import 'package:logger/logger.dart';
 
 class SongCard extends StatelessWidget {
   final SongDetail song;
@@ -23,11 +24,6 @@ class SongCard extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          // onTap: (() {
-          //   context.go(
-          //     '/songs/${song.id}',
-          //   );
-          // }),
           horizontalTitleGap: 12,
           leading: Text(song.id.toString(),
               style: Theme.of(context).textTheme.titleSmall),

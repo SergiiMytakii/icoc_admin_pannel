@@ -14,58 +14,58 @@ class _RootScreenState extends State<RootScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 16,
-      ),
       body: Row(
         children: [
-          NavigationRail(
-            selectedIndex: _selectedIndex,
-            labelType: NavigationRailLabelType.selected,
-            onDestinationSelected: (int index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-              switch (index) {
-                case 0:
-                  context.go('/notifications');
-                  break;
-                case 1:
-                  context.go('/songs');
-                  break;
-                case 2:
-                  context.go('/bible-study');
-                  break;
-                case 3:
-                  context.go('/video');
-                  break;
-                case 4:
-                  context.go('/feedbacks');
-                  break;
-              }
-            },
-            destinations: const [
-              NavigationRailDestination(
-                icon: Icon(Icons.notifications),
-                label: Text('Notifications'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.music_note),
-                label: Text('Songs'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.menu_book),
-                label: Text('Bible Study'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.video_library),
-                label: Text('Video'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.feedback),
-                label: Text('Feedbacks'),
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: NavigationRail(
+              selectedIndex: _selectedIndex,
+              labelType: NavigationRailLabelType.selected,
+              onDestinationSelected: (int index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+                switch (index) {
+                  case 0:
+                    context.go('/songs');
+                    break;
+                  case 1:
+                    context.go('/notifications');
+                    break;
+                  case 2:
+                    context.go('/bible-study');
+                    break;
+                  case 3:
+                    context.go('/video');
+                    break;
+                  case 4:
+                    context.go('/feedbacks');
+                    break;
+                }
+              },
+              destinations: const [
+                NavigationRailDestination(
+                  icon: Icon(Icons.music_note),
+                  label: Text('Songs'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.notifications),
+                  label: Text('Notifications'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.menu_book),
+                  label: Text('Bible Study'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.video_library),
+                  label: Text('Video'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.feedback),
+                  label: Text('Feedbacks'),
+                ),
+              ],
+            ),
           ),
           const VerticalDivider(thickness: 1, width: 1),
           Expanded(child: widget.child ?? const SizedBox.shrink()),

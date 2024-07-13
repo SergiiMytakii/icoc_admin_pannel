@@ -27,9 +27,6 @@ class _VideoCardState extends State<VideoCard> {
   @override
   Widget build(BuildContext context) {
     videoId = getVideoId(widget.resource.link);
-    log(
-      YoutubePlayerController.getThumbnail(videoId: videoId, webp: false),
-    );
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Container(

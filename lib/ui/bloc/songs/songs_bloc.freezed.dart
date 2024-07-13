@@ -18,9 +18,11 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$SongsEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() get,
-    required TResult Function() search,
-    required TResult Function() add,
+    required TResult Function(String? query) get,
+    required TResult Function(SongDetail song, String textVersion, String title,
+            String description, String link, String text)
+        edit,
+    required TResult Function(SongDetail song) add,
     required TResult Function(SongDetail song, String lang, String title,
             String? description, String? link, String text)
         update,
@@ -28,9 +30,11 @@ mixin _$SongsEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? get,
-    TResult? Function()? search,
-    TResult? Function()? add,
+    TResult? Function(String? query)? get,
+    TResult? Function(SongDetail song, String textVersion, String title,
+            String description, String link, String text)?
+        edit,
+    TResult? Function(SongDetail song)? add,
     TResult? Function(SongDetail song, String lang, String title,
             String? description, String? link, String text)?
         update,
@@ -38,9 +42,11 @@ mixin _$SongsEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? get,
-    TResult Function()? search,
-    TResult Function()? add,
+    TResult Function(String? query)? get,
+    TResult Function(SongDetail song, String textVersion, String title,
+            String description, String link, String text)?
+        edit,
+    TResult Function(SongDetail song)? add,
     TResult Function(SongDetail song, String lang, String title,
             String? description, String? link, String text)?
         update,
@@ -50,7 +56,7 @@ mixin _$SongsEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(SongsGet value) get,
-    required TResult Function(SongsSearch value) search,
+    required TResult Function(SongsEdit value) edit,
     required TResult Function(SongsAdd value) add,
     required TResult Function(SongsUpdate value) update,
   }) =>
@@ -58,7 +64,7 @@ mixin _$SongsEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(SongsGet value)? get,
-    TResult? Function(SongsSearch value)? search,
+    TResult? Function(SongsEdit value)? edit,
     TResult? Function(SongsAdd value)? add,
     TResult? Function(SongsUpdate value)? update,
   }) =>
@@ -66,7 +72,7 @@ mixin _$SongsEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SongsGet value)? get,
-    TResult Function(SongsSearch value)? search,
+    TResult Function(SongsEdit value)? edit,
     TResult Function(SongsAdd value)? add,
     TResult Function(SongsUpdate value)? update,
     required TResult orElse(),
@@ -100,6 +106,8 @@ abstract class _$$SongsGetImplCopyWith<$Res> {
   factory _$$SongsGetImplCopyWith(
           _$SongsGetImpl value, $Res Function(_$SongsGetImpl) then) =
       __$$SongsGetImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String? query});
 }
 
 /// @nodoc
@@ -112,66 +120,97 @@ class __$$SongsGetImplCopyWithImpl<$Res>
 
   /// Create a copy of SongsEvent
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? query = freezed,
+  }) {
+    return _then(_$SongsGetImpl(
+      query: freezed == query
+          ? _value.query
+          : query // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$SongsGetImpl implements SongsGet {
-  const _$SongsGetImpl();
+  const _$SongsGetImpl({this.query});
+
+  @override
+  final String? query;
 
   @override
   String toString() {
-    return 'SongsEvent.get()';
+    return 'SongsEvent.get(query: $query)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SongsGetImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$SongsGetImpl &&
+            (identical(other.query, query) || other.query == query));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, query);
+
+  /// Create a copy of SongsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SongsGetImplCopyWith<_$SongsGetImpl> get copyWith =>
+      __$$SongsGetImplCopyWithImpl<_$SongsGetImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() get,
-    required TResult Function() search,
-    required TResult Function() add,
+    required TResult Function(String? query) get,
+    required TResult Function(SongDetail song, String textVersion, String title,
+            String description, String link, String text)
+        edit,
+    required TResult Function(SongDetail song) add,
     required TResult Function(SongDetail song, String lang, String title,
             String? description, String? link, String text)
         update,
   }) {
-    return get();
+    return get(query);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? get,
-    TResult? Function()? search,
-    TResult? Function()? add,
+    TResult? Function(String? query)? get,
+    TResult? Function(SongDetail song, String textVersion, String title,
+            String description, String link, String text)?
+        edit,
+    TResult? Function(SongDetail song)? add,
     TResult? Function(SongDetail song, String lang, String title,
             String? description, String? link, String text)?
         update,
   }) {
-    return get?.call();
+    return get?.call(query);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? get,
-    TResult Function()? search,
-    TResult Function()? add,
+    TResult Function(String? query)? get,
+    TResult Function(SongDetail song, String textVersion, String title,
+            String description, String link, String text)?
+        edit,
+    TResult Function(SongDetail song)? add,
     TResult Function(SongDetail song, String lang, String title,
             String? description, String? link, String text)?
         update,
     required TResult orElse(),
   }) {
     if (get != null) {
-      return get();
+      return get(query);
     }
     return orElse();
   }
@@ -180,7 +219,7 @@ class _$SongsGetImpl implements SongsGet {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(SongsGet value) get,
-    required TResult Function(SongsSearch value) search,
+    required TResult Function(SongsEdit value) edit,
     required TResult Function(SongsAdd value) add,
     required TResult Function(SongsUpdate value) update,
   }) {
@@ -191,7 +230,7 @@ class _$SongsGetImpl implements SongsGet {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(SongsGet value)? get,
-    TResult? Function(SongsSearch value)? search,
+    TResult? Function(SongsEdit value)? edit,
     TResult? Function(SongsAdd value)? add,
     TResult? Function(SongsUpdate value)? update,
   }) {
@@ -202,7 +241,7 @@ class _$SongsGetImpl implements SongsGet {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SongsGet value)? get,
-    TResult Function(SongsSearch value)? search,
+    TResult Function(SongsEdit value)? edit,
     TResult Function(SongsAdd value)? add,
     TResult Function(SongsUpdate value)? update,
     required TResult orElse(),
@@ -215,86 +254,182 @@ class _$SongsGetImpl implements SongsGet {
 }
 
 abstract class SongsGet implements SongsEvent {
-  const factory SongsGet() = _$SongsGetImpl;
+  const factory SongsGet({final String? query}) = _$SongsGetImpl;
+
+  String? get query;
+
+  /// Create a copy of SongsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SongsGetImplCopyWith<_$SongsGetImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SongsSearchImplCopyWith<$Res> {
-  factory _$$SongsSearchImplCopyWith(
-          _$SongsSearchImpl value, $Res Function(_$SongsSearchImpl) then) =
-      __$$SongsSearchImplCopyWithImpl<$Res>;
+abstract class _$$SongsEditImplCopyWith<$Res> {
+  factory _$$SongsEditImplCopyWith(
+          _$SongsEditImpl value, $Res Function(_$SongsEditImpl) then) =
+      __$$SongsEditImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {SongDetail song,
+      String textVersion,
+      String title,
+      String description,
+      String link,
+      String text});
 }
 
 /// @nodoc
-class __$$SongsSearchImplCopyWithImpl<$Res>
-    extends _$SongsEventCopyWithImpl<$Res, _$SongsSearchImpl>
-    implements _$$SongsSearchImplCopyWith<$Res> {
-  __$$SongsSearchImplCopyWithImpl(
-      _$SongsSearchImpl _value, $Res Function(_$SongsSearchImpl) _then)
+class __$$SongsEditImplCopyWithImpl<$Res>
+    extends _$SongsEventCopyWithImpl<$Res, _$SongsEditImpl>
+    implements _$$SongsEditImplCopyWith<$Res> {
+  __$$SongsEditImplCopyWithImpl(
+      _$SongsEditImpl _value, $Res Function(_$SongsEditImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of SongsEvent
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? song = null,
+    Object? textVersion = null,
+    Object? title = null,
+    Object? description = null,
+    Object? link = null,
+    Object? text = null,
+  }) {
+    return _then(_$SongsEditImpl(
+      song: null == song
+          ? _value.song
+          : song // ignore: cast_nullable_to_non_nullable
+              as SongDetail,
+      textVersion: null == textVersion
+          ? _value.textVersion
+          : textVersion // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: null == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      link: null == link
+          ? _value.link
+          : link // ignore: cast_nullable_to_non_nullable
+              as String,
+      text: null == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
 /// @nodoc
 
-class _$SongsSearchImpl implements SongsSearch {
-  const _$SongsSearchImpl();
+class _$SongsEditImpl implements SongsEdit {
+  const _$SongsEditImpl(
+      {required this.song,
+      required this.textVersion,
+      required this.title,
+      required this.description,
+      required this.link,
+      required this.text});
+
+  @override
+  final SongDetail song;
+  @override
+  final String textVersion;
+  @override
+  final String title;
+  @override
+  final String description;
+  @override
+  final String link;
+  @override
+  final String text;
 
   @override
   String toString() {
-    return 'SongsEvent.search()';
+    return 'SongsEvent.edit(song: $song, textVersion: $textVersion, title: $title, description: $description, link: $link, text: $text)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SongsSearchImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$SongsEditImpl &&
+            (identical(other.song, song) || other.song == song) &&
+            (identical(other.textVersion, textVersion) ||
+                other.textVersion == textVersion) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.link, link) || other.link == link) &&
+            (identical(other.text, text) || other.text == text));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(
+      runtimeType, song, textVersion, title, description, link, text);
+
+  /// Create a copy of SongsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SongsEditImplCopyWith<_$SongsEditImpl> get copyWith =>
+      __$$SongsEditImplCopyWithImpl<_$SongsEditImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() get,
-    required TResult Function() search,
-    required TResult Function() add,
+    required TResult Function(String? query) get,
+    required TResult Function(SongDetail song, String textVersion, String title,
+            String description, String link, String text)
+        edit,
+    required TResult Function(SongDetail song) add,
     required TResult Function(SongDetail song, String lang, String title,
             String? description, String? link, String text)
         update,
   }) {
-    return search();
+    return edit(song, textVersion, title, description, link, text);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? get,
-    TResult? Function()? search,
-    TResult? Function()? add,
+    TResult? Function(String? query)? get,
+    TResult? Function(SongDetail song, String textVersion, String title,
+            String description, String link, String text)?
+        edit,
+    TResult? Function(SongDetail song)? add,
     TResult? Function(SongDetail song, String lang, String title,
             String? description, String? link, String text)?
         update,
   }) {
-    return search?.call();
+    return edit?.call(song, textVersion, title, description, link, text);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? get,
-    TResult Function()? search,
-    TResult Function()? add,
+    TResult Function(String? query)? get,
+    TResult Function(SongDetail song, String textVersion, String title,
+            String description, String link, String text)?
+        edit,
+    TResult Function(SongDetail song)? add,
     TResult Function(SongDetail song, String lang, String title,
             String? description, String? link, String text)?
         update,
     required TResult orElse(),
   }) {
-    if (search != null) {
-      return search();
+    if (edit != null) {
+      return edit(song, textVersion, title, description, link, text);
     }
     return orElse();
   }
@@ -303,42 +438,61 @@ class _$SongsSearchImpl implements SongsSearch {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(SongsGet value) get,
-    required TResult Function(SongsSearch value) search,
+    required TResult Function(SongsEdit value) edit,
     required TResult Function(SongsAdd value) add,
     required TResult Function(SongsUpdate value) update,
   }) {
-    return search(this);
+    return edit(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(SongsGet value)? get,
-    TResult? Function(SongsSearch value)? search,
+    TResult? Function(SongsEdit value)? edit,
     TResult? Function(SongsAdd value)? add,
     TResult? Function(SongsUpdate value)? update,
   }) {
-    return search?.call(this);
+    return edit?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SongsGet value)? get,
-    TResult Function(SongsSearch value)? search,
+    TResult Function(SongsEdit value)? edit,
     TResult Function(SongsAdd value)? add,
     TResult Function(SongsUpdate value)? update,
     required TResult orElse(),
   }) {
-    if (search != null) {
-      return search(this);
+    if (edit != null) {
+      return edit(this);
     }
     return orElse();
   }
 }
 
-abstract class SongsSearch implements SongsEvent {
-  const factory SongsSearch() = _$SongsSearchImpl;
+abstract class SongsEdit implements SongsEvent {
+  const factory SongsEdit(
+      {required final SongDetail song,
+      required final String textVersion,
+      required final String title,
+      required final String description,
+      required final String link,
+      required final String text}) = _$SongsEditImpl;
+
+  SongDetail get song;
+  String get textVersion;
+  String get title;
+  String get description;
+  String get link;
+  String get text;
+
+  /// Create a copy of SongsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SongsEditImplCopyWith<_$SongsEditImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -346,6 +500,8 @@ abstract class _$$SongsAddImplCopyWith<$Res> {
   factory _$$SongsAddImplCopyWith(
           _$SongsAddImpl value, $Res Function(_$SongsAddImpl) then) =
       __$$SongsAddImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({SongDetail song});
 }
 
 /// @nodoc
@@ -358,66 +514,97 @@ class __$$SongsAddImplCopyWithImpl<$Res>
 
   /// Create a copy of SongsEvent
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? song = null,
+  }) {
+    return _then(_$SongsAddImpl(
+      null == song
+          ? _value.song
+          : song // ignore: cast_nullable_to_non_nullable
+              as SongDetail,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$SongsAddImpl implements SongsAdd {
-  const _$SongsAddImpl();
+  const _$SongsAddImpl(this.song);
+
+  @override
+  final SongDetail song;
 
   @override
   String toString() {
-    return 'SongsEvent.add()';
+    return 'SongsEvent.add(song: $song)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SongsAddImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$SongsAddImpl &&
+            (identical(other.song, song) || other.song == song));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, song);
+
+  /// Create a copy of SongsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SongsAddImplCopyWith<_$SongsAddImpl> get copyWith =>
+      __$$SongsAddImplCopyWithImpl<_$SongsAddImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() get,
-    required TResult Function() search,
-    required TResult Function() add,
+    required TResult Function(String? query) get,
+    required TResult Function(SongDetail song, String textVersion, String title,
+            String description, String link, String text)
+        edit,
+    required TResult Function(SongDetail song) add,
     required TResult Function(SongDetail song, String lang, String title,
             String? description, String? link, String text)
         update,
   }) {
-    return add();
+    return add(song);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? get,
-    TResult? Function()? search,
-    TResult? Function()? add,
+    TResult? Function(String? query)? get,
+    TResult? Function(SongDetail song, String textVersion, String title,
+            String description, String link, String text)?
+        edit,
+    TResult? Function(SongDetail song)? add,
     TResult? Function(SongDetail song, String lang, String title,
             String? description, String? link, String text)?
         update,
   }) {
-    return add?.call();
+    return add?.call(song);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? get,
-    TResult Function()? search,
-    TResult Function()? add,
+    TResult Function(String? query)? get,
+    TResult Function(SongDetail song, String textVersion, String title,
+            String description, String link, String text)?
+        edit,
+    TResult Function(SongDetail song)? add,
     TResult Function(SongDetail song, String lang, String title,
             String? description, String? link, String text)?
         update,
     required TResult orElse(),
   }) {
     if (add != null) {
-      return add();
+      return add(song);
     }
     return orElse();
   }
@@ -426,7 +613,7 @@ class _$SongsAddImpl implements SongsAdd {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(SongsGet value) get,
-    required TResult Function(SongsSearch value) search,
+    required TResult Function(SongsEdit value) edit,
     required TResult Function(SongsAdd value) add,
     required TResult Function(SongsUpdate value) update,
   }) {
@@ -437,7 +624,7 @@ class _$SongsAddImpl implements SongsAdd {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(SongsGet value)? get,
-    TResult? Function(SongsSearch value)? search,
+    TResult? Function(SongsEdit value)? edit,
     TResult? Function(SongsAdd value)? add,
     TResult? Function(SongsUpdate value)? update,
   }) {
@@ -448,7 +635,7 @@ class _$SongsAddImpl implements SongsAdd {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SongsGet value)? get,
-    TResult Function(SongsSearch value)? search,
+    TResult Function(SongsEdit value)? edit,
     TResult Function(SongsAdd value)? add,
     TResult Function(SongsUpdate value)? update,
     required TResult orElse(),
@@ -461,7 +648,15 @@ class _$SongsAddImpl implements SongsAdd {
 }
 
 abstract class SongsAdd implements SongsEvent {
-  const factory SongsAdd() = _$SongsAddImpl;
+  const factory SongsAdd(final SongDetail song) = _$SongsAddImpl;
+
+  SongDetail get song;
+
+  /// Create a copy of SongsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SongsAddImplCopyWith<_$SongsAddImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -586,9 +781,11 @@ class _$SongsUpdateImpl implements SongsUpdate {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() get,
-    required TResult Function() search,
-    required TResult Function() add,
+    required TResult Function(String? query) get,
+    required TResult Function(SongDetail song, String textVersion, String title,
+            String description, String link, String text)
+        edit,
+    required TResult Function(SongDetail song) add,
     required TResult Function(SongDetail song, String lang, String title,
             String? description, String? link, String text)
         update,
@@ -599,9 +796,11 @@ class _$SongsUpdateImpl implements SongsUpdate {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? get,
-    TResult? Function()? search,
-    TResult? Function()? add,
+    TResult? Function(String? query)? get,
+    TResult? Function(SongDetail song, String textVersion, String title,
+            String description, String link, String text)?
+        edit,
+    TResult? Function(SongDetail song)? add,
     TResult? Function(SongDetail song, String lang, String title,
             String? description, String? link, String text)?
         update,
@@ -612,9 +811,11 @@ class _$SongsUpdateImpl implements SongsUpdate {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? get,
-    TResult Function()? search,
-    TResult Function()? add,
+    TResult Function(String? query)? get,
+    TResult Function(SongDetail song, String textVersion, String title,
+            String description, String link, String text)?
+        edit,
+    TResult Function(SongDetail song)? add,
     TResult Function(SongDetail song, String lang, String title,
             String? description, String? link, String text)?
         update,
@@ -630,7 +831,7 @@ class _$SongsUpdateImpl implements SongsUpdate {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(SongsGet value) get,
-    required TResult Function(SongsSearch value) search,
+    required TResult Function(SongsEdit value) edit,
     required TResult Function(SongsAdd value) add,
     required TResult Function(SongsUpdate value) update,
   }) {
@@ -641,7 +842,7 @@ class _$SongsUpdateImpl implements SongsUpdate {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(SongsGet value)? get,
-    TResult? Function(SongsSearch value)? search,
+    TResult? Function(SongsEdit value)? edit,
     TResult? Function(SongsAdd value)? add,
     TResult? Function(SongsUpdate value)? update,
   }) {
@@ -652,7 +853,7 @@ class _$SongsUpdateImpl implements SongsUpdate {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SongsGet value)? get,
-    TResult Function(SongsSearch value)? search,
+    TResult Function(SongsEdit value)? edit,
     TResult Function(SongsAdd value)? add,
     TResult Function(SongsUpdate value)? update,
     required TResult orElse(),

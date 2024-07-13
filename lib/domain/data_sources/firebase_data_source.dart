@@ -7,5 +7,5 @@ abstract class FirebaseDataSource {
       String collection, int id, Map<String, dynamic> data);
 
   Future<QuerySnapshot> postToFirebase(
-      String collection, Map<String, String> data);
+      String collection, Map<String, dynamic> data);
 }

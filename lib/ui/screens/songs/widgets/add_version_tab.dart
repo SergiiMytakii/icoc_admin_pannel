@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
+import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
+import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
 
 class AddVersionTab extends StatefulWidget {
   final SongDetail song;
@@ -31,6 +32,30 @@ class _AddVersionTabState extends State<AddVersionTab> {
         key: _formKey,
         child: ListView(
           children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 30,
+                  ),
+                  const Spacer(),
+                  const Text(
+                    'Add a new song version',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  const Spacer(),
+                  MyTextButton(
+                    onPressed: _save,
+                    label: 'Save',
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                ],
+              ),
+            ),
             MyTexField(
               controller: langController,
               hint: 'Language code',
@@ -73,9 +98,8 @@ class _AddVersionTabState extends State<AddVersionTab> {
               controller: urlController,
               hint: 'Youtube link',
             ),
-            TextButton(
-              onPressed: _save,
-              child: const Text('Submit'),
+            const SizedBox(
+              height: 250,
             )
           ],
         ),
@@ -93,42 +117,5 @@ class _AddVersionTabState extends State<AddVersionTab> {
           text: textController.text,
           link: urlController.text));
     }
-  }
-}
-
-class MyTexField extends StatelessWidget {
-  const MyTexField({
-    super.key,
-    required this.controller,
-    required this.hint,
-    this.maxLength = 100000,
-    this.maxLines = 1,
-    this.validator,
-  });
-
-  final TextEditingController controller;
-  final String hint;
-  final int maxLength;
-  final int maxLines;
-  final FormFieldValidator<String>? validator;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: TextFormField(
-        controller: controller,
-        maxLength: maxLength,
-        maxLines: maxLines,
-        validator: validator,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: Colors.grey, width: 0.3),
-          ),
-          helperText: hint,
-        ),
-      ),
-    );
   }
 }
