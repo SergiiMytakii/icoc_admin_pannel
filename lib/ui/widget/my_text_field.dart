@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MyTexField extends StatelessWidget {
   const MyTexField({
@@ -8,6 +9,7 @@ class MyTexField extends StatelessWidget {
     this.maxLength = 100000,
     this.maxLines = 1,
     this.readOnly = false,
+    this.obscureText = false,
     this.validator,
   });
 
@@ -15,6 +17,7 @@ class MyTexField extends StatelessWidget {
   final String hint;
   final int maxLength;
   final bool readOnly;
+  final bool obscureText;
   final int maxLines;
   final FormFieldValidator<String>? validator;
 
@@ -28,6 +31,7 @@ class MyTexField extends StatelessWidget {
         maxLength: maxLength,
         maxLines: maxLines,
         validator: validator,
+        obscureText: obscureText,
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),

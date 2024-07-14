@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/domain/model/resources.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
@@ -19,7 +20,7 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
   final List<bool> _isOpen = [true];
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController langController = TextEditingController();
+  TextEditingController langController = TextEditingController()..text = 'en';
   TextEditingController textController = TextEditingController();
   TextEditingController urlController = TextEditingController();
   SongDetail song = SongDetail.defaultSong();
@@ -94,7 +95,6 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
                 _isOpen.add(true);
                 titleController.clear();
                 descriptionController.clear();
-                langController.clear();
                 textController.clear();
                 urlController.clear();
               },
@@ -109,6 +109,7 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
           onPressed: () {
             _addToSong();
             getIt<SongsBloc>().add(SongsEvent.add(song));
+            context.read<SongsBloc>().currentSong.value = song;
             context.pop();
           },
           label: 'Save',

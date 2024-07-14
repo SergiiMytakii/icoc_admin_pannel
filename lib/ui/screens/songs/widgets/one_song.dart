@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/helpers/count_song_tabs.dart';
-import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
 import 'package:icoc_admin_pannel/domain/model/resources.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/add_version_tab.dart';
@@ -28,8 +26,8 @@ class OneSong extends StatefulWidget {
 
 class _OneSongState extends State<OneSong> with TickerProviderStateMixin {
   List<String> tabsKeys = [];
-  bool showVideos = false;
   bool miniPlayerOpened = true;
+  bool _showVideoPreview = true;
   bool videoIsPlaying = false;
   YoutubePlayerController? youtubePlayerController;
   late TabController tabController;
@@ -75,7 +73,8 @@ class _OneSongState extends State<OneSong> with TickerProviderStateMixin {
             _tabBarBuilder(widget.song),
             if (widget.song.resources != null &&
                 widget.song.resources!.isNotEmpty &&
-                !videoIsPlaying)
+                !videoIsPlaying &&
+                _showVideoPreview)
               _buldVideoPreview(widget.song),
             if (videoIsPlaying) _miniPlayerBuilder(),
           ],
@@ -208,7 +207,7 @@ class _OneSongState extends State<OneSong> with TickerProviderStateMixin {
     return Stack(
       children: [
         Container(
-          height: 110,
+          height: 200,
           width: double.maxFinite,
           color: Theme.of(context).colorScheme.surface,
         ),
@@ -221,6 +220,17 @@ class _OneSongState extends State<OneSong> with TickerProviderStateMixin {
                       VideoCard(resource: resource, onTap: _startPlayVideo))
                   .toList(),
             )),
+        Positioned(
+            right: 6,
+            top: 6,
+            child: IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                setState(() {
+                  _showVideoPreview = false;
+                });
+              },
+            ))
       ],
     );
   }

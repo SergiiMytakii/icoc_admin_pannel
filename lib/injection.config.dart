@@ -10,33 +10,34 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:icoc_admin_pannel/data/data_sources_impl/remote/firebase_data_source_impl.dart'
-    as _i4;
+    as _i5;
 import 'package:icoc_admin_pannel/data/data_sources_impl/remote/http_client_impl.dart'
-    as _i6;
-import 'package:icoc_admin_pannel/data/repository_impl/bible_study_repository_impl.dart'
-    as _i15;
-import 'package:icoc_admin_pannel/data/repository_impl/feedback_repository_impl.dart'
-    as _i10;
-import 'package:icoc_admin_pannel/data/repository_impl/notifications_repository_impl.dart'
-    as _i17;
-import 'package:icoc_admin_pannel/data/repository_impl/songs_repository_impl.dart'
-    as _i12;
-import 'package:icoc_admin_pannel/data/repository_impl/video_repository_impl.dart'
-    as _i8;
-import 'package:icoc_admin_pannel/domain/data_sources/firebase_data_source.dart'
-    as _i3;
-import 'package:icoc_admin_pannel/domain/data_sources/http_client.dart' as _i5;
-import 'package:icoc_admin_pannel/domain/repository/bible_study_repository.dart'
-    as _i14;
-import 'package:icoc_admin_pannel/domain/repository/feedback_repository.dart'
-    as _i9;
-import 'package:icoc_admin_pannel/domain/repository/notifications_repository.dart'
-    as _i16;
-import 'package:icoc_admin_pannel/domain/repository/songs_repository.dart'
-    as _i11;
-import 'package:icoc_admin_pannel/domain/repository/video_repository.dart'
     as _i7;
-import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart' as _i13;
+import 'package:icoc_admin_pannel/data/repository_impl/bible_study_repository_impl.dart'
+    as _i16;
+import 'package:icoc_admin_pannel/data/repository_impl/feedback_repository_impl.dart'
+    as _i11;
+import 'package:icoc_admin_pannel/data/repository_impl/notifications_repository_impl.dart'
+    as _i18;
+import 'package:icoc_admin_pannel/data/repository_impl/songs_repository_impl.dart'
+    as _i13;
+import 'package:icoc_admin_pannel/data/repository_impl/video_repository_impl.dart'
+    as _i9;
+import 'package:icoc_admin_pannel/domain/data_sources/firebase_data_source.dart'
+    as _i4;
+import 'package:icoc_admin_pannel/domain/data_sources/http_client.dart' as _i6;
+import 'package:icoc_admin_pannel/domain/repository/bible_study_repository.dart'
+    as _i15;
+import 'package:icoc_admin_pannel/domain/repository/feedback_repository.dart'
+    as _i10;
+import 'package:icoc_admin_pannel/domain/repository/notifications_repository.dart'
+    as _i17;
+import 'package:icoc_admin_pannel/domain/repository/songs_repository.dart'
+    as _i12;
+import 'package:icoc_admin_pannel/domain/repository/video_repository.dart'
+    as _i8;
+import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart' as _i3;
+import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart' as _i14;
 import 'package:injectable/injectable.dart' as _i2;
 
 const String _dev = 'dev';
@@ -53,59 +54,60 @@ extension GetItInjectableX on _i1.GetIt {
       environment,
       environmentFilter,
     );
-    gh.factory<_i3.FirebaseDataSource>(
-      () => _i4.DatabaseServiceFirebase(),
+    gh.singleton<_i3.AuthBloc>(() => _i3.AuthBloc());
+    gh.factory<_i4.FirebaseDataSource>(
+      () => _i5.DatabaseServiceFirebase(),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.factory<_i5.HttpClient>(
-      () => _i6.HttpClientImpl(),
+    gh.factory<_i6.HttpClient>(
+      () => _i7.HttpClientImpl(),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.factory<_i7.VideoRepository>(
-      () => _i8.VideoRepositoryImpl(
-        gh<_i3.FirebaseDataSource>(),
-        gh<_i5.HttpClient>(),
+    gh.factory<_i8.VideoRepository>(
+      () => _i9.VideoRepositoryImpl(
+        gh<_i4.FirebaseDataSource>(),
+        gh<_i6.HttpClient>(),
       ),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.factory<_i9.FeedbackRepository>(
-      () => _i10.FeedbackRepositoryImpl(gh<_i3.FirebaseDataSource>()),
+    gh.factory<_i10.FeedbackRepository>(
+      () => _i11.FeedbackRepositoryImpl(gh<_i4.FirebaseDataSource>()),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.factory<_i11.SongsRepository>(
-      () => _i12.SongsRepositoryImpl(
-          firebaseDataSource: gh<_i3.FirebaseDataSource>()),
+    gh.factory<_i12.SongsRepository>(
+      () => _i13.SongsRepositoryImpl(
+          firebaseDataSource: gh<_i4.FirebaseDataSource>()),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.singleton<_i13.SongsBloc>(() => _i13.SongsBloc(
-          gh<_i11.SongsRepository>(),
-          gh<_i7.VideoRepository>(),
+    gh.singleton<_i14.SongsBloc>(() => _i14.SongsBloc(
+          gh<_i12.SongsRepository>(),
+          gh<_i8.VideoRepository>(),
         ));
-    gh.factory<_i14.BibleStudyRepository>(
-      () => _i15.BibleStudyRepositoryImpl(
-          firebaseDataSource: gh<_i3.FirebaseDataSource>()),
+    gh.factory<_i15.BibleStudyRepository>(
+      () => _i16.BibleStudyRepositoryImpl(
+          firebaseDataSource: gh<_i4.FirebaseDataSource>()),
       registerFor: {
         _dev,
         _prod,
       },
     );
-    gh.factory<_i16.NotificationsRepository>(
-      () => _i17.NotificationsRepositoryImpl(gh<_i3.FirebaseDataSource>()),
+    gh.factory<_i17.NotificationsRepository>(
+      () => _i18.NotificationsRepositoryImpl(gh<_i4.FirebaseDataSource>()),
       registerFor: {
         _dev,
         _prod,

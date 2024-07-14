@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -27,12 +28,36 @@
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>icoc_admin_pannel</title>
   <link rel="manifest" href="manifest.json">
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyA7Mr6692hbRGnT2D7KwVugVi2XiQNggCc",
+      authDomain: "icoc-8f075.firebaseapp.com",
+      databaseURL: "https://icoc-8f075.firebaseio.com",
+      projectId: "icoc-8f075",
+      storageBucket: "icoc-8f075.appspot.com",
+      messagingSenderId: "423282730331",
+      appId: "1:423282730331:web:b9a893012bb754f61ce67e",
+      measurementId: "G-MV1N52Y86M"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+  <script src="main.dart.js" defer></script>
 </head>
+
 <body>
   <script src="flutter_bootstrap.js" async></script>
+  <script>
+    // Load Dart main app
+    const script = document.createElement('script');
+    script.src = 'main.dart.js';
+    document.body.appendChild(script);
+  </script>
 </body>
+
 </html>

@@ -9,6 +9,7 @@ import 'package:icoc_admin_pannel/app_router.dart';
 import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
 import 'package:icoc_admin_pannel/firebase_options.dart';
 import 'package:icoc_admin_pannel/injection.dart';
+import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -42,6 +43,9 @@ class MainApp extends StatelessWidget {
       providers: [
         BlocProvider<SongsBloc>(
           create: (BuildContext context) => getIt<SongsBloc>(),
+        ),
+        BlocProvider<AuthBloc>(
+          create: (BuildContext context) => getIt<AuthBloc>(),
         ),
       ],
       child: MaterialApp.router(

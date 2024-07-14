@@ -26,6 +26,10 @@ dependencies:
   youtube_player_iframe: ^5.0.0
   flutter_html: ^3.0.0-beta.2
   cached_network_image: ^3.3.1
+  firebase_auth_web: ^5.12.4
+  firebase_auth: ^5.1.2
+  universal_html: ^2.2.4
+  country_flags: ^3.0.0
 
 dev_dependencies:
   flutter_test:

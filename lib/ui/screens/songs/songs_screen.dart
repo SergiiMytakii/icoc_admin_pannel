@@ -6,6 +6,7 @@ import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/one_song.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/song_card.dart';
+import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 
 class SongsScreen extends StatefulWidget {
@@ -96,20 +97,10 @@ class _SongsScreenState extends State<SongsScreen> {
                 ],
               );
             } else {
-              return Center(
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 200,
-                    ),
-                    const Text('Ooooops... no songs'),
-                    MyTextButton(
-                        label: 'Go back',
-                        onPressed: () =>
-                            getIt<SongsBloc>().add(const SongsEvent.get()))
-                  ],
-                ),
-              );
+              getIt<SongsBloc>().add(const SongsEvent.get());
+              Future.delayed(Durations.long4)
+                  .then((_) => showAlertDialog(context, 'Ooooops... no songs'));
+              return const SizedBox.shrink();
             }
           });
     }));

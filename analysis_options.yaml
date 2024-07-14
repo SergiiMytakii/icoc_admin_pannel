@@ -1,6 +1,7 @@
 analyzer:
   errors:
     constant_identifier_names: ignore
+    use_build_context_synchronously: ignore
   erro ignorers:
     constant_identifier_names: ignore
 include: package:flutter_lints/flutter.yaml

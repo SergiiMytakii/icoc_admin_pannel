@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
+import 'package:icoc_admin_pannel/ui/widget/select_lang.dart';
 
 class AddSongBlock extends StatefulWidget {
   final TextEditingController titleController;
@@ -32,24 +33,20 @@ class _AddSongBlockState extends State<AddSongBlock> {
         key: _formKey,
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16),
-              child: Text(
-                'Add a new song version',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24),
-              ),
-            ),
-            MyTexField(
-              controller: widget.langController,
-              hint: 'Language code',
-              maxLength: 2,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a language code';
-                }
-                return null;
-              },
+            Row(
+              children: [
+                SelectLanguageWidget(langController: widget.langController),
+                const Spacer(),
+                const Text(
+                  'Add a new song version',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20),
+                ),
+                const Spacer(),
+                const SizedBox(
+                  width: 50,
+                )
+              ],
             ),
             MyTexField(
               controller: widget.titleController,

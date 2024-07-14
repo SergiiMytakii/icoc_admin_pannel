@@ -1,7 +1,11 @@
 // lib/app_router.dart
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
+import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
+import 'package:icoc_admin_pannel/ui/screens/auth/login_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/bible_study/bible_study_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/feedback/feedbacks_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/notifications/notifications_screen.dart';
@@ -10,6 +14,7 @@ import 'package:icoc_admin_pannel/ui/screens/songs/add_new_song.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/edit_song_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/songs_screen.dart';
 import 'package:icoc_admin_pannel/ui/video/video_screen.dart';
+import 'package:logger/logger.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -25,16 +30,45 @@ final GoRouter router = GoRouter(
   //   context.go('/songs');
   // },
   debugLogDiagnostics: true,
+  redirect: (BuildContext context, GoRouterState state) {
+    print('redirect');
+    final authBloc = context.read<AuthBloc>();
+    if (authBloc.state is AuthInitial) {
+      authBloc.add(const AuthEvent.checkStatus());
+    }
+    return null;
+  },
 
   navigatorKey: _rootNavigatorKey,
-  initialLocation: '/songs',
+  initialLocation: '/',
 
   routes: <RouteBase>[
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
       pageBuilder: (BuildContext context, GoRouterState state, Widget child) {
-        return NoTransitionPage<void>(
-            key: state.pageKey, child: RootScreen(child: child));
+        final authState = context.watch<AuthBloc>().state;
+        return authState.when(
+            initial: () => NoTransitionPage<void>(
+                key: state.pageKey, child: const LoginScreen()),
+            loading: () => NoTransitionPage<void>(
+                key: state.pageKey,
+                child: const Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )),
+            error: (message) => NoTransitionPage<void>(
+                  key: state.pageKey,
+                  child: Scaffold(
+                    body: Center(
+                      child: Text(message),
+                    ),
+                  ),
+                ),
+            authenticated: (User user) {
+              return NoTransitionPage<void>(
+                  key: state.pageKey, child: RootScreen(child: child));
+            });
       },
       routes: <GoRoute>[
         GoRoute(
@@ -67,7 +101,13 @@ final GoRouter router = GoRouter(
                 pageBuilder: (BuildContext context, GoRouterState state) {
                   final String? textVersion =
                       state.pathParameters['textVersion'];
-                  final SongDetail? song = state.extra as SongDetail?;
+
+                  SongDetail? song;
+
+                  if (state.extra is SongDetail?) {
+                    song = state.extra as SongDetail?;
+                  }
+
                   return NoTransitionPage<void>(
                     key: state.pageKey,
                     child: EditSongScreen(
