@@ -27,7 +27,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         email: event.email,
         password: event.password,
       );
-      // _setAuthCookie(await user.user!.getIdToken() ?? '');
       emit(AuthState.authenticated(user: user.user!));
     } catch (e) {
       emit(AuthState.error(e.toString()));

@@ -20,7 +20,7 @@ void main() async {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
-      // setUrlStrategy(PathUrlStrategy());
+      setUrlStrategy(PathUrlStrategy());
       configureDependencies(Environment.dev);
       runApp(const MainApp());
     },

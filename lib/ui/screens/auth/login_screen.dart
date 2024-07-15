@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
+import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
 
@@ -40,80 +42,94 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<AuthBloc, AuthState>(
-        listener: (context, state) {
-          state.whenOrNull(
-            error: (message) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(message),
+      body: Stack(
+        children: [
+          Center(
+            child: Column(
+              children: [
+                const Spacer(),
+                Image.network(
+                  fullLogoImageUrl,
+                  width: 400,
                 ),
-              );
-            },
-          );
-        },
-        builder: (context, state) {
-          return state.maybeWhen(
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
-            orElse: () => Center(
-              child: Column(
-                children: [
-                  const Spacer(),
-                  const Text(
-                    'Welcome to ICOC app admin panel!',
-                    style: TextStyle(fontSize: 24),
-                  ),
-                  SizedBox(
-                    width: 350,
-                    height: 300,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            MyTexField(
-                              controller: _emailController,
-                              hint: 'Email',
-                              validator: _validateEmail,
-                              maxLength: 30,
-                            ),
-                            MyTexField(
-                              controller: _passwordController,
-                              obscureText: true,
-                              hint: 'Password',
-                              validator: _validatePassword,
-                              maxLength: 16,
-                            ),
-                            const SizedBox(height: 16.0),
-                            MyTextButton(
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  context.read<AuthBloc>().add(
-                                        AuthEvent.logIn(
-                                          email: _emailController.text,
-                                          password: _passwordController.text,
-                                        ),
-                                      );
-                                }
-                              },
-                              label: 'Login',
-                            ),
-                          ],
-                        ),
+                const SizedBox(
+                  height: 50,
+                ),
+                const Text(
+                  'Welcome to ICOC app admin panel!',
+                  style: TextStyle(fontSize: 24),
+                ),
+                SizedBox(
+                  width: 350,
+                  height: 300,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          MyTexField(
+                            controller: _emailController,
+                            hint: 'Email',
+                            validator: _validateEmail,
+                            maxLength: 30,
+                          ),
+                          MyTexField(
+                            controller: _passwordController,
+                            obscureText: true,
+                            hint: 'Password',
+                            validator: _validatePassword,
+                            maxLength: 16,
+                            onFieldSubmitted: () {
+                              _login(context);
+                            },
+                          ),
+                          const SizedBox(height: 16.0),
+                          MyTextButton(
+                            onPressed: () {
+                              _login(context);
+                            },
+                            label: 'Login',
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  const Spacer(),
-                ],
-              ),
+                ),
+                const Spacer(),
+              ],
             ),
-          );
-        },
+          ),
+          BlocConsumer<AuthBloc, AuthState>(
+            listener: (context, state) {
+              state.whenOrNull(
+                error: (message) {
+                  showAlertDialog(context, message);
+                },
+              );
+            },
+            builder: (context, state) {
+              return state.maybeWhen(
+                  loading: () => const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                  orElse: () => const SizedBox.shrink());
+            },
+          ),
+        ],
       ),
     );
+  }
+
+  void _login(BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      context.read<AuthBloc>().add(
+            AuthEvent.logIn(
+              email: _emailController.text,
+              password: _passwordController.text,
+            ),
+          );
+    }
   }
 }

@@ -47,28 +47,14 @@ final GoRouter router = GoRouter(
       navigatorKey: _shellNavigatorKey,
       pageBuilder: (BuildContext context, GoRouterState state, Widget child) {
         final authState = context.watch<AuthBloc>().state;
-        return authState.when(
-            initial: () => NoTransitionPage<void>(
-                key: state.pageKey, child: const LoginScreen()),
-            loading: () => NoTransitionPage<void>(
-                key: state.pageKey,
-                child: const Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                )),
-            error: (message) => NoTransitionPage<void>(
-                  key: state.pageKey,
-                  child: Scaffold(
-                    body: Center(
-                      child: Text(message),
-                    ),
-                  ),
-                ),
-            authenticated: (User user) {
-              return NoTransitionPage<void>(
-                  key: state.pageKey, child: RootScreen(child: child));
-            });
+        return authState.maybeWhen(
+          authenticated: (User user) {
+            return NoTransitionPage<void>(
+                key: state.pageKey, child: RootScreen(child: child));
+          },
+          orElse: () => NoTransitionPage<void>(
+              key: state.pageKey, child: const LoginScreen()),
+        );
       },
       routes: <GoRoute>[
         GoRoute(
@@ -88,7 +74,8 @@ final GoRouter router = GoRouter(
                 path: 'addsong',
                 pageBuilder: (BuildContext context, GoRouterState state) {
                   final int? songsCount = state.extra as int?;
-                  return NoTransitionPage(
+
+                  return NoTransitionPage<void>(
                     key: state.pageKey,
                     child: AddNewSongScreen(
                       songsCount: songsCount ?? 0,
