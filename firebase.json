@@ -12,7 +12,7 @@
     }
   },
   "hosting": {
-    "source": "./build/web",
+    "source": "build/web",
     "ignore": [
       "firebase.json",
       "**/.*",
