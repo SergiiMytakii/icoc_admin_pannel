@@ -22,18 +22,33 @@ class NotificationsRepositoryImpl extends NotificationsRepository {
       final Map data = doc.data() as Map;
       final keys = data.keys;
       keys.forEach((key) {
-        for (final Map notification in data[key]) {
+        for (int i = 0; i < data[key].length; i++) {
           notifications.add({
             key: NotificationsModel(
+                id: i,
                 topic: doc.id,
-                title: notification['title'],
-                text: notification['text'],
-                link: notification['link'])
+                title: data[key][i]['title'],
+                text: data[key][i]['text'],
+                link: data[key][i]['link'])
           });
         }
       });
     }
 
     return notifications.reversed.toList();
+  }
+
+  @override
+  Future<List<Map<String, NotificationsModel>>> addNotifications(
+      String lang, NotificationsModel notification) {
+    // TODO: implement addNotifications
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Map<String, NotificationsModel>>> deleteNotifications(
+      String lang, String id) {
+    // TODO: implement deleteNotifications
+    throw UnimplementedError();
   }
 }

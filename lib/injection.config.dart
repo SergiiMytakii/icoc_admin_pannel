@@ -18,7 +18,7 @@ import 'package:icoc_admin_pannel/data/repository_impl/bible_study_repository_im
 import 'package:icoc_admin_pannel/data/repository_impl/feedback_repository_impl.dart'
     as _i11;
 import 'package:icoc_admin_pannel/data/repository_impl/notifications_repository_impl.dart'
-    as _i18;
+    as _i19;
 import 'package:icoc_admin_pannel/data/repository_impl/songs_repository_impl.dart'
     as _i13;
 import 'package:icoc_admin_pannel/data/repository_impl/video_repository_impl.dart'
@@ -31,13 +31,19 @@ import 'package:icoc_admin_pannel/domain/repository/bible_study_repository.dart'
 import 'package:icoc_admin_pannel/domain/repository/feedback_repository.dart'
     as _i10;
 import 'package:icoc_admin_pannel/domain/repository/notifications_repository.dart'
-    as _i17;
+    as _i18;
 import 'package:icoc_admin_pannel/domain/repository/songs_repository.dart'
     as _i12;
 import 'package:icoc_admin_pannel/domain/repository/video_repository.dart'
     as _i8;
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart' as _i3;
+import 'package:icoc_admin_pannel/ui/bloc/bible_study/bible_study_bloc.dart'
+    as _i17;
+import 'package:icoc_admin_pannel/ui/bloc/feedback/feedback_bloc.dart' as _i21;
+import 'package:icoc_admin_pannel/ui/bloc/notifications/notifications_bloc.dart'
+    as _i22;
 import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart' as _i14;
+import 'package:icoc_admin_pannel/ui/bloc/videos/videos_bloc.dart' as _i20;
 import 'package:injectable/injectable.dart' as _i2;
 
 const String _dev = 'dev';
@@ -106,13 +112,21 @@ extension GetItInjectableX on _i1.GetIt {
         _prod,
       },
     );
-    gh.factory<_i17.NotificationsRepository>(
-      () => _i18.NotificationsRepositoryImpl(gh<_i4.FirebaseDataSource>()),
+    gh.singleton<_i17.BibleStudyBloc>(
+        () => _i17.BibleStudyBloc(gh<_i15.BibleStudyRepository>()));
+    gh.factory<_i18.NotificationsRepository>(
+      () => _i19.NotificationsRepositoryImpl(gh<_i4.FirebaseDataSource>()),
       registerFor: {
         _dev,
         _prod,
       },
     );
+    gh.singleton<_i20.VideosBloc>(
+        () => _i20.VideosBloc(gh<_i8.VideoRepository>()));
+    gh.singleton<_i21.FeedbackBloc>(
+        () => _i21.FeedbackBloc(gh<_i10.FeedbackRepository>()));
+    gh.singleton<_i22.NotificationsBloc>(
+        () => _i22.NotificationsBloc(gh<_i18.NotificationsRepository>()));
     return this;
   }
 }

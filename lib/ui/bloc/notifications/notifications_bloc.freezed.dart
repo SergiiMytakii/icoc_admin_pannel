@@ -1,0 +1,1164 @@
+// coverage:ignore-file
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
+
+part of 'notifications_bloc.dart';
+
+// **************************************************************************
+// FreezedGenerator
+// **************************************************************************
+
+T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+
+/// @nodoc
+mixin _$NotificationsEvent {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() get,
+    required TResult Function(String lang, NotificationsModel notification) add,
+    required TResult Function(SongDetail song) delete,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? get,
+    TResult? Function(String lang, NotificationsModel notification)? add,
+    TResult? Function(SongDetail song)? delete,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? get,
+    TResult Function(String lang, NotificationsModel notification)? add,
+    TResult Function(SongDetail song)? delete,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(NotificationsGet value) get,
+    required TResult Function(NotificationsAdd value) add,
+    required TResult Function(NotificationsDelete value) delete,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(NotificationsGet value)? get,
+    TResult? Function(NotificationsAdd value)? add,
+    TResult? Function(NotificationsDelete value)? delete,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(NotificationsGet value)? get,
+    TResult Function(NotificationsAdd value)? add,
+    TResult Function(NotificationsDelete value)? delete,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $NotificationsEventCopyWith<$Res> {
+  factory $NotificationsEventCopyWith(
+          NotificationsEvent value, $Res Function(NotificationsEvent) then) =
+      _$NotificationsEventCopyWithImpl<$Res, NotificationsEvent>;
+}
+
+/// @nodoc
+class _$NotificationsEventCopyWithImpl<$Res, $Val extends NotificationsEvent>
+    implements $NotificationsEventCopyWith<$Res> {
+  _$NotificationsEventCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of NotificationsEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$NotificationsGetImplCopyWith<$Res> {
+  factory _$$NotificationsGetImplCopyWith(_$NotificationsGetImpl value,
+          $Res Function(_$NotificationsGetImpl) then) =
+      __$$NotificationsGetImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$NotificationsGetImplCopyWithImpl<$Res>
+    extends _$NotificationsEventCopyWithImpl<$Res, _$NotificationsGetImpl>
+    implements _$$NotificationsGetImplCopyWith<$Res> {
+  __$$NotificationsGetImplCopyWithImpl(_$NotificationsGetImpl _value,
+      $Res Function(_$NotificationsGetImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of NotificationsEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$NotificationsGetImpl implements NotificationsGet {
+  const _$NotificationsGetImpl();
+
+  @override
+  String toString() {
+    return 'NotificationsEvent.get()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$NotificationsGetImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() get,
+    required TResult Function(String lang, NotificationsModel notification) add,
+    required TResult Function(SongDetail song) delete,
+  }) {
+    return get();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? get,
+    TResult? Function(String lang, NotificationsModel notification)? add,
+    TResult? Function(SongDetail song)? delete,
+  }) {
+    return get?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? get,
+    TResult Function(String lang, NotificationsModel notification)? add,
+    TResult Function(SongDetail song)? delete,
+    required TResult orElse(),
+  }) {
+    if (get != null) {
+      return get();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(NotificationsGet value) get,
+    required TResult Function(NotificationsAdd value) add,
+    required TResult Function(NotificationsDelete value) delete,
+  }) {
+    return get(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(NotificationsGet value)? get,
+    TResult? Function(NotificationsAdd value)? add,
+    TResult? Function(NotificationsDelete value)? delete,
+  }) {
+    return get?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(NotificationsGet value)? get,
+    TResult Function(NotificationsAdd value)? add,
+    TResult Function(NotificationsDelete value)? delete,
+    required TResult orElse(),
+  }) {
+    if (get != null) {
+      return get(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class NotificationsGet implements NotificationsEvent {
+  const factory NotificationsGet() = _$NotificationsGetImpl;
+}
+
+/// @nodoc
+abstract class _$$NotificationsAddImplCopyWith<$Res> {
+  factory _$$NotificationsAddImplCopyWith(_$NotificationsAddImpl value,
+          $Res Function(_$NotificationsAddImpl) then) =
+      __$$NotificationsAddImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String lang, NotificationsModel notification});
+}
+
+/// @nodoc
+class __$$NotificationsAddImplCopyWithImpl<$Res>
+    extends _$NotificationsEventCopyWithImpl<$Res, _$NotificationsAddImpl>
+    implements _$$NotificationsAddImplCopyWith<$Res> {
+  __$$NotificationsAddImplCopyWithImpl(_$NotificationsAddImpl _value,
+      $Res Function(_$NotificationsAddImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of NotificationsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? lang = null,
+    Object? notification = null,
+  }) {
+    return _then(_$NotificationsAddImpl(
+      null == lang
+          ? _value.lang
+          : lang // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == notification
+          ? _value.notification
+          : notification // ignore: cast_nullable_to_non_nullable
+              as NotificationsModel,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$NotificationsAddImpl implements NotificationsAdd {
+  const _$NotificationsAddImpl(this.lang, this.notification);
+
+  @override
+  final String lang;
+  @override
+  final NotificationsModel notification;
+
+  @override
+  String toString() {
+    return 'NotificationsEvent.add(lang: $lang, notification: $notification)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$NotificationsAddImpl &&
+            (identical(other.lang, lang) || other.lang == lang) &&
+            (identical(other.notification, notification) ||
+                other.notification == notification));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, lang, notification);
+
+  /// Create a copy of NotificationsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$NotificationsAddImplCopyWith<_$NotificationsAddImpl> get copyWith =>
+      __$$NotificationsAddImplCopyWithImpl<_$NotificationsAddImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() get,
+    required TResult Function(String lang, NotificationsModel notification) add,
+    required TResult Function(SongDetail song) delete,
+  }) {
+    return add(lang, notification);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? get,
+    TResult? Function(String lang, NotificationsModel notification)? add,
+    TResult? Function(SongDetail song)? delete,
+  }) {
+    return add?.call(lang, notification);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? get,
+    TResult Function(String lang, NotificationsModel notification)? add,
+    TResult Function(SongDetail song)? delete,
+    required TResult orElse(),
+  }) {
+    if (add != null) {
+      return add(lang, notification);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(NotificationsGet value) get,
+    required TResult Function(NotificationsAdd value) add,
+    required TResult Function(NotificationsDelete value) delete,
+  }) {
+    return add(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(NotificationsGet value)? get,
+    TResult? Function(NotificationsAdd value)? add,
+    TResult? Function(NotificationsDelete value)? delete,
+  }) {
+    return add?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(NotificationsGet value)? get,
+    TResult Function(NotificationsAdd value)? add,
+    TResult Function(NotificationsDelete value)? delete,
+    required TResult orElse(),
+  }) {
+    if (add != null) {
+      return add(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class NotificationsAdd implements NotificationsEvent {
+  const factory NotificationsAdd(
+          final String lang, final NotificationsModel notification) =
+      _$NotificationsAddImpl;
+
+  String get lang;
+  NotificationsModel get notification;
+
+  /// Create a copy of NotificationsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$NotificationsAddImplCopyWith<_$NotificationsAddImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$NotificationsDeleteImplCopyWith<$Res> {
+  factory _$$NotificationsDeleteImplCopyWith(_$NotificationsDeleteImpl value,
+          $Res Function(_$NotificationsDeleteImpl) then) =
+      __$$NotificationsDeleteImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({SongDetail song});
+}
+
+/// @nodoc
+class __$$NotificationsDeleteImplCopyWithImpl<$Res>
+    extends _$NotificationsEventCopyWithImpl<$Res, _$NotificationsDeleteImpl>
+    implements _$$NotificationsDeleteImplCopyWith<$Res> {
+  __$$NotificationsDeleteImplCopyWithImpl(_$NotificationsDeleteImpl _value,
+      $Res Function(_$NotificationsDeleteImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of NotificationsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? song = null,
+  }) {
+    return _then(_$NotificationsDeleteImpl(
+      null == song
+          ? _value.song
+          : song // ignore: cast_nullable_to_non_nullable
+              as SongDetail,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$NotificationsDeleteImpl implements NotificationsDelete {
+  const _$NotificationsDeleteImpl(this.song);
+
+  @override
+  final SongDetail song;
+
+  @override
+  String toString() {
+    return 'NotificationsEvent.delete(song: $song)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$NotificationsDeleteImpl &&
+            (identical(other.song, song) || other.song == song));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, song);
+
+  /// Create a copy of NotificationsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$NotificationsDeleteImplCopyWith<_$NotificationsDeleteImpl> get copyWith =>
+      __$$NotificationsDeleteImplCopyWithImpl<_$NotificationsDeleteImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() get,
+    required TResult Function(String lang, NotificationsModel notification) add,
+    required TResult Function(SongDetail song) delete,
+  }) {
+    return delete(song);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? get,
+    TResult? Function(String lang, NotificationsModel notification)? add,
+    TResult? Function(SongDetail song)? delete,
+  }) {
+    return delete?.call(song);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? get,
+    TResult Function(String lang, NotificationsModel notification)? add,
+    TResult Function(SongDetail song)? delete,
+    required TResult orElse(),
+  }) {
+    if (delete != null) {
+      return delete(song);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(NotificationsGet value) get,
+    required TResult Function(NotificationsAdd value) add,
+    required TResult Function(NotificationsDelete value) delete,
+  }) {
+    return delete(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(NotificationsGet value)? get,
+    TResult? Function(NotificationsAdd value)? add,
+    TResult? Function(NotificationsDelete value)? delete,
+  }) {
+    return delete?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(NotificationsGet value)? get,
+    TResult Function(NotificationsAdd value)? add,
+    TResult Function(NotificationsDelete value)? delete,
+    required TResult orElse(),
+  }) {
+    if (delete != null) {
+      return delete(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class NotificationsDelete implements NotificationsEvent {
+  const factory NotificationsDelete(final SongDetail song) =
+      _$NotificationsDeleteImpl;
+
+  SongDetail get song;
+
+  /// Create a copy of NotificationsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$NotificationsDeleteImplCopyWith<_$NotificationsDeleteImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$NotificationsState {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(String errorMessage) error,
+    required TResult Function(
+            List<Map<String, NotificationsModel>> notifications)
+        success,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function(List<Map<String, NotificationsModel>> notifications)?
+        success,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(String errorMessage)? error,
+    TResult Function(List<Map<String, NotificationsModel>> notifications)?
+        success,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_NotificationsInitialState value) initial,
+    required TResult Function(_NotificationsLoadingState value) loading,
+    required TResult Function(_NotificationsErrorState value) error,
+    required TResult Function(_NotificationsSuccessState value) success,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_NotificationsInitialState value)? initial,
+    TResult? Function(_NotificationsLoadingState value)? loading,
+    TResult? Function(_NotificationsErrorState value)? error,
+    TResult? Function(_NotificationsSuccessState value)? success,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_NotificationsInitialState value)? initial,
+    TResult Function(_NotificationsLoadingState value)? loading,
+    TResult Function(_NotificationsErrorState value)? error,
+    TResult Function(_NotificationsSuccessState value)? success,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $NotificationsStateCopyWith<$Res> {
+  factory $NotificationsStateCopyWith(
+          NotificationsState value, $Res Function(NotificationsState) then) =
+      _$NotificationsStateCopyWithImpl<$Res, NotificationsState>;
+}
+
+/// @nodoc
+class _$NotificationsStateCopyWithImpl<$Res, $Val extends NotificationsState>
+    implements $NotificationsStateCopyWith<$Res> {
+  _$NotificationsStateCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of NotificationsState
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$NotificationsInitialStateImplCopyWith<$Res> {
+  factory _$$NotificationsInitialStateImplCopyWith(
+          _$NotificationsInitialStateImpl value,
+          $Res Function(_$NotificationsInitialStateImpl) then) =
+      __$$NotificationsInitialStateImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$NotificationsInitialStateImplCopyWithImpl<$Res>
+    extends _$NotificationsStateCopyWithImpl<$Res,
+        _$NotificationsInitialStateImpl>
+    implements _$$NotificationsInitialStateImplCopyWith<$Res> {
+  __$$NotificationsInitialStateImplCopyWithImpl(
+      _$NotificationsInitialStateImpl _value,
+      $Res Function(_$NotificationsInitialStateImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of NotificationsState
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$NotificationsInitialStateImpl implements _NotificationsInitialState {
+  const _$NotificationsInitialStateImpl();
+
+  @override
+  String toString() {
+    return 'NotificationsState.initial()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$NotificationsInitialStateImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(String errorMessage) error,
+    required TResult Function(
+            List<Map<String, NotificationsModel>> notifications)
+        success,
+  }) {
+    return initial();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function(List<Map<String, NotificationsModel>> notifications)?
+        success,
+  }) {
+    return initial?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(String errorMessage)? error,
+    TResult Function(List<Map<String, NotificationsModel>> notifications)?
+        success,
+    required TResult orElse(),
+  }) {
+    if (initial != null) {
+      return initial();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_NotificationsInitialState value) initial,
+    required TResult Function(_NotificationsLoadingState value) loading,
+    required TResult Function(_NotificationsErrorState value) error,
+    required TResult Function(_NotificationsSuccessState value) success,
+  }) {
+    return initial(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_NotificationsInitialState value)? initial,
+    TResult? Function(_NotificationsLoadingState value)? loading,
+    TResult? Function(_NotificationsErrorState value)? error,
+    TResult? Function(_NotificationsSuccessState value)? success,
+  }) {
+    return initial?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_NotificationsInitialState value)? initial,
+    TResult Function(_NotificationsLoadingState value)? loading,
+    TResult Function(_NotificationsErrorState value)? error,
+    TResult Function(_NotificationsSuccessState value)? success,
+    required TResult orElse(),
+  }) {
+    if (initial != null) {
+      return initial(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _NotificationsInitialState implements NotificationsState {
+  const factory _NotificationsInitialState() = _$NotificationsInitialStateImpl;
+}
+
+/// @nodoc
+abstract class _$$NotificationsLoadingStateImplCopyWith<$Res> {
+  factory _$$NotificationsLoadingStateImplCopyWith(
+          _$NotificationsLoadingStateImpl value,
+          $Res Function(_$NotificationsLoadingStateImpl) then) =
+      __$$NotificationsLoadingStateImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$NotificationsLoadingStateImplCopyWithImpl<$Res>
+    extends _$NotificationsStateCopyWithImpl<$Res,
+        _$NotificationsLoadingStateImpl>
+    implements _$$NotificationsLoadingStateImplCopyWith<$Res> {
+  __$$NotificationsLoadingStateImplCopyWithImpl(
+      _$NotificationsLoadingStateImpl _value,
+      $Res Function(_$NotificationsLoadingStateImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of NotificationsState
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$NotificationsLoadingStateImpl implements _NotificationsLoadingState {
+  const _$NotificationsLoadingStateImpl();
+
+  @override
+  String toString() {
+    return 'NotificationsState.loading()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$NotificationsLoadingStateImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(String errorMessage) error,
+    required TResult Function(
+            List<Map<String, NotificationsModel>> notifications)
+        success,
+  }) {
+    return loading();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function(List<Map<String, NotificationsModel>> notifications)?
+        success,
+  }) {
+    return loading?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(String errorMessage)? error,
+    TResult Function(List<Map<String, NotificationsModel>> notifications)?
+        success,
+    required TResult orElse(),
+  }) {
+    if (loading != null) {
+      return loading();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_NotificationsInitialState value) initial,
+    required TResult Function(_NotificationsLoadingState value) loading,
+    required TResult Function(_NotificationsErrorState value) error,
+    required TResult Function(_NotificationsSuccessState value) success,
+  }) {
+    return loading(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_NotificationsInitialState value)? initial,
+    TResult? Function(_NotificationsLoadingState value)? loading,
+    TResult? Function(_NotificationsErrorState value)? error,
+    TResult? Function(_NotificationsSuccessState value)? success,
+  }) {
+    return loading?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_NotificationsInitialState value)? initial,
+    TResult Function(_NotificationsLoadingState value)? loading,
+    TResult Function(_NotificationsErrorState value)? error,
+    TResult Function(_NotificationsSuccessState value)? success,
+    required TResult orElse(),
+  }) {
+    if (loading != null) {
+      return loading(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _NotificationsLoadingState implements NotificationsState {
+  const factory _NotificationsLoadingState() = _$NotificationsLoadingStateImpl;
+}
+
+/// @nodoc
+abstract class _$$NotificationsErrorStateImplCopyWith<$Res> {
+  factory _$$NotificationsErrorStateImplCopyWith(
+          _$NotificationsErrorStateImpl value,
+          $Res Function(_$NotificationsErrorStateImpl) then) =
+      __$$NotificationsErrorStateImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String errorMessage});
+}
+
+/// @nodoc
+class __$$NotificationsErrorStateImplCopyWithImpl<$Res>
+    extends _$NotificationsStateCopyWithImpl<$Res,
+        _$NotificationsErrorStateImpl>
+    implements _$$NotificationsErrorStateImplCopyWith<$Res> {
+  __$$NotificationsErrorStateImplCopyWithImpl(
+      _$NotificationsErrorStateImpl _value,
+      $Res Function(_$NotificationsErrorStateImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of NotificationsState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? errorMessage = null,
+  }) {
+    return _then(_$NotificationsErrorStateImpl(
+      null == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$NotificationsErrorStateImpl implements _NotificationsErrorState {
+  const _$NotificationsErrorStateImpl(this.errorMessage);
+
+  @override
+  final String errorMessage;
+
+  @override
+  String toString() {
+    return 'NotificationsState.error(errorMessage: $errorMessage)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$NotificationsErrorStateImpl &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, errorMessage);
+
+  /// Create a copy of NotificationsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$NotificationsErrorStateImplCopyWith<_$NotificationsErrorStateImpl>
+      get copyWith => __$$NotificationsErrorStateImplCopyWithImpl<
+          _$NotificationsErrorStateImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(String errorMessage) error,
+    required TResult Function(
+            List<Map<String, NotificationsModel>> notifications)
+        success,
+  }) {
+    return error(errorMessage);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function(List<Map<String, NotificationsModel>> notifications)?
+        success,
+  }) {
+    return error?.call(errorMessage);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(String errorMessage)? error,
+    TResult Function(List<Map<String, NotificationsModel>> notifications)?
+        success,
+    required TResult orElse(),
+  }) {
+    if (error != null) {
+      return error(errorMessage);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_NotificationsInitialState value) initial,
+    required TResult Function(_NotificationsLoadingState value) loading,
+    required TResult Function(_NotificationsErrorState value) error,
+    required TResult Function(_NotificationsSuccessState value) success,
+  }) {
+    return error(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_NotificationsInitialState value)? initial,
+    TResult? Function(_NotificationsLoadingState value)? loading,
+    TResult? Function(_NotificationsErrorState value)? error,
+    TResult? Function(_NotificationsSuccessState value)? success,
+  }) {
+    return error?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_NotificationsInitialState value)? initial,
+    TResult Function(_NotificationsLoadingState value)? loading,
+    TResult Function(_NotificationsErrorState value)? error,
+    TResult Function(_NotificationsSuccessState value)? success,
+    required TResult orElse(),
+  }) {
+    if (error != null) {
+      return error(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _NotificationsErrorState implements NotificationsState {
+  const factory _NotificationsErrorState(final String errorMessage) =
+      _$NotificationsErrorStateImpl;
+
+  String get errorMessage;
+
+  /// Create a copy of NotificationsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$NotificationsErrorStateImplCopyWith<_$NotificationsErrorStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$NotificationsSuccessStateImplCopyWith<$Res> {
+  factory _$$NotificationsSuccessStateImplCopyWith(
+          _$NotificationsSuccessStateImpl value,
+          $Res Function(_$NotificationsSuccessStateImpl) then) =
+      __$$NotificationsSuccessStateImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({List<Map<String, NotificationsModel>> notifications});
+}
+
+/// @nodoc
+class __$$NotificationsSuccessStateImplCopyWithImpl<$Res>
+    extends _$NotificationsStateCopyWithImpl<$Res,
+        _$NotificationsSuccessStateImpl>
+    implements _$$NotificationsSuccessStateImplCopyWith<$Res> {
+  __$$NotificationsSuccessStateImplCopyWithImpl(
+      _$NotificationsSuccessStateImpl _value,
+      $Res Function(_$NotificationsSuccessStateImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of NotificationsState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? notifications = null,
+  }) {
+    return _then(_$NotificationsSuccessStateImpl(
+      null == notifications
+          ? _value._notifications
+          : notifications // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, NotificationsModel>>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$NotificationsSuccessStateImpl implements _NotificationsSuccessState {
+  const _$NotificationsSuccessStateImpl(
+      final List<Map<String, NotificationsModel>> notifications)
+      : _notifications = notifications;
+
+  final List<Map<String, NotificationsModel>> _notifications;
+  @override
+  List<Map<String, NotificationsModel>> get notifications {
+    if (_notifications is EqualUnmodifiableListView) return _notifications;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_notifications);
+  }
+
+  @override
+  String toString() {
+    return 'NotificationsState.success(notifications: $notifications)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$NotificationsSuccessStateImpl &&
+            const DeepCollectionEquality()
+                .equals(other._notifications, _notifications));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_notifications));
+
+  /// Create a copy of NotificationsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$NotificationsSuccessStateImplCopyWith<_$NotificationsSuccessStateImpl>
+      get copyWith => __$$NotificationsSuccessStateImplCopyWithImpl<
+          _$NotificationsSuccessStateImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(String errorMessage) error,
+    required TResult Function(
+            List<Map<String, NotificationsModel>> notifications)
+        success,
+  }) {
+    return success(notifications);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(String errorMessage)? error,
+    TResult? Function(List<Map<String, NotificationsModel>> notifications)?
+        success,
+  }) {
+    return success?.call(notifications);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(String errorMessage)? error,
+    TResult Function(List<Map<String, NotificationsModel>> notifications)?
+        success,
+    required TResult orElse(),
+  }) {
+    if (success != null) {
+      return success(notifications);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_NotificationsInitialState value) initial,
+    required TResult Function(_NotificationsLoadingState value) loading,
+    required TResult Function(_NotificationsErrorState value) error,
+    required TResult Function(_NotificationsSuccessState value) success,
+  }) {
+    return success(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_NotificationsInitialState value)? initial,
+    TResult? Function(_NotificationsLoadingState value)? loading,
+    TResult? Function(_NotificationsErrorState value)? error,
+    TResult? Function(_NotificationsSuccessState value)? success,
+  }) {
+    return success?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_NotificationsInitialState value)? initial,
+    TResult Function(_NotificationsLoadingState value)? loading,
+    TResult Function(_NotificationsErrorState value)? error,
+    TResult Function(_NotificationsSuccessState value)? success,
+    required TResult orElse(),
+  }) {
+    if (success != null) {
+      return success(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _NotificationsSuccessState implements NotificationsState {
+  const factory _NotificationsSuccessState(
+          final List<Map<String, NotificationsModel>> notifications) =
+      _$NotificationsSuccessStateImpl;
+
+  List<Map<String, NotificationsModel>> get notifications;
+
+  /// Create a copy of NotificationsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$NotificationsSuccessStateImplCopyWith<_$NotificationsSuccessStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}

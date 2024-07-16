@@ -31,6 +31,18 @@ class FeedbackRepositoryImpl extends FeedbackRepository {
     final List<Feedback> feedbacks = _listFromSnapshot(snapshot);
     return feedbacks.reversed.toList();
   }
+
+  @override
+  Future<List<Feedback>> deleteFeedback(String feedbackId) {
+    // TODO: implement deleteFeedback
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Feedback>> editFeedback(String feedbackId) {
+    // TODO: implement editFeedback
+    throw UnimplementedError();
+  }
 }
 
 List<Feedback> _listFromSnapshot(QuerySnapshot snapshot) {

@@ -4,6 +4,7 @@ import 'package:icoc_admin_pannel/domain/data_sources/firebase_data_source.dart'
 import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
 import 'package:icoc_admin_pannel/domain/repository/bible_study_repository.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 
 @dev
 @prod
@@ -17,8 +18,34 @@ class BibleStudyRepositoryImpl extends BibleStudyRepository {
     final QuerySnapshot snapshot = await firebaseDataSource.getFromFirebase(
       FirebaseCollections.BibleStudy.name,
     );
-    final List<BibleStudy> topics = _listFromSnapshot(snapshot);
-    return topics;
+    final List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      return BibleStudy.fromJson(data);
+    }).toList();
+    return bibleStudies;
+  }
+
+  @override
+  Future addBibleStudy(BibleStudy bibleStudy) async {
+    final QuerySnapshot snapshot = await firebaseDataSource.postToFirebase(
+        FirebaseCollections.BibleStudy.name, bibleStudy.toJson());
+    final List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      return BibleStudy.fromJson(data);
+    }).toList();
+    return bibleStudies;
+  }
+
+  @override
+  Future addLesson(String bibleStudyId, Lesson lesson) {
+    // TODO: implement addLesson
+    throw UnimplementedError();
+  }
+
+  @override
+  Future editLesson(String bibleStudyId, Lesson lesson) {
+    // TODO: implement editLesson
+    throw UnimplementedError();
   }
 }
 

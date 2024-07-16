@@ -13,7 +13,7 @@ import 'package:icoc_admin_pannel/ui/screens/root/root_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/add_new_song.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/edit_song_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/songs_screen.dart';
-import 'package:icoc_admin_pannel/ui/video/video_screen.dart';
+import 'package:icoc_admin_pannel/ui/screens/video/video_screen.dart';
 import 'package:logger/logger.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
@@ -74,7 +74,6 @@ final GoRouter router = GoRouter(
                 path: 'addsong',
                 pageBuilder: (BuildContext context, GoRouterState state) {
                   final int? songsCount = state.extra as int?;
-
                   return NoTransitionPage<void>(
                     key: state.pageKey,
                     child: AddNewSongScreen(
