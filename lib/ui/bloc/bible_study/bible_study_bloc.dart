@@ -20,6 +20,7 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
     on<BibleStudyGet>(_onBibleStudyRequested);
     on<LessonEdit>(_onLessonEditRequested);
     on<LessonAdd>(_onLessonAddRequested);
+    on<BibleStudyDelete>(_onLessonDeleteRequested);
     on<BibleStudyAdd>(_onBibleStudyAddRequested);
   }
   final BibleStudyRepository bibleStudyRepository;
@@ -52,9 +53,31 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
   ) async {
     emit(const BibleStudyState.loading());
     try {
-      await bibleStudyRepository.editLesson(event.id, Lesson.defaultLesson);
       final List<BibleStudy> bibleStudies =
-          await bibleStudyRepository.getBibleStudyList();
+          await bibleStudyRepository.editLesson(event.bibleStudy);
+
+      if (bibleStudies.isNotEmpty) {
+        bibleStudies.sort((a, b) => a.id.compareTo(b.id));
+      }
+      emit(BibleStudyState.success(bibleStudies));
+    } catch (error, stackTrace) {
+      logError(error, stackTrace);
+      emit(BibleStudyState.error(error.toString()));
+    }
+  }
+
+  Future<void> _onLessonDeleteRequested(
+    BibleStudyDelete event,
+    Emitter<BibleStudyState> emit,
+  ) async {
+    emit(const BibleStudyState.loading());
+    try {
+      final List<BibleStudy> bibleStudies =
+          await bibleStudyRepository.deleteBibleStudy(event.id);
+
+      if (bibleStudies.isNotEmpty) {
+        bibleStudies.sort((a, b) => a.id.compareTo(b.id));
+      }
       emit(BibleStudyState.success(bibleStudies));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
@@ -68,9 +91,12 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
   ) async {
     emit(const BibleStudyState.loading());
     try {
-      await bibleStudyRepository.addBibleStudy(event.bibleStudy);
       final List<BibleStudy> bibleStudies =
-          await bibleStudyRepository.getBibleStudyList();
+          await bibleStudyRepository.addBibleStudy(event.bibleStudy);
+      if (bibleStudies.isNotEmpty) {
+        bibleStudies.sort((a, b) => a.id.compareTo(b.id));
+      }
+
       emit(BibleStudyState.success(bibleStudies));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
@@ -84,9 +110,12 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
   ) async {
     emit(const BibleStudyState.loading());
     try {
-      await bibleStudyRepository.addBibleStudy(event.bibleStudy);
       final List<BibleStudy> bibleStudies =
-          await bibleStudyRepository.getBibleStudyList();
+          await bibleStudyRepository.addBibleStudy(event.bibleStudy);
+
+      if (bibleStudies.isNotEmpty) {
+        bibleStudies.sort((a, b) => a.id.compareTo(b.id));
+      }
       emit(BibleStudyState.success(bibleStudies));
     } catch (error, stackTrace) {
       logError(error, stackTrace);

@@ -19,7 +19,8 @@ mixin _$BibleStudyEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(String id) editLesson,
+    required TResult Function(String id) delete,
+    required TResult Function(BibleStudy bibleStudy) editLesson,
     required TResult Function(BibleStudy bibleStudy) addBibleStudy,
     required TResult Function(BibleStudy bibleStudy) addLesson,
   }) =>
@@ -27,7 +28,8 @@ mixin _$BibleStudyEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(String id)? editLesson,
+    TResult? Function(String id)? delete,
+    TResult? Function(BibleStudy bibleStudy)? editLesson,
     TResult? Function(BibleStudy bibleStudy)? addBibleStudy,
     TResult? Function(BibleStudy bibleStudy)? addLesson,
   }) =>
@@ -35,7 +37,8 @@ mixin _$BibleStudyEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(String id)? editLesson,
+    TResult Function(String id)? delete,
+    TResult Function(BibleStudy bibleStudy)? editLesson,
     TResult Function(BibleStudy bibleStudy)? addBibleStudy,
     TResult Function(BibleStudy bibleStudy)? addLesson,
     required TResult orElse(),
@@ -44,6 +47,7 @@ mixin _$BibleStudyEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(BibleStudyGet value) get,
+    required TResult Function(BibleStudyDelete value) delete,
     required TResult Function(LessonEdit value) editLesson,
     required TResult Function(BibleStudyAdd value) addBibleStudy,
     required TResult Function(LessonAdd value) addLesson,
@@ -52,6 +56,7 @@ mixin _$BibleStudyEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(BibleStudyGet value)? get,
+    TResult? Function(BibleStudyDelete value)? delete,
     TResult? Function(LessonEdit value)? editLesson,
     TResult? Function(BibleStudyAdd value)? addBibleStudy,
     TResult? Function(LessonAdd value)? addLesson,
@@ -60,6 +65,7 @@ mixin _$BibleStudyEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(BibleStudyGet value)? get,
+    TResult Function(BibleStudyDelete value)? delete,
     TResult Function(LessonEdit value)? editLesson,
     TResult Function(BibleStudyAdd value)? addBibleStudy,
     TResult Function(LessonAdd value)? addLesson,
@@ -131,7 +137,8 @@ class _$BibleStudyGetImpl implements BibleStudyGet {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(String id) editLesson,
+    required TResult Function(String id) delete,
+    required TResult Function(BibleStudy bibleStudy) editLesson,
     required TResult Function(BibleStudy bibleStudy) addBibleStudy,
     required TResult Function(BibleStudy bibleStudy) addLesson,
   }) {
@@ -142,7 +149,8 @@ class _$BibleStudyGetImpl implements BibleStudyGet {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(String id)? editLesson,
+    TResult? Function(String id)? delete,
+    TResult? Function(BibleStudy bibleStudy)? editLesson,
     TResult? Function(BibleStudy bibleStudy)? addBibleStudy,
     TResult? Function(BibleStudy bibleStudy)? addLesson,
   }) {
@@ -153,7 +161,8 @@ class _$BibleStudyGetImpl implements BibleStudyGet {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(String id)? editLesson,
+    TResult Function(String id)? delete,
+    TResult Function(BibleStudy bibleStudy)? editLesson,
     TResult Function(BibleStudy bibleStudy)? addBibleStudy,
     TResult Function(BibleStudy bibleStudy)? addLesson,
     required TResult orElse(),
@@ -168,6 +177,7 @@ class _$BibleStudyGetImpl implements BibleStudyGet {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(BibleStudyGet value) get,
+    required TResult Function(BibleStudyDelete value) delete,
     required TResult Function(LessonEdit value) editLesson,
     required TResult Function(BibleStudyAdd value) addBibleStudy,
     required TResult Function(LessonAdd value) addLesson,
@@ -179,6 +189,7 @@ class _$BibleStudyGetImpl implements BibleStudyGet {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(BibleStudyGet value)? get,
+    TResult? Function(BibleStudyDelete value)? delete,
     TResult? Function(LessonEdit value)? editLesson,
     TResult? Function(BibleStudyAdd value)? addBibleStudy,
     TResult? Function(LessonAdd value)? addLesson,
@@ -190,6 +201,7 @@ class _$BibleStudyGetImpl implements BibleStudyGet {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(BibleStudyGet value)? get,
+    TResult Function(BibleStudyDelete value)? delete,
     TResult Function(LessonEdit value)? editLesson,
     TResult Function(BibleStudyAdd value)? addBibleStudy,
     TResult Function(LessonAdd value)? addLesson,
@@ -207,12 +219,171 @@ abstract class BibleStudyGet implements BibleStudyEvent {
 }
 
 /// @nodoc
+abstract class _$$BibleStudyDeleteImplCopyWith<$Res> {
+  factory _$$BibleStudyDeleteImplCopyWith(_$BibleStudyDeleteImpl value,
+          $Res Function(_$BibleStudyDeleteImpl) then) =
+      __$$BibleStudyDeleteImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String id});
+}
+
+/// @nodoc
+class __$$BibleStudyDeleteImplCopyWithImpl<$Res>
+    extends _$BibleStudyEventCopyWithImpl<$Res, _$BibleStudyDeleteImpl>
+    implements _$$BibleStudyDeleteImplCopyWith<$Res> {
+  __$$BibleStudyDeleteImplCopyWithImpl(_$BibleStudyDeleteImpl _value,
+      $Res Function(_$BibleStudyDeleteImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of BibleStudyEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+  }) {
+    return _then(_$BibleStudyDeleteImpl(
+      null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$BibleStudyDeleteImpl implements BibleStudyDelete {
+  const _$BibleStudyDeleteImpl(this.id);
+
+  @override
+  final String id;
+
+  @override
+  String toString() {
+    return 'BibleStudyEvent.delete(id: $id)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$BibleStudyDeleteImpl &&
+            (identical(other.id, id) || other.id == id));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, id);
+
+  /// Create a copy of BibleStudyEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$BibleStudyDeleteImplCopyWith<_$BibleStudyDeleteImpl> get copyWith =>
+      __$$BibleStudyDeleteImplCopyWithImpl<_$BibleStudyDeleteImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() get,
+    required TResult Function(String id) delete,
+    required TResult Function(BibleStudy bibleStudy) editLesson,
+    required TResult Function(BibleStudy bibleStudy) addBibleStudy,
+    required TResult Function(BibleStudy bibleStudy) addLesson,
+  }) {
+    return delete(id);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? get,
+    TResult? Function(String id)? delete,
+    TResult? Function(BibleStudy bibleStudy)? editLesson,
+    TResult? Function(BibleStudy bibleStudy)? addBibleStudy,
+    TResult? Function(BibleStudy bibleStudy)? addLesson,
+  }) {
+    return delete?.call(id);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? get,
+    TResult Function(String id)? delete,
+    TResult Function(BibleStudy bibleStudy)? editLesson,
+    TResult Function(BibleStudy bibleStudy)? addBibleStudy,
+    TResult Function(BibleStudy bibleStudy)? addLesson,
+    required TResult orElse(),
+  }) {
+    if (delete != null) {
+      return delete(id);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(BibleStudyGet value) get,
+    required TResult Function(BibleStudyDelete value) delete,
+    required TResult Function(LessonEdit value) editLesson,
+    required TResult Function(BibleStudyAdd value) addBibleStudy,
+    required TResult Function(LessonAdd value) addLesson,
+  }) {
+    return delete(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(BibleStudyGet value)? get,
+    TResult? Function(BibleStudyDelete value)? delete,
+    TResult? Function(LessonEdit value)? editLesson,
+    TResult? Function(BibleStudyAdd value)? addBibleStudy,
+    TResult? Function(LessonAdd value)? addLesson,
+  }) {
+    return delete?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(BibleStudyGet value)? get,
+    TResult Function(BibleStudyDelete value)? delete,
+    TResult Function(LessonEdit value)? editLesson,
+    TResult Function(BibleStudyAdd value)? addBibleStudy,
+    TResult Function(LessonAdd value)? addLesson,
+    required TResult orElse(),
+  }) {
+    if (delete != null) {
+      return delete(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class BibleStudyDelete implements BibleStudyEvent {
+  const factory BibleStudyDelete(final String id) = _$BibleStudyDeleteImpl;
+
+  String get id;
+
+  /// Create a copy of BibleStudyEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$BibleStudyDeleteImplCopyWith<_$BibleStudyDeleteImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 abstract class _$$LessonEditImplCopyWith<$Res> {
   factory _$$LessonEditImplCopyWith(
           _$LessonEditImpl value, $Res Function(_$LessonEditImpl) then) =
       __$$LessonEditImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String id});
+  $Res call({BibleStudy bibleStudy});
 }
 
 /// @nodoc
@@ -228,13 +399,13 @@ class __$$LessonEditImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? bibleStudy = null,
   }) {
     return _then(_$LessonEditImpl(
-      null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
+      null == bibleStudy
+          ? _value.bibleStudy
+          : bibleStudy // ignore: cast_nullable_to_non_nullable
+              as BibleStudy,
     ));
   }
 }
@@ -242,14 +413,14 @@ class __$$LessonEditImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LessonEditImpl implements LessonEdit {
-  const _$LessonEditImpl(this.id);
+  const _$LessonEditImpl(this.bibleStudy);
 
   @override
-  final String id;
+  final BibleStudy bibleStudy;
 
   @override
   String toString() {
-    return 'BibleStudyEvent.editLesson(id: $id)';
+    return 'BibleStudyEvent.editLesson(bibleStudy: $bibleStudy)';
   }
 
   @override
@@ -257,11 +428,12 @@ class _$LessonEditImpl implements LessonEdit {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LessonEditImpl &&
-            (identical(other.id, id) || other.id == id));
+            (identical(other.bibleStudy, bibleStudy) ||
+                other.bibleStudy == bibleStudy));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id);
+  int get hashCode => Object.hash(runtimeType, bibleStudy);
 
   /// Create a copy of BibleStudyEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -275,35 +447,38 @@ class _$LessonEditImpl implements LessonEdit {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(String id) editLesson,
+    required TResult Function(String id) delete,
+    required TResult Function(BibleStudy bibleStudy) editLesson,
     required TResult Function(BibleStudy bibleStudy) addBibleStudy,
     required TResult Function(BibleStudy bibleStudy) addLesson,
   }) {
-    return editLesson(id);
+    return editLesson(bibleStudy);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(String id)? editLesson,
+    TResult? Function(String id)? delete,
+    TResult? Function(BibleStudy bibleStudy)? editLesson,
     TResult? Function(BibleStudy bibleStudy)? addBibleStudy,
     TResult? Function(BibleStudy bibleStudy)? addLesson,
   }) {
-    return editLesson?.call(id);
+    return editLesson?.call(bibleStudy);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(String id)? editLesson,
+    TResult Function(String id)? delete,
+    TResult Function(BibleStudy bibleStudy)? editLesson,
     TResult Function(BibleStudy bibleStudy)? addBibleStudy,
     TResult Function(BibleStudy bibleStudy)? addLesson,
     required TResult orElse(),
   }) {
     if (editLesson != null) {
-      return editLesson(id);
+      return editLesson(bibleStudy);
     }
     return orElse();
   }
@@ -312,6 +487,7 @@ class _$LessonEditImpl implements LessonEdit {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(BibleStudyGet value) get,
+    required TResult Function(BibleStudyDelete value) delete,
     required TResult Function(LessonEdit value) editLesson,
     required TResult Function(BibleStudyAdd value) addBibleStudy,
     required TResult Function(LessonAdd value) addLesson,
@@ -323,6 +499,7 @@ class _$LessonEditImpl implements LessonEdit {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(BibleStudyGet value)? get,
+    TResult? Function(BibleStudyDelete value)? delete,
     TResult? Function(LessonEdit value)? editLesson,
     TResult? Function(BibleStudyAdd value)? addBibleStudy,
     TResult? Function(LessonAdd value)? addLesson,
@@ -334,6 +511,7 @@ class _$LessonEditImpl implements LessonEdit {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(BibleStudyGet value)? get,
+    TResult Function(BibleStudyDelete value)? delete,
     TResult Function(LessonEdit value)? editLesson,
     TResult Function(BibleStudyAdd value)? addBibleStudy,
     TResult Function(LessonAdd value)? addLesson,
@@ -347,9 +525,9 @@ class _$LessonEditImpl implements LessonEdit {
 }
 
 abstract class LessonEdit implements BibleStudyEvent {
-  const factory LessonEdit(final String id) = _$LessonEditImpl;
+  const factory LessonEdit(final BibleStudy bibleStudy) = _$LessonEditImpl;
 
-  String get id;
+  BibleStudy get bibleStudy;
 
   /// Create a copy of BibleStudyEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -428,7 +606,8 @@ class _$BibleStudyAddImpl implements BibleStudyAdd {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(String id) editLesson,
+    required TResult Function(String id) delete,
+    required TResult Function(BibleStudy bibleStudy) editLesson,
     required TResult Function(BibleStudy bibleStudy) addBibleStudy,
     required TResult Function(BibleStudy bibleStudy) addLesson,
   }) {
@@ -439,7 +618,8 @@ class _$BibleStudyAddImpl implements BibleStudyAdd {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(String id)? editLesson,
+    TResult? Function(String id)? delete,
+    TResult? Function(BibleStudy bibleStudy)? editLesson,
     TResult? Function(BibleStudy bibleStudy)? addBibleStudy,
     TResult? Function(BibleStudy bibleStudy)? addLesson,
   }) {
@@ -450,7 +630,8 @@ class _$BibleStudyAddImpl implements BibleStudyAdd {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(String id)? editLesson,
+    TResult Function(String id)? delete,
+    TResult Function(BibleStudy bibleStudy)? editLesson,
     TResult Function(BibleStudy bibleStudy)? addBibleStudy,
     TResult Function(BibleStudy bibleStudy)? addLesson,
     required TResult orElse(),
@@ -465,6 +646,7 @@ class _$BibleStudyAddImpl implements BibleStudyAdd {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(BibleStudyGet value) get,
+    required TResult Function(BibleStudyDelete value) delete,
     required TResult Function(LessonEdit value) editLesson,
     required TResult Function(BibleStudyAdd value) addBibleStudy,
     required TResult Function(LessonAdd value) addLesson,
@@ -476,6 +658,7 @@ class _$BibleStudyAddImpl implements BibleStudyAdd {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(BibleStudyGet value)? get,
+    TResult? Function(BibleStudyDelete value)? delete,
     TResult? Function(LessonEdit value)? editLesson,
     TResult? Function(BibleStudyAdd value)? addBibleStudy,
     TResult? Function(LessonAdd value)? addLesson,
@@ -487,6 +670,7 @@ class _$BibleStudyAddImpl implements BibleStudyAdd {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(BibleStudyGet value)? get,
+    TResult Function(BibleStudyDelete value)? delete,
     TResult Function(LessonEdit value)? editLesson,
     TResult Function(BibleStudyAdd value)? addBibleStudy,
     TResult Function(LessonAdd value)? addLesson,
@@ -582,7 +766,8 @@ class _$LessonAddImpl implements LessonAdd {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(String id) editLesson,
+    required TResult Function(String id) delete,
+    required TResult Function(BibleStudy bibleStudy) editLesson,
     required TResult Function(BibleStudy bibleStudy) addBibleStudy,
     required TResult Function(BibleStudy bibleStudy) addLesson,
   }) {
@@ -593,7 +778,8 @@ class _$LessonAddImpl implements LessonAdd {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(String id)? editLesson,
+    TResult? Function(String id)? delete,
+    TResult? Function(BibleStudy bibleStudy)? editLesson,
     TResult? Function(BibleStudy bibleStudy)? addBibleStudy,
     TResult? Function(BibleStudy bibleStudy)? addLesson,
   }) {
@@ -604,7 +790,8 @@ class _$LessonAddImpl implements LessonAdd {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(String id)? editLesson,
+    TResult Function(String id)? delete,
+    TResult Function(BibleStudy bibleStudy)? editLesson,
     TResult Function(BibleStudy bibleStudy)? addBibleStudy,
     TResult Function(BibleStudy bibleStudy)? addLesson,
     required TResult orElse(),
@@ -619,6 +806,7 @@ class _$LessonAddImpl implements LessonAdd {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(BibleStudyGet value) get,
+    required TResult Function(BibleStudyDelete value) delete,
     required TResult Function(LessonEdit value) editLesson,
     required TResult Function(BibleStudyAdd value) addBibleStudy,
     required TResult Function(LessonAdd value) addLesson,
@@ -630,6 +818,7 @@ class _$LessonAddImpl implements LessonAdd {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(BibleStudyGet value)? get,
+    TResult? Function(BibleStudyDelete value)? delete,
     TResult? Function(LessonEdit value)? editLesson,
     TResult? Function(BibleStudyAdd value)? addBibleStudy,
     TResult? Function(LessonAdd value)? addLesson,
@@ -641,6 +830,7 @@ class _$LessonAddImpl implements LessonAdd {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(BibleStudyGet value)? get,
+    TResult Function(BibleStudyDelete value)? delete,
     TResult Function(LessonEdit value)? editLesson,
     TResult Function(BibleStudyAdd value)? addBibleStudy,
     TResult Function(LessonAdd value)? addLesson,

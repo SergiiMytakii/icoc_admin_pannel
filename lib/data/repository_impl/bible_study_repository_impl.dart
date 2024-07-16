@@ -37,39 +37,24 @@ class BibleStudyRepositoryImpl extends BibleStudyRepository {
   }
 
   @override
-  Future addLesson(String bibleStudyId, Lesson lesson) {
-    // TODO: implement addLesson
-    throw UnimplementedError();
+  Future editLesson(BibleStudy bibleStudy) async {
+    final QuerySnapshot snapshot = await firebaseDataSource.postToFirebase(
+        FirebaseCollections.BibleStudy.name, bibleStudy.toJson());
+    final List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      return BibleStudy.fromJson(data);
+    }).toList();
+    return bibleStudies;
   }
 
   @override
-  Future editLesson(String bibleStudyId, Lesson lesson) {
-    // TODO: implement editLesson
-    throw UnimplementedError();
+  Future deleteBibleStudy(String bibleStudyId) async {
+    final QuerySnapshot snapshot = await firebaseDataSource.deleteToFirebase(
+        FirebaseCollections.BibleStudy.name, bibleStudyId);
+    final List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      return BibleStudy.fromJson(data);
+    }).toList();
+    return bibleStudies;
   }
-}
-
-List<BibleStudy> _listFromSnapshot(QuerySnapshot snapshot) {
-  final List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
-    //получаем все уроки как Map
-    final Map lessons = doc.get('lessons') as Map;
-    final List<Lesson> less = [];
-
-    lessons.forEach((key, lesson) {
-      less.add(Lesson(
-          id: int.parse(key),
-          title: lessons[key]['title'] ?? lessons[key]['titile'],
-          text: lessons[key]['text']));
-    });
-    less.sort(
-      (a, b) => a.id.compareTo(b.id),
-    );
-    return BibleStudy(
-        topic: doc.id,
-        id: doc.get('id'),
-        subtopic: doc.get('subtopic'),
-        lessons: less,
-        lang: doc.get('lang'));
-  }).toList();
-  return bibleStudies;
 }

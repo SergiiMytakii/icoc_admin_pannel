@@ -26,10 +26,10 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
   void initState() {
     Future.delayed(Duration.zero).then((_) {
       final state = context.read<BibleStudyBloc>().state;
-
-      state.maybeWhen(
-        success: (bibleStudies) {},
-        orElse: () => context.go('/bible-study'),
+      state.whenOrNull(
+        initial: () {
+          context.go('/bible-study');
+        },
       );
     });
 
@@ -45,48 +45,50 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
     return Scaffold(
         body: Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Text('Lesson number: $lessonNumber'),
-                const Spacer(),
-                const Text(
-                  'Add a new lesson',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20),
-                ),
-                const Spacer(),
-                _buttonsBlock(currentBibleStudy.value, lessonNumber)
-              ],
-            ),
-            MyTexField(
-              controller: titleController,
-              hint: 'Title',
-              maxLength: 50,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a title';
-                }
-                return null;
-              },
-            ),
-            MyTexField(
-              controller: textController,
-              hint: 'Text',
-              maxLines: 20,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter the text in HTML format';
-                }
-                return null;
-              },
-            ),
-          ],
-        ),
-      ),
+      child: Builder(builder: (context) {
+        return Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Text('Lesson number: $lessonNumber'),
+                  const Spacer(),
+                  const Text(
+                    'Add a new lesson',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  const Spacer(),
+                  _buttonsBlock(currentBibleStudy.value, lessonNumber)
+                ],
+              ),
+              MyTexField(
+                controller: titleController,
+                hint: 'Title',
+                maxLength: 50,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a title';
+                  }
+                  return null;
+                },
+              ),
+              MyTexField(
+                controller: textController,
+                hint: 'Text',
+                maxLines: 20,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the text in HTML format';
+                  }
+                  return null;
+                },
+              ),
+            ],
+          ),
+        );
+      }),
     ));
   }
 

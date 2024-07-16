@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:icoc_admin_pannel/app_router.dart';
 import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
+import 'package:icoc_admin_pannel/domain/helpers/prevent_system_context_menu.dart';
 import 'package:icoc_admin_pannel/firebase_options.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
@@ -24,6 +25,7 @@ void main() async {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
+      preventSystemContextMenu();
       setUrlStrategy(PathUrlStrategy());
       configureDependencies(Environment.dev);
       runApp(const MainApp());

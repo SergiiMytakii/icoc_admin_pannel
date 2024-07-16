@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/helpers/calculate_song_number.dart';
 import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
 import 'package:icoc_admin_pannel/injection.dart';
@@ -66,7 +67,15 @@ class BibleStudyScreen extends StatelessWidget {
                                       if (bibleStudy.lessons.isNotEmpty) {
                                         currentLesson.value =
                                             bibleStudy.lessons[0];
+                                      } else {
+                                        currentLesson.value =
+                                            Lesson.defaultLesson;
                                       }
+                                    },
+                                    onSecondaryTapDown:
+                                        (TapDownDetails details) {
+                                      _showContextMenu(context,
+                                          details.globalPosition, bibleStudy);
                                     },
                                     child: BibleStudyCard(
                                       bibleStudy: bibleStudy,
@@ -87,8 +96,9 @@ class BibleStudyScreen extends StatelessWidget {
                           children: [
                             MyTextButton(
                               label: 'Add lesson',
-                              onPressed: () => context.go('/addlesson',
-                                  extra: currentBibleStudy.value),
+                              onPressed: () => context.go(
+                                '/bible-study/addlesson',
+                              ),
                             ),
                           ],
                         ),
@@ -126,7 +136,9 @@ class BibleStudyScreen extends StatelessWidget {
                           children: [
                             MyTextButton(
                               label: 'Edit lesson',
-                              onPressed: () {},
+                              onPressed: () => context.go(
+                                '/bible-study/editlesson',
+                              ),
                             ),
                           ],
                         ),
@@ -153,6 +165,42 @@ class BibleStudyScreen extends StatelessWidget {
     }));
   }
 
+  void _showContextMenu(
+      BuildContext context, Offset tapPosition, BibleStudy bibleStudy) {
+    final RenderBox overlay =
+        Overlay.of(context).context.findRenderObject() as RenderBox;
+
+    final RelativeRect position = RelativeRect.fromRect(
+      Rect.fromPoints(
+        tapPosition,
+        tapPosition,
+      ),
+      Offset.zero & overlay.size,
+    );
+    showMenu(
+      context: context,
+      position: position,
+      items: [
+        PopupMenuItem(
+          child: const Text(
+            'Delete',
+            style: TextStyle(color: ScreenColors.songBook),
+          ),
+          onTap: () async {
+            final result = await showAlertDialog(context,
+                'Do you really want to delete ${bibleStudy.topic}? Be carefull! ',
+                showCancelButton: true);
+            if (result) {
+              context
+                  .read<BibleStudyBloc>()
+                  .add(BibleStudyEvent.delete(bibleStudy.id.toString()));
+            }
+          },
+        ),
+      ],
+    );
+  }
+
   Future<dynamic> _showAddTopicDialog(
       BuildContext context, List<BibleStudy> bibleStudies) {
     return showDialog(
@@ -163,20 +211,42 @@ class BibleStudyScreen extends StatelessWidget {
             TextEditingController();
         final TextEditingController langController = TextEditingController()
           ..text = 'en';
+        final formKey = GlobalKey<FormState>();
         return Center(
           child: AlertDialog(
-            title: const Text('Add New Topic'),
+            title: const Text('Add a New Topic'),
             content: SizedBox(
               width: MediaQuery.of(context).size.width / 2,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  MyTexField(controller: topicController, hint: 'Topic'),
-                  const SizedBox(height: 16),
-                  MyTexField(controller: subTopicController, hint: 'Subtopic'),
-                  const SizedBox(height: 16),
-                  SelectLanguageWidget(langController: langController),
-                ],
+              child: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    MyTexField(
+                      controller: topicController,
+                      hint: 'Topic',
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a topic';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    MyTexField(
+                      controller: subTopicController,
+                      hint: 'Description',
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a description';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    SelectLanguageWidget(langController: langController),
+                  ],
+                ),
               ),
             ),
             actions: [
@@ -186,15 +256,17 @@ class BibleStudyScreen extends StatelessWidget {
               ),
               MyTextButton(
                 onPressed: () {
-                  final bibleStudy = BibleStudy(
-                      lessons: [],
-                      topic: topicController.text,
-                      id: calculateLastNumber(bibleStudies) + 1,
-                      subtopic: subTopicController.text,
-                      lang: langController.text);
-                  getIt<BibleStudyBloc>()
-                      .add(BibleStudyEvent.addBibleStudy(bibleStudy));
-                  context.pop();
+                  if (formKey.currentState!.validate()) {
+                    final bibleStudy = BibleStudy(
+                        lessons: [],
+                        topic: topicController.text,
+                        id: calculateLastNumber(bibleStudies) + 1,
+                        subtopic: subTopicController.text,
+                        lang: langController.text);
+                    getIt<BibleStudyBloc>()
+                        .add(BibleStudyEvent.addBibleStudy(bibleStudy));
+                    context.pop();
+                  }
                 },
                 label: 'Add',
               ),

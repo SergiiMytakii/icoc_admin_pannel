@@ -3,12 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/auth/login_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/bible_study/add_new_lesson.dart';
 import 'package:icoc_admin_pannel/ui/screens/bible_study/bible_study_screen.dart';
+import 'package:icoc_admin_pannel/ui/screens/bible_study/edit_lesson.dart';
 import 'package:icoc_admin_pannel/ui/screens/feedback/feedbacks_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/notifications/notifications_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/root/root_screen.dart';
@@ -16,7 +16,6 @@ import 'package:icoc_admin_pannel/ui/screens/songs/add_new_song.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/edit_song_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/songs_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/video/video_screen.dart';
-import 'package:logger/logger.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -30,7 +29,6 @@ final GoRouter router = GoRouter(
   },
   debugLogDiagnostics: true,
   redirect: (BuildContext context, GoRouterState state) {
-    print('redirect');
     final authBloc = context.read<AuthBloc>();
     if (authBloc.state is AuthInitial) {
       authBloc.add(const AuthEvent.checkStatus());
@@ -38,7 +36,7 @@ final GoRouter router = GoRouter(
     return null;
   },
   navigatorKey: _rootNavigatorKey,
-  initialLocation: '/',
+  initialLocation: '/songs',
   routes: <RouteBase>[
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
@@ -106,12 +104,18 @@ final GoRouter router = GoRouter(
               GoRoute(
                 path: 'addlesson',
                 pageBuilder: (BuildContext context, GoRouterState state) {
-                  final BibleStudy? bibleStudy = state.extra as BibleStudy?;
                   return NoTransitionPage<void>(
                     key: state.pageKey,
-                    child: AddNewLessonScreen(
-                      bibleStudy: bibleStudy ?? BibleStudy.defaultBibleStudy,
-                    ),
+                    child: const AddNewLessonScreen(),
+                  );
+                },
+              ),
+              GoRoute(
+                path: 'editlesson',
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  return NoTransitionPage<void>(
+                    key: state.pageKey,
+                    child: const EditLessonScreen(),
                   );
                 },
               ),

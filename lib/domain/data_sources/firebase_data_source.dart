@@ -8,4 +8,6 @@ abstract class FirebaseDataSource {
 
   Future<QuerySnapshot> postToFirebase(
       String collection, Map<String, dynamic> data);
+
+  Future<QuerySnapshot> deleteToFirebase(String collection, String id);
 }
