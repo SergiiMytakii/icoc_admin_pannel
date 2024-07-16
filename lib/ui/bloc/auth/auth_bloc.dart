@@ -3,10 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
 import 'package:injectable/injectable.dart';
-import 'package:logger/logger.dart';
-import 'package:universal_html/html.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -43,11 +40,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await _auth.authStateChanges().first.then((User? user) async {
         if (user != null) {
-          print('authenticated');
           emit(AuthState.authenticated(user: user));
         } else {
-          print('UNauthenticated');
-
           emit(const AuthState.initial());
         }
       });

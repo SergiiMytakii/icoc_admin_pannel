@@ -1,9 +1,10 @@
 import 'dart:collection';
 
+import 'package:icoc_admin_pannel/domain/model/identifable.dart';
 import 'package:icoc_admin_pannel/domain/model/resources.dart';
-import 'package:logger/logger.dart';
 
-class SongDetail {
+class SongDetail implements Identifiable {
+  @override
   final int id;
   final Map? description;
   final Map title;

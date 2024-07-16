@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:icoc_admin_pannel/domain/helpers/calculate_song_number.dart';
 import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
 import 'package:icoc_admin_pannel/domain/helpers/get_video_id.dart';
 import 'package:icoc_admin_pannel/domain/model/resources.dart';
@@ -28,6 +29,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
   final VideoRepository videoRepositoryImpl;
   final ValueNotifier<SongDetail> currentSong =
       ValueNotifier<SongDetail>(SongInitial.defaultSong());
+  int lastSongNumber = -1;
   Future<void> _onSongsRequested(
     SongsGet event,
     Emitter<SongsState> emit,
@@ -49,6 +51,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
       }
       if (songs.isNotEmpty) {
         songs.sort((a, b) => a.id.compareTo(b.id));
+        lastSongNumber = calculateLastNumber(songs);
       }
 
       emit(SongsState.success(songs));

@@ -7,7 +7,6 @@ import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/one_song.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/song_card.dart';
 import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
-import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 
 class SongsScreen extends StatefulWidget {
   const SongsScreen({
@@ -91,7 +90,6 @@ class _SongsScreenState extends State<SongsScreen> {
                           builder: (context, song, _) {
                             return OneSong(
                               song: song,
-                              songCount: calculateSongLastNumber(songs),
                             );
                           }))
                 ],

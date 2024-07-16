@@ -4,33 +4,32 @@ import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
 import 'package:icoc_admin_pannel/ui/widget/select_lang.dart';
 
 class AddSongBlock extends StatefulWidget {
+  final GlobalKey<FormState> formKey;
   final TextEditingController titleController;
   final TextEditingController descriptionController;
   final TextEditingController langController;
   final TextEditingController textController;
   final TextEditingController urlController;
-  AddSongBlock({
-    super.key,
-    required this.titleController,
-    required this.descriptionController,
-    required this.langController,
-    required this.textController,
-    required this.urlController,
-  });
+  AddSongBlock(
+      {super.key,
+      required this.titleController,
+      required this.descriptionController,
+      required this.langController,
+      required this.textController,
+      required this.urlController,
+      required this.formKey});
 
   @override
   State<AddSongBlock> createState() => _AddSongBlockState();
 }
 
 class _AddSongBlockState extends State<AddSongBlock> {
-  final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Form(
-        key: _formKey,
+        key: widget.formKey,
         child: Column(
           children: [
             Row(

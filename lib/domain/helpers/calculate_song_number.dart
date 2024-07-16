@@ -1,9 +1,12 @@
 import 'dart:math';
 
-import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
+import 'package:icoc_admin_pannel/domain/model/identifable.dart';
 
-int calculateSongLastNumber(List<SongDetail> songs) {
-  final ids = songs.map((song) => song.id).toList();
+int calculateLastNumber<T extends Identifiable>(List<T> items) {
+  if (items.isEmpty) {
+    return 0;
+  }
+  final ids = items.map((item) => item.id).toList();
   final maximum = ids.reduce(max);
   return maximum;
 }

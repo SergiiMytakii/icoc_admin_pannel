@@ -92,6 +92,12 @@ class VideoRepositoryImpl extends VideoRepository {
     }
     return null;
   }
+
+  @override
+  Future<List<Playlist>> addPlayList(Playlist playlist) {
+    // TODO: implement addPlayList
+    throw UnimplementedError();
+  }
 }
 
 List<Playlist> _listFromSnapshot(QuerySnapshot snapshot) {

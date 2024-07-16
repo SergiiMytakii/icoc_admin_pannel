@@ -45,4 +45,14 @@ class DatabaseServiceFirebase implements FirebaseDataSource {
     final QuerySnapshot snapshot = await collection.get();
     return snapshot;
   }
+
+  @override
+  Future<QuerySnapshot> deleteToFirebase(
+      String collectionName, String id) async {
+    final CollectionReference collection = db.collection(collectionName);
+    final DocumentReference documentRef = collection.doc(id.toString());
+    await documentRef.delete();
+    final QuerySnapshot snapshot = await collection.get();
+    return snapshot;
+  }
 }
