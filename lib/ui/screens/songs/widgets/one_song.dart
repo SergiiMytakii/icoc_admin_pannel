@@ -12,12 +12,10 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class OneSong extends StatefulWidget {
   final SongDetail song;
-  final int songCount;
 
   OneSong({
     super.key,
     required this.song,
-    required this.songCount,
   });
 
   @override
@@ -93,7 +91,7 @@ class _OneSongState extends State<OneSong> with TickerProviderStateMixin {
         MyTextButton(
           label: 'Add a new song',
           onPressed: () {
-            context.go('/songs/addsong', extra: widget.songCount);
+            context.go('/songs/addsong');
           },
         ),
       ],

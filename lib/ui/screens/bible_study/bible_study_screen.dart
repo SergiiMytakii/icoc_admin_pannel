@@ -87,7 +87,8 @@ class BibleStudyScreen extends StatelessWidget {
                           children: [
                             MyTextButton(
                               label: 'Add lesson',
-                              onPressed: () {},
+                              onPressed: () => context.go('/addlesson',
+                                  extra: currentBibleStudy.value),
                             ),
                           ],
                         ),

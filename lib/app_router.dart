@@ -3,9 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/auth/login_screen.dart';
+import 'package:icoc_admin_pannel/ui/screens/bible_study/add_new_lesson.dart';
 import 'package:icoc_admin_pannel/ui/screens/bible_study/bible_study_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/feedback/feedbacks_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/notifications/notifications_screen.dart';
@@ -26,9 +28,6 @@ final GoRouter router = GoRouter(
     context.go('/songs');
     return const SizedBox.shrink();
   },
-  // onException: (context, state, router) {
-  //   context.go('/songs');
-  // },
   debugLogDiagnostics: true,
   redirect: (BuildContext context, GoRouterState state) {
     print('redirect');
@@ -38,10 +37,8 @@ final GoRouter router = GoRouter(
     }
     return null;
   },
-
   navigatorKey: _rootNavigatorKey,
   initialLocation: '/',
-
   routes: <RouteBase>[
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
@@ -73,12 +70,9 @@ final GoRouter router = GoRouter(
               GoRoute(
                 path: 'addsong',
                 pageBuilder: (BuildContext context, GoRouterState state) {
-                  final int? songsCount = state.extra as int?;
                   return NoTransitionPage<void>(
                     key: state.pageKey,
-                    child: AddNewSongScreen(
-                      songsCount: songsCount ?? 0,
-                    ),
+                    child: const AddNewSongScreen(),
                   );
                 },
               ),
@@ -107,7 +101,21 @@ final GoRouter router = GoRouter(
             pageBuilder: (BuildContext context, GoRouterState state) {
               return NoTransitionPage<void>(
                   key: state.pageKey, child: const BibleStudyScreen());
-            }),
+            },
+            routes: [
+              GoRoute(
+                path: 'addlesson',
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  final BibleStudy? bibleStudy = state.extra as BibleStudy?;
+                  return NoTransitionPage<void>(
+                    key: state.pageKey,
+                    child: AddNewLessonScreen(
+                      bibleStudy: bibleStudy ?? BibleStudy.defaultBibleStudy,
+                    ),
+                  );
+                },
+              ),
+            ]),
         GoRoute(
           path: '/video',
           pageBuilder: (BuildContext context, GoRouterState state) {

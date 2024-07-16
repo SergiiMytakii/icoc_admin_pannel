@@ -90,7 +90,6 @@ class _SongsScreenState extends State<SongsScreen> {
                           builder: (context, song, _) {
                             return OneSong(
                               song: song,
-                              songCount: calculateLastNumber(songs),
                             );
                           }))
                 ],

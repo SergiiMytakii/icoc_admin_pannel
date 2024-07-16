@@ -42,7 +42,8 @@ class BibleStudy implements Identifiable {
   }
 }
 
-class Lesson {
+class Lesson implements Identifiable {
+  @override
   int id;
   String title;
   String text;
