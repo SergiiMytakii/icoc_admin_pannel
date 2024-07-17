@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:icoc_admin_pannel/app_router.dart';
@@ -25,6 +26,16 @@ void main() async {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
+      // Check if it's a mobile browser
+      if (kIsWeb &&
+          PlatformDispatcher.instance.views.first.physicalSize.shortestSide <
+              600) {
+        // Set preferred orientations for mobile browser
+        await SystemChrome.setPreferredOrientations([
+          DeviceOrientation.landscapeLeft,
+          DeviceOrientation.landscapeRight,
+        ]);
+      }
       preventSystemContextMenu();
       setUrlStrategy(PathUrlStrategy());
       configureDependencies(Environment.dev);

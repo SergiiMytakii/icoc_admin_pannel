@@ -1,8 +1,6 @@
 import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/data_sources/firebase_data_source.dart';
-import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
-import 'package:icoc_admin_pannel/domain/model/resources.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:icoc_admin_pannel/domain/repository/songs_repository.dart';
 import 'package:injectable/injectable.dart';
@@ -52,7 +50,7 @@ class SongsRepositoryImpl implements SongsRepository {
   List<SongDetail> _songListFromSnapshot(QuerySnapshot snapshot) {
     final List<SongDetail> songs = snapshot.docs.map(
       (doc) {
-        Map data = doc.data() as Map;
+        final Map data = doc.data() as Map;
         final song = SongDetail.fromJson(data, int.parse(doc.id));
         return song;
       },
