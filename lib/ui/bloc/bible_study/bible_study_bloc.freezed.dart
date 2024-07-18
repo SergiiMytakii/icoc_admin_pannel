@@ -19,28 +19,29 @@ mixin _$BibleStudyEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(String id) delete,
-    required TResult Function(BibleStudy bibleStudy) editLesson,
-    required TResult Function(BibleStudy bibleStudy) addBibleStudy,
-    required TResult Function(BibleStudy bibleStudy) addLesson,
+    required TResult Function(IcocUser? user, String id) delete,
+    required TResult Function(IcocUser? user, BibleStudy bibleStudy) editLesson,
+    required TResult Function(IcocUser? user, BibleStudy bibleStudy)
+        addBibleStudy,
+    required TResult Function(IcocUser? user, BibleStudy bibleStudy) addLesson,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(String id)? delete,
-    TResult? Function(BibleStudy bibleStudy)? editLesson,
-    TResult? Function(BibleStudy bibleStudy)? addBibleStudy,
-    TResult? Function(BibleStudy bibleStudy)? addLesson,
+    TResult? Function(IcocUser? user, String id)? delete,
+    TResult? Function(IcocUser? user, BibleStudy bibleStudy)? editLesson,
+    TResult? Function(IcocUser? user, BibleStudy bibleStudy)? addBibleStudy,
+    TResult? Function(IcocUser? user, BibleStudy bibleStudy)? addLesson,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(String id)? delete,
-    TResult Function(BibleStudy bibleStudy)? editLesson,
-    TResult Function(BibleStudy bibleStudy)? addBibleStudy,
-    TResult Function(BibleStudy bibleStudy)? addLesson,
+    TResult Function(IcocUser? user, String id)? delete,
+    TResult Function(IcocUser? user, BibleStudy bibleStudy)? editLesson,
+    TResult Function(IcocUser? user, BibleStudy bibleStudy)? addBibleStudy,
+    TResult Function(IcocUser? user, BibleStudy bibleStudy)? addLesson,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -90,9 +91,6 @@ class _$BibleStudyEventCopyWithImpl<$Res, $Val extends BibleStudyEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of BibleStudyEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -109,9 +107,6 @@ class __$$BibleStudyGetImplCopyWithImpl<$Res>
   __$$BibleStudyGetImplCopyWithImpl(
       _$BibleStudyGetImpl _value, $Res Function(_$BibleStudyGetImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of BibleStudyEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -137,10 +132,11 @@ class _$BibleStudyGetImpl implements BibleStudyGet {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(String id) delete,
-    required TResult Function(BibleStudy bibleStudy) editLesson,
-    required TResult Function(BibleStudy bibleStudy) addBibleStudy,
-    required TResult Function(BibleStudy bibleStudy) addLesson,
+    required TResult Function(IcocUser? user, String id) delete,
+    required TResult Function(IcocUser? user, BibleStudy bibleStudy) editLesson,
+    required TResult Function(IcocUser? user, BibleStudy bibleStudy)
+        addBibleStudy,
+    required TResult Function(IcocUser? user, BibleStudy bibleStudy) addLesson,
   }) {
     return get();
   }
@@ -149,10 +145,10 @@ class _$BibleStudyGetImpl implements BibleStudyGet {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(String id)? delete,
-    TResult? Function(BibleStudy bibleStudy)? editLesson,
-    TResult? Function(BibleStudy bibleStudy)? addBibleStudy,
-    TResult? Function(BibleStudy bibleStudy)? addLesson,
+    TResult? Function(IcocUser? user, String id)? delete,
+    TResult? Function(IcocUser? user, BibleStudy bibleStudy)? editLesson,
+    TResult? Function(IcocUser? user, BibleStudy bibleStudy)? addBibleStudy,
+    TResult? Function(IcocUser? user, BibleStudy bibleStudy)? addLesson,
   }) {
     return get?.call();
   }
@@ -161,10 +157,10 @@ class _$BibleStudyGetImpl implements BibleStudyGet {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(String id)? delete,
-    TResult Function(BibleStudy bibleStudy)? editLesson,
-    TResult Function(BibleStudy bibleStudy)? addBibleStudy,
-    TResult Function(BibleStudy bibleStudy)? addLesson,
+    TResult Function(IcocUser? user, String id)? delete,
+    TResult Function(IcocUser? user, BibleStudy bibleStudy)? editLesson,
+    TResult Function(IcocUser? user, BibleStudy bibleStudy)? addBibleStudy,
+    TResult Function(IcocUser? user, BibleStudy bibleStudy)? addLesson,
     required TResult orElse(),
   }) {
     if (get != null) {
@@ -224,7 +220,7 @@ abstract class _$$BibleStudyDeleteImplCopyWith<$Res> {
           $Res Function(_$BibleStudyDeleteImpl) then) =
       __$$BibleStudyDeleteImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String id});
+  $Res call({IcocUser? user, String id});
 }
 
 /// @nodoc
@@ -235,15 +231,18 @@ class __$$BibleStudyDeleteImplCopyWithImpl<$Res>
       $Res Function(_$BibleStudyDeleteImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of BibleStudyEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? user = freezed,
     Object? id = null,
   }) {
     return _then(_$BibleStudyDeleteImpl(
-      null == id
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as IcocUser?,
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
@@ -254,14 +253,16 @@ class __$$BibleStudyDeleteImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$BibleStudyDeleteImpl implements BibleStudyDelete {
-  const _$BibleStudyDeleteImpl(this.id);
+  const _$BibleStudyDeleteImpl({required this.user, required this.id});
 
+  @override
+  final IcocUser? user;
   @override
   final String id;
 
   @override
   String toString() {
-    return 'BibleStudyEvent.delete(id: $id)';
+    return 'BibleStudyEvent.delete(user: $user, id: $id)';
   }
 
   @override
@@ -269,15 +270,14 @@ class _$BibleStudyDeleteImpl implements BibleStudyDelete {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$BibleStudyDeleteImpl &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.id, id) || other.id == id));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id);
+  int get hashCode => Object.hash(runtimeType, user, id);
 
-  /// Create a copy of BibleStudyEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$BibleStudyDeleteImplCopyWith<_$BibleStudyDeleteImpl> get copyWith =>
@@ -288,38 +288,39 @@ class _$BibleStudyDeleteImpl implements BibleStudyDelete {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(String id) delete,
-    required TResult Function(BibleStudy bibleStudy) editLesson,
-    required TResult Function(BibleStudy bibleStudy) addBibleStudy,
-    required TResult Function(BibleStudy bibleStudy) addLesson,
+    required TResult Function(IcocUser? user, String id) delete,
+    required TResult Function(IcocUser? user, BibleStudy bibleStudy) editLesson,
+    required TResult Function(IcocUser? user, BibleStudy bibleStudy)
+        addBibleStudy,
+    required TResult Function(IcocUser? user, BibleStudy bibleStudy) addLesson,
   }) {
-    return delete(id);
+    return delete(user, id);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(String id)? delete,
-    TResult? Function(BibleStudy bibleStudy)? editLesson,
-    TResult? Function(BibleStudy bibleStudy)? addBibleStudy,
-    TResult? Function(BibleStudy bibleStudy)? addLesson,
+    TResult? Function(IcocUser? user, String id)? delete,
+    TResult? Function(IcocUser? user, BibleStudy bibleStudy)? editLesson,
+    TResult? Function(IcocUser? user, BibleStudy bibleStudy)? addBibleStudy,
+    TResult? Function(IcocUser? user, BibleStudy bibleStudy)? addLesson,
   }) {
-    return delete?.call(id);
+    return delete?.call(user, id);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(String id)? delete,
-    TResult Function(BibleStudy bibleStudy)? editLesson,
-    TResult Function(BibleStudy bibleStudy)? addBibleStudy,
-    TResult Function(BibleStudy bibleStudy)? addLesson,
+    TResult Function(IcocUser? user, String id)? delete,
+    TResult Function(IcocUser? user, BibleStudy bibleStudy)? editLesson,
+    TResult Function(IcocUser? user, BibleStudy bibleStudy)? addBibleStudy,
+    TResult Function(IcocUser? user, BibleStudy bibleStudy)? addLesson,
     required TResult orElse(),
   }) {
     if (delete != null) {
-      return delete(id);
+      return delete(user, id);
     }
     return orElse();
   }
@@ -366,13 +367,13 @@ class _$BibleStudyDeleteImpl implements BibleStudyDelete {
 }
 
 abstract class BibleStudyDelete implements BibleStudyEvent {
-  const factory BibleStudyDelete(final String id) = _$BibleStudyDeleteImpl;
+  const factory BibleStudyDelete(
+      {required final IcocUser? user,
+      required final String id}) = _$BibleStudyDeleteImpl;
 
+  IcocUser? get user;
   String get id;
-
-  /// Create a copy of BibleStudyEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$BibleStudyDeleteImplCopyWith<_$BibleStudyDeleteImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -383,7 +384,7 @@ abstract class _$$LessonEditImplCopyWith<$Res> {
           _$LessonEditImpl value, $Res Function(_$LessonEditImpl) then) =
       __$$LessonEditImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({BibleStudy bibleStudy});
+  $Res call({IcocUser? user, BibleStudy bibleStudy});
 }
 
 /// @nodoc
@@ -394,15 +395,18 @@ class __$$LessonEditImplCopyWithImpl<$Res>
       _$LessonEditImpl _value, $Res Function(_$LessonEditImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of BibleStudyEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? user = freezed,
     Object? bibleStudy = null,
   }) {
     return _then(_$LessonEditImpl(
-      null == bibleStudy
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as IcocUser?,
+      bibleStudy: null == bibleStudy
           ? _value.bibleStudy
           : bibleStudy // ignore: cast_nullable_to_non_nullable
               as BibleStudy,
@@ -413,14 +417,16 @@ class __$$LessonEditImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LessonEditImpl implements LessonEdit {
-  const _$LessonEditImpl(this.bibleStudy);
+  const _$LessonEditImpl({required this.user, required this.bibleStudy});
 
+  @override
+  final IcocUser? user;
   @override
   final BibleStudy bibleStudy;
 
   @override
   String toString() {
-    return 'BibleStudyEvent.editLesson(bibleStudy: $bibleStudy)';
+    return 'BibleStudyEvent.editLesson(user: $user, bibleStudy: $bibleStudy)';
   }
 
   @override
@@ -428,16 +434,15 @@ class _$LessonEditImpl implements LessonEdit {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LessonEditImpl &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.bibleStudy, bibleStudy) ||
                 other.bibleStudy == bibleStudy));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, bibleStudy);
+  int get hashCode => Object.hash(runtimeType, user, bibleStudy);
 
-  /// Create a copy of BibleStudyEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LessonEditImplCopyWith<_$LessonEditImpl> get copyWith =>
@@ -447,38 +452,39 @@ class _$LessonEditImpl implements LessonEdit {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(String id) delete,
-    required TResult Function(BibleStudy bibleStudy) editLesson,
-    required TResult Function(BibleStudy bibleStudy) addBibleStudy,
-    required TResult Function(BibleStudy bibleStudy) addLesson,
+    required TResult Function(IcocUser? user, String id) delete,
+    required TResult Function(IcocUser? user, BibleStudy bibleStudy) editLesson,
+    required TResult Function(IcocUser? user, BibleStudy bibleStudy)
+        addBibleStudy,
+    required TResult Function(IcocUser? user, BibleStudy bibleStudy) addLesson,
   }) {
-    return editLesson(bibleStudy);
+    return editLesson(user, bibleStudy);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(String id)? delete,
-    TResult? Function(BibleStudy bibleStudy)? editLesson,
-    TResult? Function(BibleStudy bibleStudy)? addBibleStudy,
-    TResult? Function(BibleStudy bibleStudy)? addLesson,
+    TResult? Function(IcocUser? user, String id)? delete,
+    TResult? Function(IcocUser? user, BibleStudy bibleStudy)? editLesson,
+    TResult? Function(IcocUser? user, BibleStudy bibleStudy)? addBibleStudy,
+    TResult? Function(IcocUser? user, BibleStudy bibleStudy)? addLesson,
   }) {
-    return editLesson?.call(bibleStudy);
+    return editLesson?.call(user, bibleStudy);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(String id)? delete,
-    TResult Function(BibleStudy bibleStudy)? editLesson,
-    TResult Function(BibleStudy bibleStudy)? addBibleStudy,
-    TResult Function(BibleStudy bibleStudy)? addLesson,
+    TResult Function(IcocUser? user, String id)? delete,
+    TResult Function(IcocUser? user, BibleStudy bibleStudy)? editLesson,
+    TResult Function(IcocUser? user, BibleStudy bibleStudy)? addBibleStudy,
+    TResult Function(IcocUser? user, BibleStudy bibleStudy)? addLesson,
     required TResult orElse(),
   }) {
     if (editLesson != null) {
-      return editLesson(bibleStudy);
+      return editLesson(user, bibleStudy);
     }
     return orElse();
   }
@@ -525,13 +531,13 @@ class _$LessonEditImpl implements LessonEdit {
 }
 
 abstract class LessonEdit implements BibleStudyEvent {
-  const factory LessonEdit(final BibleStudy bibleStudy) = _$LessonEditImpl;
+  const factory LessonEdit(
+      {required final IcocUser? user,
+      required final BibleStudy bibleStudy}) = _$LessonEditImpl;
 
+  IcocUser? get user;
   BibleStudy get bibleStudy;
-
-  /// Create a copy of BibleStudyEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LessonEditImplCopyWith<_$LessonEditImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -542,7 +548,7 @@ abstract class _$$BibleStudyAddImplCopyWith<$Res> {
           _$BibleStudyAddImpl value, $Res Function(_$BibleStudyAddImpl) then) =
       __$$BibleStudyAddImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({BibleStudy bibleStudy});
+  $Res call({IcocUser? user, BibleStudy bibleStudy});
 }
 
 /// @nodoc
@@ -553,15 +559,18 @@ class __$$BibleStudyAddImplCopyWithImpl<$Res>
       _$BibleStudyAddImpl _value, $Res Function(_$BibleStudyAddImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of BibleStudyEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? user = freezed,
     Object? bibleStudy = null,
   }) {
     return _then(_$BibleStudyAddImpl(
-      null == bibleStudy
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as IcocUser?,
+      bibleStudy: null == bibleStudy
           ? _value.bibleStudy
           : bibleStudy // ignore: cast_nullable_to_non_nullable
               as BibleStudy,
@@ -572,14 +581,16 @@ class __$$BibleStudyAddImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$BibleStudyAddImpl implements BibleStudyAdd {
-  const _$BibleStudyAddImpl(this.bibleStudy);
+  const _$BibleStudyAddImpl({required this.user, required this.bibleStudy});
 
+  @override
+  final IcocUser? user;
   @override
   final BibleStudy bibleStudy;
 
   @override
   String toString() {
-    return 'BibleStudyEvent.addBibleStudy(bibleStudy: $bibleStudy)';
+    return 'BibleStudyEvent.addBibleStudy(user: $user, bibleStudy: $bibleStudy)';
   }
 
   @override
@@ -587,16 +598,15 @@ class _$BibleStudyAddImpl implements BibleStudyAdd {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$BibleStudyAddImpl &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.bibleStudy, bibleStudy) ||
                 other.bibleStudy == bibleStudy));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, bibleStudy);
+  int get hashCode => Object.hash(runtimeType, user, bibleStudy);
 
-  /// Create a copy of BibleStudyEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$BibleStudyAddImplCopyWith<_$BibleStudyAddImpl> get copyWith =>
@@ -606,38 +616,39 @@ class _$BibleStudyAddImpl implements BibleStudyAdd {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(String id) delete,
-    required TResult Function(BibleStudy bibleStudy) editLesson,
-    required TResult Function(BibleStudy bibleStudy) addBibleStudy,
-    required TResult Function(BibleStudy bibleStudy) addLesson,
+    required TResult Function(IcocUser? user, String id) delete,
+    required TResult Function(IcocUser? user, BibleStudy bibleStudy) editLesson,
+    required TResult Function(IcocUser? user, BibleStudy bibleStudy)
+        addBibleStudy,
+    required TResult Function(IcocUser? user, BibleStudy bibleStudy) addLesson,
   }) {
-    return addBibleStudy(bibleStudy);
+    return addBibleStudy(user, bibleStudy);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(String id)? delete,
-    TResult? Function(BibleStudy bibleStudy)? editLesson,
-    TResult? Function(BibleStudy bibleStudy)? addBibleStudy,
-    TResult? Function(BibleStudy bibleStudy)? addLesson,
+    TResult? Function(IcocUser? user, String id)? delete,
+    TResult? Function(IcocUser? user, BibleStudy bibleStudy)? editLesson,
+    TResult? Function(IcocUser? user, BibleStudy bibleStudy)? addBibleStudy,
+    TResult? Function(IcocUser? user, BibleStudy bibleStudy)? addLesson,
   }) {
-    return addBibleStudy?.call(bibleStudy);
+    return addBibleStudy?.call(user, bibleStudy);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(String id)? delete,
-    TResult Function(BibleStudy bibleStudy)? editLesson,
-    TResult Function(BibleStudy bibleStudy)? addBibleStudy,
-    TResult Function(BibleStudy bibleStudy)? addLesson,
+    TResult Function(IcocUser? user, String id)? delete,
+    TResult Function(IcocUser? user, BibleStudy bibleStudy)? editLesson,
+    TResult Function(IcocUser? user, BibleStudy bibleStudy)? addBibleStudy,
+    TResult Function(IcocUser? user, BibleStudy bibleStudy)? addLesson,
     required TResult orElse(),
   }) {
     if (addBibleStudy != null) {
-      return addBibleStudy(bibleStudy);
+      return addBibleStudy(user, bibleStudy);
     }
     return orElse();
   }
@@ -684,14 +695,13 @@ class _$BibleStudyAddImpl implements BibleStudyAdd {
 }
 
 abstract class BibleStudyAdd implements BibleStudyEvent {
-  const factory BibleStudyAdd(final BibleStudy bibleStudy) =
-      _$BibleStudyAddImpl;
+  const factory BibleStudyAdd(
+      {required final IcocUser? user,
+      required final BibleStudy bibleStudy}) = _$BibleStudyAddImpl;
 
+  IcocUser? get user;
   BibleStudy get bibleStudy;
-
-  /// Create a copy of BibleStudyEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$BibleStudyAddImplCopyWith<_$BibleStudyAddImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -702,7 +712,7 @@ abstract class _$$LessonAddImplCopyWith<$Res> {
           _$LessonAddImpl value, $Res Function(_$LessonAddImpl) then) =
       __$$LessonAddImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({BibleStudy bibleStudy});
+  $Res call({IcocUser? user, BibleStudy bibleStudy});
 }
 
 /// @nodoc
@@ -713,15 +723,18 @@ class __$$LessonAddImplCopyWithImpl<$Res>
       _$LessonAddImpl _value, $Res Function(_$LessonAddImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of BibleStudyEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? user = freezed,
     Object? bibleStudy = null,
   }) {
     return _then(_$LessonAddImpl(
-      null == bibleStudy
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as IcocUser?,
+      bibleStudy: null == bibleStudy
           ? _value.bibleStudy
           : bibleStudy // ignore: cast_nullable_to_non_nullable
               as BibleStudy,
@@ -732,14 +745,16 @@ class __$$LessonAddImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LessonAddImpl implements LessonAdd {
-  const _$LessonAddImpl(this.bibleStudy);
+  const _$LessonAddImpl({required this.user, required this.bibleStudy});
 
+  @override
+  final IcocUser? user;
   @override
   final BibleStudy bibleStudy;
 
   @override
   String toString() {
-    return 'BibleStudyEvent.addLesson(bibleStudy: $bibleStudy)';
+    return 'BibleStudyEvent.addLesson(user: $user, bibleStudy: $bibleStudy)';
   }
 
   @override
@@ -747,16 +762,15 @@ class _$LessonAddImpl implements LessonAdd {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LessonAddImpl &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.bibleStudy, bibleStudy) ||
                 other.bibleStudy == bibleStudy));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, bibleStudy);
+  int get hashCode => Object.hash(runtimeType, user, bibleStudy);
 
-  /// Create a copy of BibleStudyEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LessonAddImplCopyWith<_$LessonAddImpl> get copyWith =>
@@ -766,38 +780,39 @@ class _$LessonAddImpl implements LessonAdd {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(String id) delete,
-    required TResult Function(BibleStudy bibleStudy) editLesson,
-    required TResult Function(BibleStudy bibleStudy) addBibleStudy,
-    required TResult Function(BibleStudy bibleStudy) addLesson,
+    required TResult Function(IcocUser? user, String id) delete,
+    required TResult Function(IcocUser? user, BibleStudy bibleStudy) editLesson,
+    required TResult Function(IcocUser? user, BibleStudy bibleStudy)
+        addBibleStudy,
+    required TResult Function(IcocUser? user, BibleStudy bibleStudy) addLesson,
   }) {
-    return addLesson(bibleStudy);
+    return addLesson(user, bibleStudy);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(String id)? delete,
-    TResult? Function(BibleStudy bibleStudy)? editLesson,
-    TResult? Function(BibleStudy bibleStudy)? addBibleStudy,
-    TResult? Function(BibleStudy bibleStudy)? addLesson,
+    TResult? Function(IcocUser? user, String id)? delete,
+    TResult? Function(IcocUser? user, BibleStudy bibleStudy)? editLesson,
+    TResult? Function(IcocUser? user, BibleStudy bibleStudy)? addBibleStudy,
+    TResult? Function(IcocUser? user, BibleStudy bibleStudy)? addLesson,
   }) {
-    return addLesson?.call(bibleStudy);
+    return addLesson?.call(user, bibleStudy);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(String id)? delete,
-    TResult Function(BibleStudy bibleStudy)? editLesson,
-    TResult Function(BibleStudy bibleStudy)? addBibleStudy,
-    TResult Function(BibleStudy bibleStudy)? addLesson,
+    TResult Function(IcocUser? user, String id)? delete,
+    TResult Function(IcocUser? user, BibleStudy bibleStudy)? editLesson,
+    TResult Function(IcocUser? user, BibleStudy bibleStudy)? addBibleStudy,
+    TResult Function(IcocUser? user, BibleStudy bibleStudy)? addLesson,
     required TResult orElse(),
   }) {
     if (addLesson != null) {
-      return addLesson(bibleStudy);
+      return addLesson(user, bibleStudy);
     }
     return orElse();
   }
@@ -844,13 +859,13 @@ class _$LessonAddImpl implements LessonAdd {
 }
 
 abstract class LessonAdd implements BibleStudyEvent {
-  const factory LessonAdd(final BibleStudy bibleStudy) = _$LessonAddImpl;
+  const factory LessonAdd(
+      {required final IcocUser? user,
+      required final BibleStudy bibleStudy}) = _$LessonAddImpl;
 
+  IcocUser? get user;
   BibleStudy get bibleStudy;
-
-  /// Create a copy of BibleStudyEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LessonAddImplCopyWith<_$LessonAddImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -925,9 +940,6 @@ class _$BibleStudyStateCopyWithImpl<$Res, $Val extends BibleStudyState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of BibleStudyState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -946,9 +958,6 @@ class __$$BibleStudyInitialStateImplCopyWithImpl<$Res>
       _$BibleStudyInitialStateImpl _value,
       $Res Function(_$BibleStudyInitialStateImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of BibleStudyState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1066,9 +1075,6 @@ class __$$BibleStudyLoadingStateImplCopyWithImpl<$Res>
       _$BibleStudyLoadingStateImpl _value,
       $Res Function(_$BibleStudyLoadingStateImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of BibleStudyState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1187,8 +1193,6 @@ class __$$BibleStudyErrorStateImplCopyWithImpl<$Res>
       $Res Function(_$BibleStudyErrorStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of BibleStudyState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1228,9 +1232,7 @@ class _$BibleStudyErrorStateImpl implements _BibleStudyErrorState {
   @override
   int get hashCode => Object.hash(runtimeType, errorMessage);
 
-  /// Create a copy of BibleStudyState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$BibleStudyErrorStateImplCopyWith<_$BibleStudyErrorStateImpl>
@@ -1318,10 +1320,7 @@ abstract class _BibleStudyErrorState implements BibleStudyState {
       _$BibleStudyErrorStateImpl;
 
   String get errorMessage;
-
-  /// Create a copy of BibleStudyState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$BibleStudyErrorStateImplCopyWith<_$BibleStudyErrorStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -1345,8 +1344,6 @@ class __$$BibleStudySuccessStateImplCopyWithImpl<$Res>
       $Res Function(_$BibleStudySuccessStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of BibleStudyState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1393,9 +1390,7 @@ class _$BibleStudySuccessStateImpl implements _BibleStudySuccessState {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_bibleStudies));
 
-  /// Create a copy of BibleStudyState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$BibleStudySuccessStateImplCopyWith<_$BibleStudySuccessStateImpl>
@@ -1482,10 +1477,7 @@ abstract class _BibleStudySuccessState implements BibleStudyState {
       _$BibleStudySuccessStateImpl;
 
   List<BibleStudy> get bibleStudies;
-
-  /// Create a copy of BibleStudyState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$BibleStudySuccessStateImplCopyWith<_$BibleStudySuccessStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

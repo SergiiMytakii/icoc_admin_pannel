@@ -5,6 +5,7 @@ import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/helpers/calculate_song_number.dart';
 import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
 import 'package:icoc_admin_pannel/injection.dart';
+import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/bible_study/bible_study_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/bible_study/widgets/bible_study_card.dart';
 import 'package:icoc_admin_pannel/ui/screens/bible_study/widgets/one_lesson.dart';
@@ -191,9 +192,9 @@ class BibleStudyScreen extends StatelessWidget {
                 'Do you really want to delete ${bibleStudy.topic}? Be carefull! ',
                 showCancelButton: true);
             if (result) {
-              context
-                  .read<BibleStudyBloc>()
-                  .add(BibleStudyEvent.delete(bibleStudy.id.toString()));
+              context.read<BibleStudyBloc>().add(BibleStudyEvent.delete(
+                  user: context.read<AuthBloc>().icocUser,
+                  id: bibleStudy.id.toString()));
             }
           },
         ),
@@ -263,8 +264,10 @@ class BibleStudyScreen extends StatelessWidget {
                         id: calculateLastNumber(bibleStudies) + 1,
                         subtopic: subTopicController.text,
                         lang: langController.text);
-                    getIt<BibleStudyBloc>()
-                        .add(BibleStudyEvent.addBibleStudy(bibleStudy));
+                    getIt<BibleStudyBloc>().add(BibleStudyEvent.addBibleStudy(
+                      bibleStudy: bibleStudy,
+                      user: context.read<AuthBloc>().icocUser,
+                    ));
                     context.pop();
                   }
                 },

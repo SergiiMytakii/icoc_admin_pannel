@@ -77,9 +77,6 @@ class _$AuthEventCopyWithImpl<$Res, $Val extends AuthEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -99,8 +96,6 @@ class __$$AuthEventLogInImplCopyWithImpl<$Res>
       _$AuthEventLogInImpl _value, $Res Function(_$AuthEventLogInImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -148,9 +143,7 @@ class _$AuthEventLogInImpl implements AuthEventLogIn {
   @override
   int get hashCode => Object.hash(runtimeType, email, password);
 
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$AuthEventLogInImplCopyWith<_$AuthEventLogInImpl> get copyWith =>
@@ -233,10 +226,7 @@ abstract class AuthEventLogIn implements AuthEvent {
 
   String get email;
   String get password;
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$AuthEventLogInImplCopyWith<_$AuthEventLogInImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -255,9 +245,6 @@ class __$$AuthEventLogOutImplCopyWithImpl<$Res>
   __$$AuthEventLogOutImplCopyWithImpl(
       _$AuthEventLogOutImpl _value, $Res Function(_$AuthEventLogOutImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -366,9 +353,6 @@ class __$$AuthEventCheckStatusImplCopyWithImpl<$Res>
   __$$AuthEventCheckStatusImplCopyWithImpl(_$AuthEventCheckStatusImpl _value,
       $Res Function(_$AuthEventCheckStatusImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -470,7 +454,7 @@ mixin _$AuthState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(User user) authenticated,
+    required TResult Function(IcocUser user) authenticated,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -478,7 +462,7 @@ mixin _$AuthState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(User user)? authenticated,
+    TResult? Function(IcocUser user)? authenticated,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -486,7 +470,7 @@ mixin _$AuthState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(User user)? authenticated,
+    TResult Function(IcocUser user)? authenticated,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -533,9 +517,6 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -552,9 +533,6 @@ class __$$AuthInitialImplCopyWithImpl<$Res>
   __$$AuthInitialImplCopyWithImpl(
       _$AuthInitialImpl _value, $Res Function(_$AuthInitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -581,7 +559,7 @@ class _$AuthInitialImpl implements AuthInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(User user) authenticated,
+    required TResult Function(IcocUser user) authenticated,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -592,7 +570,7 @@ class _$AuthInitialImpl implements AuthInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(User user)? authenticated,
+    TResult? Function(IcocUser user)? authenticated,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -603,7 +581,7 @@ class _$AuthInitialImpl implements AuthInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(User user)? authenticated,
+    TResult Function(IcocUser user)? authenticated,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -669,9 +647,6 @@ class __$$AuthLoadingImplCopyWithImpl<$Res>
   __$$AuthLoadingImplCopyWithImpl(
       _$AuthLoadingImpl _value, $Res Function(_$AuthLoadingImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -698,7 +673,7 @@ class _$AuthLoadingImpl implements AuthLoading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(User user) authenticated,
+    required TResult Function(IcocUser user) authenticated,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -709,7 +684,7 @@ class _$AuthLoadingImpl implements AuthLoading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(User user)? authenticated,
+    TResult? Function(IcocUser user)? authenticated,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -720,7 +695,7 @@ class _$AuthLoadingImpl implements AuthLoading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(User user)? authenticated,
+    TResult Function(IcocUser user)? authenticated,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -778,7 +753,7 @@ abstract class _$$AuthAuthenticatedImplCopyWith<$Res> {
           $Res Function(_$AuthAuthenticatedImpl) then) =
       __$$AuthAuthenticatedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({User user});
+  $Res call({IcocUser user});
 }
 
 /// @nodoc
@@ -789,8 +764,6 @@ class __$$AuthAuthenticatedImplCopyWithImpl<$Res>
       $Res Function(_$AuthAuthenticatedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -800,7 +773,7 @@ class __$$AuthAuthenticatedImplCopyWithImpl<$Res>
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
-              as User,
+              as IcocUser,
     ));
   }
 }
@@ -811,7 +784,7 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
   const _$AuthAuthenticatedImpl({required this.user});
 
   @override
-  final User user;
+  final IcocUser user;
 
   @override
   String toString() {
@@ -829,9 +802,7 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
   @override
   int get hashCode => Object.hash(runtimeType, user);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$AuthAuthenticatedImplCopyWith<_$AuthAuthenticatedImpl> get copyWith =>
@@ -843,7 +814,7 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(User user) authenticated,
+    required TResult Function(IcocUser user) authenticated,
     required TResult Function(String message) error,
   }) {
     return authenticated(user);
@@ -854,7 +825,7 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(User user)? authenticated,
+    TResult? Function(IcocUser user)? authenticated,
     TResult? Function(String message)? error,
   }) {
     return authenticated?.call(user);
@@ -865,7 +836,7 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(User user)? authenticated,
+    TResult Function(IcocUser user)? authenticated,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -914,14 +885,11 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
 }
 
 abstract class AuthAuthenticated implements AuthState {
-  const factory AuthAuthenticated({required final User user}) =
+  const factory AuthAuthenticated({required final IcocUser user}) =
       _$AuthAuthenticatedImpl;
 
-  User get user;
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  IcocUser get user;
+  @JsonKey(ignore: true)
   _$$AuthAuthenticatedImplCopyWith<_$AuthAuthenticatedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -943,8 +911,6 @@ class __$$AuthErrorImplCopyWithImpl<$Res>
       _$AuthErrorImpl _value, $Res Function(_$AuthErrorImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -983,9 +949,7 @@ class _$AuthErrorImpl implements AuthError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$AuthErrorImplCopyWith<_$AuthErrorImpl> get copyWith =>
@@ -996,7 +960,7 @@ class _$AuthErrorImpl implements AuthError {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(User user) authenticated,
+    required TResult Function(IcocUser user) authenticated,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -1007,7 +971,7 @@ class _$AuthErrorImpl implements AuthError {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(User user)? authenticated,
+    TResult? Function(IcocUser user)? authenticated,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -1018,7 +982,7 @@ class _$AuthErrorImpl implements AuthError {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(User user)? authenticated,
+    TResult Function(IcocUser user)? authenticated,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -1070,10 +1034,7 @@ abstract class AuthError implements AuthState {
   const factory AuthError(final String message) = _$AuthErrorImpl;
 
   String get message;
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$AuthErrorImplCopyWith<_$AuthErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

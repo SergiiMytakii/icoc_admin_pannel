@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/helpers/calculate_song_number.dart';
 import 'package:icoc_admin_pannel/domain/model/resources.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:icoc_admin_pannel/injection.dart';
+import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/add_song_block.dart';
+import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 
 class AddNewSongScreen extends StatefulWidget {
@@ -108,23 +111,29 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
     return Row(
       children: [
         MyTextButton(
-          onPressed: () {
+          onPressed: () async {
             final currentKey =
                 _isOpen.firstWhere((item) => item['isOpen'] == true)['key']
                     as GlobalKey<FormState>;
             if (currentKey.currentState!.validate()) {
-              _addToSong();
-              // log(song.toJson());
-              setState(
-                () {
-                  _isOpen[_isOpen.length - 1]['isOpen'] = false;
-                  _isOpen.add({'isOpen': true, 'key': GlobalKey<FormState>()});
-                  titleController.clear();
-                  descriptionController.clear();
-                  textController.clear();
-                  urlController.clear();
-                },
-              );
+              final res = await showAlertDialog(context,
+                  'The language of the version is ${languagesCodes[langController.text]}, correct?',
+                  showCancelButton: true);
+              if (res) {
+                _addToSong();
+                // log(song.toJson());
+                setState(
+                  () {
+                    _isOpen[_isOpen.length - 1]['isOpen'] = false;
+                    _isOpen
+                        .add({'isOpen': true, 'key': GlobalKey<FormState>()});
+                    titleController.clear();
+                    descriptionController.clear();
+                    textController.clear();
+                    urlController.clear();
+                  },
+                );
+              }
             }
           },
           label: 'Add Version',
@@ -133,15 +142,21 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
           width: 16,
         ),
         MyTextButton(
-          onPressed: () {
+          onPressed: () async {
             final currentKey =
                 _isOpen.firstWhere((item) => item['isOpen'] == true)['key']
                     as GlobalKey<FormState>;
             if (currentKey.currentState!.validate()) {
-              _addToSong();
-              getIt<SongsBloc>().add(SongsEvent.add(song));
-              context.read<SongsBloc>().currentSong.value = song;
-              context.pop();
+              final res = await showAlertDialog(context,
+                  'The language of the version is ${languagesCodes[langController.text]}, correct?',
+                  showCancelButton: true);
+              if (res) {
+                _addToSong();
+                getIt<SongsBloc>().add(SongsEvent.add(
+                    user: context.read<AuthBloc>().icocUser, song: song));
+                context.read<SongsBloc>().currentSong.value = song;
+                context.pop();
+              }
             }
           },
           label: 'Save',

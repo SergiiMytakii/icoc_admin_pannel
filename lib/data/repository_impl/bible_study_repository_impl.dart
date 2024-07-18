@@ -2,6 +2,7 @@ import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/data_sources/firebase_data_source.dart';
 import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
+import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/domain/repository/bible_study_repository.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
@@ -26,9 +27,9 @@ class BibleStudyRepositoryImpl extends BibleStudyRepository {
   }
 
   @override
-  Future addBibleStudy(BibleStudy bibleStudy) async {
+  Future addBibleStudy(IcocUser? user, BibleStudy bibleStudy) async {
     final QuerySnapshot snapshot = await firebaseDataSource.postToFirebase(
-        FirebaseCollections.BibleStudy.name, bibleStudy.toJson());
+        user, FirebaseCollections.BibleStudy.name, bibleStudy.toJson());
     final List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       return BibleStudy.fromJson(data);
@@ -37,9 +38,9 @@ class BibleStudyRepositoryImpl extends BibleStudyRepository {
   }
 
   @override
-  Future editLesson(BibleStudy bibleStudy) async {
+  Future editLesson(IcocUser? user, BibleStudy bibleStudy) async {
     final QuerySnapshot snapshot = await firebaseDataSource.postToFirebase(
-        FirebaseCollections.BibleStudy.name, bibleStudy.toJson());
+        user, FirebaseCollections.BibleStudy.name, bibleStudy.toJson());
     final List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       return BibleStudy.fromJson(data);
@@ -48,9 +49,9 @@ class BibleStudyRepositoryImpl extends BibleStudyRepository {
   }
 
   @override
-  Future deleteBibleStudy(String bibleStudyId) async {
+  Future deleteBibleStudy(IcocUser? user, String bibleStudyId) async {
     final QuerySnapshot snapshot = await firebaseDataSource.deleteToFirebase(
-        FirebaseCollections.BibleStudy.name, bibleStudyId);
+        user, FirebaseCollections.BibleStudy.name, bibleStudyId);
     final List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       return BibleStudy.fromJson(data);

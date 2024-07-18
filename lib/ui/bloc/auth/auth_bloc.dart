@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:injectable/injectable.dart';
 
 part 'auth_event.dart';
@@ -17,6 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventCheckStatus>(_onCheckAuthStatus);
   }
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  IcocUser? icocUser;
   Future<void> _onLogIn(AuthEventLogIn event, Emitter<AuthState> emit) async {
     emit(const AuthState.loading());
     try {
@@ -24,7 +26,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         email: event.email,
         password: event.password,
       );
-      emit(AuthState.authenticated(user: user.user!));
+      icocUser = IcocUser.fromFirebaseUser(user.user!);
+      emit(AuthState.authenticated(user: icocUser!));
     } catch (e) {
       emit(AuthState.error(e.toString()));
     }
@@ -40,7 +43,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await _auth.authStateChanges().first.then((User? user) async {
         if (user != null) {
-          emit(AuthState.authenticated(user: user));
+          icocUser = IcocUser.fromFirebaseUser(user);
+          emit(AuthState.authenticated(user: icocUser!));
         } else {
           emit(const AuthState.initial());
         }
@@ -49,42 +53,4 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthState.error('Error signing in with custom token: $e'));
     }
   }
-
-  // Future<void> _onCheckAuthStatus(
-  //     AuthEventCheckStatus event, Emitter<AuthState> emit) async {
-  //   final authToken = _getAuthCookie();
-  //   if (authToken != null) {
-  //     try {
-  //       final user = await _auth.signInWithCustomToken(authToken);
-  //       emit(AuthState.authenticated(user: user.user!));
-  //     } catch (e) {
-  //       _clearAuthCookie();
-  //       emit(AuthState.error('Error signing in with custom token: $e'));
-  //     }
-  //   } else {
-  //     emit(const AuthInitial());
-  //   }
-  // }
-
-  // void _setAuthCookie(String token) {
-  //   document.cookie =
-  //       'auth_token=$token; path=/; max-age=2592000; SameSite=Strict; Secure';
-  // }
-
-  // String? _getAuthCookie() {
-  //   final cookies = document.cookie?.split('; ') ?? [];
-  //   Logger().f(cookies);
-  //   for (var cookie in cookies) {
-  //     final parts = cookie.split('=');
-  //     if (parts[0] == 'auth_token') {
-  //       return parts[1];
-  //     }
-  //   }
-  //   return null;
-  // }
-
-  // void _clearAuthCookie() {
-  //   document.cookie =
-  //       'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-  // }
 }

@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/domain/helpers/extract_text_from_html.dart';
 import 'package:icoc_admin_pannel/domain/model/resources.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
+import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/injection.dart';
+import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
@@ -143,6 +146,7 @@ class _EditSongScreenState extends State<EditSongScreen> {
     if (_formKey.currentState!.validate()) {
       if (widget.song != null) {
         getIt<SongsBloc>().add(SongsEvent.edit(
+            user: context.read<AuthBloc>().icocUser,
             song: widget.song!,
             textVersion: textVersionController.text.toLowerCase(),
             title: titleController.text,

@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/constants.dart';
@@ -7,6 +8,7 @@ import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/add_version_tab.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/song_text_on_song_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/video_card.dart';
+import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
@@ -90,8 +92,11 @@ class _OneSongState extends State<OneSong> with TickerProviderStateMixin {
       actions: [
         MyTextButton(
           label: 'Add a new song',
-          onPressed: () {
-            context.go('/songs/addsong');
+          onPressed: () async {
+            final res = await showAlertDialog(context,
+                'Did you check that the same song does not exist? \n Check on other languages as well.',
+                showCancelButton: true);
+            if (res) context.go('/songs/addsong');
           },
         ),
       ],
@@ -211,8 +216,7 @@ class _OneSongState extends State<OneSong> with TickerProviderStateMixin {
         ),
         SizedBox(
             height: 200,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
+            child: HorizontalListView(
               children: song.resources!
                   .map((resource) =>
                       VideoCard(resource: resource, onTap: _startPlayVideo))
@@ -230,6 +234,39 @@ class _OneSongState extends State<OneSong> with TickerProviderStateMixin {
               },
             ))
       ],
+    );
+  }
+}
+
+class HorizontalListView extends StatefulWidget {
+  final List<Widget> children;
+
+  const HorizontalListView({super.key, required this.children});
+  @override
+  _HorizontalListViewState createState() => _HorizontalListViewState();
+}
+
+class _HorizontalListViewState extends State<HorizontalListView> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Listener(
+      onPointerSignal: (PointerSignalEvent event) {
+        if (event is PointerScrollEvent) {
+          _scrollController.jumpTo(
+            _scrollController.offset + event.scrollDelta.dy / 2,
+          );
+        }
+      },
+      child: SizedBox(
+        height: 200, // Height of the horizontal list view
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          controller: _scrollController,
+          children: widget.children,
+        ),
+      ),
     );
   }
 }

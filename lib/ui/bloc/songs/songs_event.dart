@@ -7,13 +7,16 @@ class SongsEvent with _$SongsEvent {
       {required SongDetail song,
       required String textVersion,
       required String title,
+      required IcocUser? user,
       required String description,
       required String link,
       required String text}) = SongsEdit;
 
-  const factory SongsEvent.add(SongDetail song) = SongsAdd;
+  const factory SongsEvent.add(
+      {required IcocUser? user, required SongDetail song}) = SongsAdd;
   const factory SongsEvent.update(
-      {required SongDetail song,
+      {required IcocUser? user,
+      required SongDetail song,
       required String lang,
       required String title,
       String? description,

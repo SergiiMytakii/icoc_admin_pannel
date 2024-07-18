@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
 import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/domain/repository/bible_study_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -54,7 +55,7 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
     emit(const BibleStudyState.loading());
     try {
       final List<BibleStudy> bibleStudies =
-          await bibleStudyRepository.editLesson(event.bibleStudy);
+          await bibleStudyRepository.editLesson(event.user, event.bibleStudy);
 
       if (bibleStudies.isNotEmpty) {
         bibleStudies.sort((a, b) => a.id.compareTo(b.id));
@@ -73,7 +74,7 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
     emit(const BibleStudyState.loading());
     try {
       final List<BibleStudy> bibleStudies =
-          await bibleStudyRepository.deleteBibleStudy(event.id);
+          await bibleStudyRepository.deleteBibleStudy(event.user, event.id);
 
       if (bibleStudies.isNotEmpty) {
         bibleStudies.sort((a, b) => a.id.compareTo(b.id));
@@ -91,8 +92,8 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
   ) async {
     emit(const BibleStudyState.loading());
     try {
-      final List<BibleStudy> bibleStudies =
-          await bibleStudyRepository.addBibleStudy(event.bibleStudy);
+      final List<BibleStudy> bibleStudies = await bibleStudyRepository
+          .addBibleStudy(event.user, event.bibleStudy);
       if (bibleStudies.isNotEmpty) {
         bibleStudies.sort((a, b) => a.id.compareTo(b.id));
       }
@@ -110,8 +111,8 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
   ) async {
     emit(const BibleStudyState.loading());
     try {
-      final List<BibleStudy> bibleStudies =
-          await bibleStudyRepository.addBibleStudy(event.bibleStudy);
+      final List<BibleStudy> bibleStudies = await bibleStudyRepository
+          .addBibleStudy(event.user, event.bibleStudy);
 
       if (bibleStudies.isNotEmpty) {
         bibleStudies.sort((a, b) => a.id.compareTo(b.id));

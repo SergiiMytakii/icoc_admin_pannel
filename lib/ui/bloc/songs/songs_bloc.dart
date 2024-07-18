@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/domain/helpers/calculate_song_number.dart';
 import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
 import 'package:icoc_admin_pannel/domain/helpers/get_video_id.dart';
 import 'package:icoc_admin_pannel/domain/model/resources.dart';
+import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/domain/repository/songs_repository.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -65,6 +67,8 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     SongsEdit event,
     Emitter<SongsState> emit,
   ) async {
+    emit(const SongsState.loading());
+
     try {
       SongDetail song = event.song;
       song.title[event.textVersion.substring(0, 2)] = event.title;
@@ -98,10 +102,8 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
         }
       }
 
-      emit(const SongsState.loading());
-      log(song.toJson());
-      final songs =
-          await songsRepositoryImpl.updateSong(event.song.id, song.toJson());
+      final songs = await songsRepositoryImpl.updateSong(
+          event.user, event.song.id, song.toJson());
       songs.sort((a, b) => a.id.compareTo(b.id));
       emit(SongsState.success(songs));
     } catch (error, stackTrace) {
@@ -155,7 +157,8 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
 
     try {
       emit(const SongsState.loading());
-      final songs = await songsRepositoryImpl.updateSong(event.song.id, data);
+      final songs =
+          await songsRepositoryImpl.updateSong(event.user, event.song.id, data);
       songs.sort((a, b) => a.id.compareTo(b.id));
       emit(SongsState.success(songs));
     } catch (error, stackTrace) {
@@ -180,7 +183,8 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     }
     try {
       emit(const SongsState.loading());
-      final songs = await songsRepositoryImpl.addSong(song.toJson());
+      final songs =
+          await songsRepositoryImpl.addSong(event.user, song.toJson());
       songs.sort((a, b) => a.id.compareTo(b.id));
       emit(SongsState.success(songs));
     } catch (error, stackTrace) {

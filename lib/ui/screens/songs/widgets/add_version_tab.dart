@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:icoc_admin_pannel/injection.dart';
+import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
@@ -10,7 +12,7 @@ import 'package:icoc_admin_pannel/ui/widget/select_lang.dart';
 
 class AddVersionTab extends StatefulWidget {
   final SongDetail song;
-  AddVersionTab(
+  const AddVersionTab(
     this.song, {
     super.key,
   });
@@ -108,6 +110,7 @@ class _AddVersionTabState extends State<AddVersionTab> {
           'The language of the song is ${languagesCodes[langController.text]}?',
           showCancelButton: true)) {
         getIt<SongsBloc>().add(SongsEvent.update(
+            user: context.read<AuthBloc>().icocUser,
             song: widget.song,
             lang: langController.text.toLowerCase(),
             title: titleController.text,

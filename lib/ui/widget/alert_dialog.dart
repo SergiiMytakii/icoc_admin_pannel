@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 Future<bool> showAlertDialog(BuildContext context, String message,
     {bool showCancelButton = false}) async {
@@ -14,13 +13,13 @@ Future<bool> showAlertDialog(BuildContext context, String message,
             TextButton(
               child: const Text('Cancel'),
               onPressed: () {
-                context.pop(false);
+                Navigator.of(context).pop(false);
               },
             ),
           TextButton(
             child: const Text('Ok'),
             onPressed: () {
-              context.pop(true);
+              Navigator.of(context).pop(true);
             },
           ),
         ],

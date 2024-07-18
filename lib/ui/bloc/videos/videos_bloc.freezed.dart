@@ -84,9 +84,6 @@ class _$VideosEventCopyWithImpl<$Res, $Val extends VideosEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of VideosEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -103,9 +100,6 @@ class __$$VideosGetImplCopyWithImpl<$Res>
   __$$VideosGetImplCopyWithImpl(
       _$VideosGetImpl _value, $Res Function(_$VideosGetImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of VideosEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -223,8 +217,6 @@ class __$$VideosAddPlaylistImplCopyWithImpl<$Res>
       $Res Function(_$VideosAddPlaylistImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of VideosEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -264,9 +256,7 @@ class _$VideosAddPlaylistImpl implements VideosAddPlaylist {
   @override
   int get hashCode => Object.hash(runtimeType, playlist);
 
-  /// Create a copy of VideosEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$VideosAddPlaylistImplCopyWith<_$VideosAddPlaylistImpl> get copyWith =>
@@ -353,10 +343,7 @@ abstract class VideosAddPlaylist implements VideosEvent {
       _$VideosAddPlaylistImpl;
 
   Playlist get playlist;
-
-  /// Create a copy of VideosEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$VideosAddPlaylistImplCopyWith<_$VideosAddPlaylistImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -380,8 +367,6 @@ class __$$VideosFetchFromPlaylistImplCopyWithImpl<$Res>
       $Res Function(_$VideosFetchFromPlaylistImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of VideosEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -421,9 +406,7 @@ class _$VideosFetchFromPlaylistImpl implements VideosFetchFromPlaylist {
   @override
   int get hashCode => Object.hash(runtimeType, playlistId);
 
-  /// Create a copy of VideosEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$VideosFetchFromPlaylistImplCopyWith<_$VideosFetchFromPlaylistImpl>
@@ -510,10 +493,7 @@ abstract class VideosFetchFromPlaylist implements VideosEvent {
       _$VideosFetchFromPlaylistImpl;
 
   String get playlistId;
-
-  /// Create a copy of VideosEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$VideosFetchFromPlaylistImplCopyWith<_$VideosFetchFromPlaylistImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -535,8 +515,6 @@ class __$$VideosFetchDetailsImplCopyWithImpl<$Res>
       $Res Function(_$VideosFetchDetailsImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of VideosEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -575,9 +553,7 @@ class _$VideosFetchDetailsImpl implements VideosFetchDetails {
   @override
   int get hashCode => Object.hash(runtimeType, videoId);
 
-  /// Create a copy of VideosEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$VideosFetchDetailsImplCopyWith<_$VideosFetchDetailsImpl> get copyWith =>
@@ -664,10 +640,7 @@ abstract class VideosFetchDetails implements VideosEvent {
       _$VideosFetchDetailsImpl;
 
   String get videoId;
-
-  /// Create a copy of VideosEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$VideosFetchDetailsImplCopyWith<_$VideosFetchDetailsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -754,9 +727,6 @@ class _$VideosStateCopyWithImpl<$Res, $Val extends VideosState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of VideosState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -773,9 +743,6 @@ class __$$VideosInitialStateImplCopyWithImpl<$Res>
   __$$VideosInitialStateImplCopyWithImpl(_$VideosInitialStateImpl _value,
       $Res Function(_$VideosInitialStateImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of VideosState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -902,9 +869,6 @@ class __$$VideosLoadingStateImplCopyWithImpl<$Res>
   __$$VideosLoadingStateImplCopyWithImpl(_$VideosLoadingStateImpl _value,
       $Res Function(_$VideosLoadingStateImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of VideosState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1034,8 +998,6 @@ class __$$VideosErrorStateImplCopyWithImpl<$Res>
       $Res Function(_$VideosErrorStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of VideosState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1075,9 +1037,7 @@ class _$VideosErrorStateImpl implements _VideosErrorState {
   @override
   int get hashCode => Object.hash(runtimeType, errorMessage);
 
-  /// Create a copy of VideosState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$VideosErrorStateImplCopyWith<_$VideosErrorStateImpl> get copyWith =>
@@ -1176,10 +1136,7 @@ abstract class _VideosErrorState implements VideosState {
       _$VideosErrorStateImpl;
 
   String get errorMessage;
-
-  /// Create a copy of VideosState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$VideosErrorStateImplCopyWith<_$VideosErrorStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1201,8 +1158,6 @@ class __$$VideosSuccessStateImplCopyWithImpl<$Res>
       $Res Function(_$VideosSuccessStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of VideosState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1249,9 +1204,7 @@ class _$VideosSuccessStateImpl implements _VideosSuccessState {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_playlists));
 
-  /// Create a copy of VideosState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$VideosSuccessStateImplCopyWith<_$VideosSuccessStateImpl> get copyWith =>
@@ -1350,10 +1303,7 @@ abstract class _VideosSuccessState implements VideosState {
       _$VideosSuccessStateImpl;
 
   List<Playlist> get playlists;
-
-  /// Create a copy of VideosState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$VideosSuccessStateImplCopyWith<_$VideosSuccessStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1377,8 +1327,6 @@ class __$$VideosPlaylistVideosStateImplCopyWithImpl<$Res>
       $Res Function(_$VideosPlaylistVideosStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of VideosState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1427,9 +1375,7 @@ class _$VideosPlaylistVideosStateImpl implements _VideosPlaylistVideosState {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_resources));
 
-  /// Create a copy of VideosState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$VideosPlaylistVideosStateImplCopyWith<_$VideosPlaylistVideosStateImpl>
@@ -1528,10 +1474,7 @@ abstract class _VideosPlaylistVideosState implements VideosState {
       _$VideosPlaylistVideosStateImpl;
 
   List<Resources>? get resources;
-
-  /// Create a copy of VideosState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$VideosPlaylistVideosStateImplCopyWith<_$VideosPlaylistVideosStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -1553,8 +1496,6 @@ class __$$VideosDetailsStateImplCopyWithImpl<$Res>
       $Res Function(_$VideosDetailsStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of VideosState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1594,9 +1535,7 @@ class _$VideosDetailsStateImpl implements _VideosDetailsState {
   @override
   int get hashCode => Object.hash(runtimeType, videoDetails);
 
-  /// Create a copy of VideosState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$VideosDetailsStateImplCopyWith<_$VideosDetailsStateImpl> get copyWith =>
@@ -1695,10 +1634,7 @@ abstract class _VideosDetailsState implements VideosState {
       _$VideosDetailsStateImpl;
 
   Resources? get videoDetails;
-
-  /// Create a copy of VideosState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$VideosDetailsStateImplCopyWith<_$VideosDetailsStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

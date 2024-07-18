@@ -90,4 +90,11 @@ Map<String, String> languagesCodes = {
   'sr': 'Serbian',
 };
 
-enum FirebaseCollections { Songs, BibleStudy, Notifications, Video, Feedback }
+enum FirebaseCollections {
+  Songs,
+  BibleStudy,
+  Notifications,
+  Video,
+  Feedback,
+  UsersLogs
+}

@@ -1,5 +1,7 @@
 import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
+import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/data_sources/firebase_data_source.dart';
+import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 
@@ -27,32 +29,53 @@ class DatabaseServiceFirebase implements FirebaseDataSource {
   }
 
   @override
-  Future<QuerySnapshot> updateToFirebase(
-      String collectionName, int id, Map<String, dynamic> data) async {
+  Future<QuerySnapshot> updateToFirebase(IcocUser? user, String collectionName,
+      int id, Map<String, dynamic> data) async {
     final CollectionReference collection = db.collection(collectionName);
     final DocumentReference documentRef = collection.doc(id.toString());
     await documentRef.update(data);
+    logToFirebase(user, 'Update', collectionName, data);
     final QuerySnapshot snapshot = await collection.get();
     return snapshot;
   }
 
   @override
   Future<QuerySnapshot> postToFirebase(
-      String collectionName, Map<String, dynamic> data) async {
+      IcocUser? user, String collectionName, Map<String, dynamic> data) async {
     final CollectionReference collection = db.collection(collectionName);
     final DocumentReference documentRef = collection.doc(data['id'].toString());
     await documentRef.set(data, SetOptions(merge: true));
+    logToFirebase(user, 'Post', collectionName, data);
     final QuerySnapshot snapshot = await collection.get();
     return snapshot;
   }
 
   @override
   Future<QuerySnapshot> deleteToFirebase(
-      String collectionName, String id) async {
+      IcocUser? user, String collectionName, String id) async {
     final CollectionReference collection = db.collection(collectionName);
     final DocumentReference documentRef = collection.doc(id.toString());
     await documentRef.delete();
+    logToFirebase(user, 'Delete', collectionName, {'id': id});
     final QuerySnapshot snapshot = await collection.get();
     return snapshot;
+  }
+
+  @override
+  Future<void> logToFirebase(IcocUser? user, String eventName,
+      String collectionName, Map<String, dynamic> data) async {
+    final CollectionReference collection =
+        db.collection(FirebaseCollections.UsersLogs.name);
+    final DocumentReference documentRef =
+        collection.doc(DateTime.now().toString());
+    final map = {
+      'user': user?.email ?? 'Unauthenticated',
+      'eventName': eventName,
+      'collection': collectionName,
+      'data': data,
+      'timestamp': DateTime.now()
+    };
+    // Logger().f(map);
+    await documentRef.set(map);
   }
 }

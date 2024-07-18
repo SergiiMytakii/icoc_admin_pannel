@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
 import 'package:icoc_admin_pannel/injection.dart';
+import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/bible_study/bible_study_bloc.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
@@ -117,8 +118,9 @@ class _EditLessonScreenState extends State<EditLessonScreen> {
                   title: titleController.text,
                   text: textController.text,
                   id: currentLesson.id));
-              getIt<BibleStudyBloc>()
-                  .add(BibleStudyEvent.editLesson(currentBibleStudy));
+              getIt<BibleStudyBloc>().add(BibleStudyEvent.editLesson(
+                  user: context.read<AuthBloc>().icocUser,
+                  bibleStudy: currentBibleStudy));
 
               context.pop();
             }

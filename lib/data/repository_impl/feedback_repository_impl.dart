@@ -22,17 +22,6 @@ class FeedbackRepositoryImpl extends FeedbackRepository {
   }
 
   @override
-  Future<List<Feedback>> insertFeedback(String name, String feedback) async {
-    final QuerySnapshot snapshot = await firebaseDataSource
-        .postToFirebase(FirebaseCollections.Feedback.name, {
-      'name': name,
-      'text': feedback,
-    });
-    final List<Feedback> feedbacks = _listFromSnapshot(snapshot);
-    return feedbacks.reversed.toList();
-  }
-
-  @override
   Future<List<Feedback>> deleteFeedback(String feedbackId) {
     // TODO: implement deleteFeedback
     throw UnimplementedError();

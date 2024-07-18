@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/domain/helpers/calculate_song_number.dart';
 import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
 import 'package:icoc_admin_pannel/injection.dart';
+import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/bible_study/bible_study_bloc.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
@@ -109,8 +110,10 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
                   title: titleController.text,
                   text: textController.text,
                   id: lessonNumber));
-              getIt<BibleStudyBloc>()
-                  .add(BibleStudyEvent.addLesson(currentBibleStudy));
+              getIt<BibleStudyBloc>().add(BibleStudyEvent.addLesson(
+                bibleStudy: currentBibleStudy,
+                user: context.read<AuthBloc>().icocUser,
+              ));
               Future.delayed(const Duration(seconds: 1)).then((_) {
                 context.read<BibleStudyBloc>().currentLesson.value =
                     currentBibleStudy.lessons[lessonNumber - 1];

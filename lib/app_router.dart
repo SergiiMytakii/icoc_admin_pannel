@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
+import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/auth/login_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/bible_study/add_new_lesson.dart';
@@ -43,7 +44,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state, Widget child) {
         final authState = context.watch<AuthBloc>().state;
         return authState.maybeWhen(
-          authenticated: (User user) {
+          authenticated: (IcocUser user) {
             return NoTransitionPage<void>(
                 key: state.pageKey, child: RootScreen(child: child));
           },

@@ -2,6 +2,7 @@ import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/data_sources/firebase_data_source.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
+import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/domain/repository/songs_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -24,26 +25,21 @@ class SongsRepositoryImpl implements SongsRepository {
   }
 
   @override
-  Future<List<SongDetail>> addSong(Map<String, dynamic> data) async {
+  Future<List<SongDetail>> addSong(
+      IcocUser? user, Map<String, dynamic> data) async {
     final QuerySnapshot snapshot = await firebaseDataSource.postToFirebase(
-        FirebaseCollections.Songs.name, data);
+        user, FirebaseCollections.Songs.name, data);
     final List<SongDetail> songList = _songListFromSnapshot(snapshot);
     return songList;
   }
 
   @override
   Future<List<SongDetail>> updateSong(
-      int songId, Map<String, dynamic> data) async {
+      IcocUser? user, int songId, Map<String, dynamic> data) async {
     final QuerySnapshot snapshot = await firebaseDataSource.updateToFirebase(
-        FirebaseCollections.Songs.name, songId, data);
+        user, FirebaseCollections.Songs.name, songId, data);
     final List<SongDetail> songList = _songListFromSnapshot(snapshot);
     return songList;
-  }
-
-  @override
-  Future<List<SongDetail>> getSearchResult(
-      String query, List<String> orderLang) async {
-    return [];
   }
 
 //converting  snapshot to song list
