@@ -5,6 +5,7 @@ import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -45,25 +46,26 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Stack(
         children: [
           Center(
-            child: Column(
-              children: [
-                const Spacer(),
-                Image.network(
-                  fullLogoImageUrl,
-                  width: 400,
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                const Text(
-                  'Welcome to ICOC app admin panel!',
-                  style: TextStyle(fontSize: 24),
-                ),
-                SizedBox(
-                  width: 350,
-                  height: 300,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+            child: SizedBox(
+              width: 400,
+              child: ListView(
+                children: [
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Image.network(
+                    fullLogoImageUrl,
+                    width: 400,
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  const Text(
+                    'Welcome to ICOC app admin panel!',
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16),
                     child: Form(
                       key: _formKey,
                       child: Column(
@@ -85,20 +87,44 @@ class _LoginScreenState extends State<LoginScreen> {
                               _login(context);
                             },
                           ),
-                          const SizedBox(height: 16.0),
+                          const SizedBox(height: 16),
                           MyTextButton(
                             onPressed: () {
                               _login(context);
                             },
                             label: 'Login',
                           ),
+                          const SizedBox(
+                            height: 50,
+                          ),
+                          const Text('Do not have an account? Email me:'),
+                          TextButton(
+                            onPressed: () async {
+                              final Uri emailLaunchUri = Uri(
+                                scheme: 'mailto',
+                                path: email,
+                                query: encodeQueryParameters(<String, String>{
+                                  'subject':
+                                      'Access to ICOC app admin panel request',
+                                  'body':
+                                      'Hello, I woud like to request access to the ICOC app admin panel. Please send login credentials.'
+                                }),
+                              );
+                              if (await canLaunchUrl(emailLaunchUri)) {
+                                await launchUrl(emailLaunchUri);
+                              } else {
+                                throw 'Could not launch $emailLaunchUri';
+                              }
+                            },
+                            child: const Text(email),
+                          )
                         ],
                       ),
                     ),
                   ),
-                ),
-                const Spacer(),
-              ],
+                  const Spacer(),
+                ],
+              ),
             ),
           ),
           BlocConsumer<AuthBloc, AuthState>(
@@ -120,6 +146,13 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
     );
+  }
+
+  String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((e) =>
+            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
   }
 
   void _login(BuildContext context) {

@@ -2,6 +2,7 @@ import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/data_sources/firebase_data_source.dart';
 import 'package:icoc_admin_pannel/domain/model/notifications_model.dart';
+import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/domain/repository/notifications_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -13,41 +14,41 @@ class NotificationsRepositoryImpl extends NotificationsRepository {
 
   NotificationsRepositoryImpl(this.firebaseDataSource);
   @override
-  Future<List<Map<String, NotificationsModel>>> getNotifications() async {
-    final List<Map<String, NotificationsModel>> notifications = [];
-
+  Future<List<NotificationsModel>> getNotifications() async {
     final QuerySnapshot snapshot = await firebaseDataSource
         .getFromFirebase(FirebaseCollections.Notifications.name);
-    for (final doc in snapshot.docs) {
-      final Map data = doc.data() as Map;
-      final keys = data.keys;
-      keys.forEach((key) {
-        for (int i = 0; i < data[key].length; i++) {
-          notifications.add({
-            key: NotificationsModel(
-                id: i,
-                topic: doc.id,
-                title: data[key][i]['title'],
-                text: data[key][i]['text'],
-                link: data[key][i]['link'])
-          });
-        }
-      });
-    }
+    final List<NotificationsModel> notifications = snapshot.docs.map(
+      (doc) {
+        final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return NotificationsModel.fromJson(
+          data,
+        );
+      },
+    ).toList();
 
-    return notifications.reversed.toList();
+    return notifications;
   }
 
   @override
-  Future<List<Map<String, NotificationsModel>>> addNotifications(
-      String lang, NotificationsModel notification) {
-    // TODO: implement addNotifications
-    throw UnimplementedError();
+  Future<List<NotificationsModel>> addNotifications(
+      IcocUser? user, NotificationsModel notification) async {
+    final QuerySnapshot snapshot = await firebaseDataSource.postToFirebase(
+        user, FirebaseCollections.Notifications.name, notification.toJson());
+    final List<NotificationsModel> notifications = snapshot.docs.map(
+      (doc) {
+        final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return NotificationsModel.fromJson(
+          data,
+        );
+      },
+    ).toList();
+
+    return notifications;
   }
 
   @override
-  Future<List<Map<String, NotificationsModel>>> deleteNotifications(
-      String lang, String id) {
+  Future<List<NotificationsModel>> deleteNotifications(
+      IcocUser? user, String id) {
     // TODO: implement deleteNotifications
     throw UnimplementedError();
   }

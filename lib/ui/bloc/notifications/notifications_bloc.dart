@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
 import 'package:icoc_admin_pannel/domain/model/notifications_model.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/domain/repository/notifications_repository.dart';
 import 'package:injectable/injectable.dart';
 part 'notifications_event.dart';
@@ -20,6 +22,9 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     on<NotificationsDelete>(_onNotificationDeleteRequested);
   }
   final NotificationsRepository notificationsRepository;
+  final ValueNotifier<NotificationsModel> currentNotification =
+      ValueNotifier<NotificationsModel>(
+          NotificationsModelInitial.defaultNotification());
 
   Future<void> _onNotificationsRequested(
     NotificationsGet event,
@@ -27,7 +32,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   ) async {
     emit(const NotificationsState.loading());
     try {
-      final List<Map<String, NotificationsModel>> notifications =
+      final List<NotificationsModel> notifications =
           await notificationsRepository.getNotifications();
 
       emit(NotificationsState.success(notifications));
@@ -41,8 +46,9 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       NotificationsAdd event, Emitter<NotificationsState> emit) async {
     try {
       emit(const NotificationsState.loading());
-      final List<Map<String, NotificationsModel>> notifications =
-          await notificationsRepository.getNotifications();
+      final List<NotificationsModel> notifications =
+          await notificationsRepository.addNotifications(
+              event.user, event.notification);
       emit(NotificationsState.success(notifications));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
@@ -54,7 +60,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       NotificationsDelete event, Emitter<NotificationsState> emit) async {
     try {
       emit(const NotificationsState.loading());
-      final List<Map<String, NotificationsModel>> notifications =
+      final List<NotificationsModel> notifications =
           await notificationsRepository.getNotifications();
       emit(NotificationsState.success(notifications));
     } catch (error, stackTrace) {

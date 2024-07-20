@@ -37,7 +37,7 @@ class SongsRepositoryImpl implements SongsRepository {
   Future<List<SongDetail>> updateSong(
       IcocUser? user, int songId, Map<String, dynamic> data) async {
     final QuerySnapshot snapshot = await firebaseDataSource.updateToFirebase(
-        user, FirebaseCollections.Songs.name, songId, data);
+        user, FirebaseCollections.Songs.name, songId.toString(), data);
     final List<SongDetail> songList = _songListFromSnapshot(snapshot);
     return songList;
   }

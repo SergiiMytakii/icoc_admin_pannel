@@ -42,11 +42,10 @@ class _SongsScreenState extends State<SongsScreen> {
               return Row(
                 children: [
                   Flexible(
-                    flex: 1,
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.all(16),
                           child: SearchBar(
                             overlayColor: WidgetStateProperty.all(
                                 Theme.of(context).cardColor),

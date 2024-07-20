@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/constants.dart';
+import 'package:icoc_admin_pannel/domain/model/notifications_model.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
@@ -10,18 +11,18 @@ import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
 import 'package:icoc_admin_pannel/ui/widget/select_lang.dart';
 
-class AddVersionTab extends StatefulWidget {
-  final SongDetail song;
-  const AddVersionTab(
-    this.song, {
+class AddLangTab extends StatefulWidget {
+  final NotificationsModel notificationsModel;
+  const AddLangTab(
+    this.notificationsModel, {
     super.key,
   });
 
   @override
-  State<AddVersionTab> createState() => _AddVersionTabState();
+  State<AddLangTab> createState() => _AddLangTabState();
 }
 
-class _AddVersionTabState extends State<AddVersionTab> {
+class _AddLangTabState extends State<AddLangTab> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -46,7 +47,7 @@ class _AddVersionTabState extends State<AddVersionTab> {
                       SelectLanguageWidget(langController: langController),
                       const Spacer(),
                       const Text(
-                        'Add a new song version',
+                        'Add a new notification version',
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 20),
                       ),
@@ -107,17 +108,8 @@ class _AddVersionTabState extends State<AddVersionTab> {
   void _save() async {
     if (_formKey.currentState!.validate()) {
       if (await showAlertDialog(context,
-          'The language of the song is ${languagesCodes[langController.text]}?',
-          showCancelButton: true)) {
-        getIt<SongsBloc>().add(SongsEvent.update(
-            user: context.read<AuthBloc>().icocUser,
-            song: widget.song,
-            lang: langController.text.toLowerCase(),
-            title: titleController.text,
-            description: descriptionController.text,
-            text: textController.text,
-            link: urlController.text));
-      }
+          'The language of the notificationsModel is ${languagesCodes[langController.text]}?',
+          showCancelButton: true)) {}
     }
   }
 }

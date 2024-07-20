@@ -89,7 +89,6 @@ class BibleStudyScreen extends StatelessWidget {
                   ),
                   const VerticalDivider(thickness: 1, width: 1),
                   Flexible(
-                    flex: 1,
                     child: Column(
                       children: [
                         Row(

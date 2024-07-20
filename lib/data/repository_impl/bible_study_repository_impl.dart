@@ -20,7 +20,7 @@ class BibleStudyRepositoryImpl extends BibleStudyRepository {
       FirebaseCollections.BibleStudy.name,
     );
     final List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
-      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       return BibleStudy.fromJson(data);
     }).toList();
     return bibleStudies;
@@ -31,7 +31,7 @@ class BibleStudyRepositoryImpl extends BibleStudyRepository {
     final QuerySnapshot snapshot = await firebaseDataSource.postToFirebase(
         user, FirebaseCollections.BibleStudy.name, bibleStudy.toJson());
     final List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
-      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       return BibleStudy.fromJson(data);
     }).toList();
     return bibleStudies;
@@ -42,7 +42,7 @@ class BibleStudyRepositoryImpl extends BibleStudyRepository {
     final QuerySnapshot snapshot = await firebaseDataSource.postToFirebase(
         user, FirebaseCollections.BibleStudy.name, bibleStudy.toJson());
     final List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
-      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       return BibleStudy.fromJson(data);
     }).toList();
     return bibleStudies;
@@ -53,7 +53,7 @@ class BibleStudyRepositoryImpl extends BibleStudyRepository {
     final QuerySnapshot snapshot = await firebaseDataSource.deleteToFirebase(
         user, FirebaseCollections.BibleStudy.name, bibleStudyId);
     final List<BibleStudy> bibleStudies = snapshot.docs.map((doc) {
-      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       return BibleStudy.fromJson(data);
     }).toList();
     return bibleStudies;

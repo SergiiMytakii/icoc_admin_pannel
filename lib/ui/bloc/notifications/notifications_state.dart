@@ -7,6 +7,6 @@ class NotificationsState with _$NotificationsState {
   const factory NotificationsState.error(String errorMessage) =
       _NotificationsErrorState;
   const factory NotificationsState.success(
-          List<Map<String, NotificationsModel>> notifications) =
+          List<NotificationsModel> notifications) =
       _NotificationsSuccessState;
 }

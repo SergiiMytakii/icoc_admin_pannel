@@ -1,36 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icoc_admin_pannel/domain/helpers/calculate_song_number.dart';
-import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
-import 'package:icoc_admin_pannel/injection.dart';
+import 'package:icoc_admin_pannel/domain/model/notifications_model.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
-import 'package:icoc_admin_pannel/ui/bloc/bible_study/bible_study_bloc.dart';
+import 'package:icoc_admin_pannel/ui/bloc/notifications/notifications_bloc.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
+import 'package:icoc_admin_pannel/ui/widget/select_lang.dart';
 
-class AddNewLessonScreen extends StatefulWidget {
-  const AddNewLessonScreen({
+class AddNewNotificationScreen extends StatefulWidget {
+  const AddNewNotificationScreen({
     super.key,
   });
 
   @override
-  State<AddNewLessonScreen> createState() => _AddNewLessonScreenState();
+  State<AddNewNotificationScreen> createState() =>
+      _AddNewNotificationScreenState();
 }
 
-class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
+class _AddNewNotificationScreenState extends State<AddNewNotificationScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController textController = TextEditingController();
+  TextEditingController langController = TextEditingController()..text = 'ru';
+  TextEditingController urlController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     Future.delayed(Duration.zero).then((_) {
-      final state = context.read<BibleStudyBloc>().state;
+      final state = context.read<NotificationsBloc>().state;
 
       state.maybeWhen(
-        success: (bibleStudies) {},
-        orElse: () => context.go('/bible-study'),
+        success: (_) {},
+        orElse: () => context.go('/notifications'),
       );
     });
 
@@ -39,10 +41,6 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final currentBibleStudy = context.read<BibleStudyBloc>().currentBibleStudy;
-
-    final int lessonNumber =
-        calculateLastNumber(currentBibleStudy.value.lessons) + 1;
     return Scaffold(
         body: Padding(
       padding: const EdgeInsets.all(16),
@@ -52,15 +50,15 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
           children: [
             Row(
               children: [
-                Text('Lesson number: $lessonNumber'),
+                SelectLanguageWidget(langController: langController),
                 const Spacer(),
                 const Text(
-                  'Add a new lesson',
+                  'Add a new notification',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 20),
                 ),
                 const Spacer(),
-                _buttonsBlock(currentBibleStudy.value, lessonNumber)
+                _buttonsBlock()
               ],
             ),
             MyTexField(
@@ -77,13 +75,17 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
             MyTexField(
               controller: textController,
               hint: 'Text',
-              maxLines: 20,
+              maxLines: 10,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter the text in HTML format';
+                  return 'Please enter the text in text or  HTML format';
                 }
                 return null;
               },
+            ),
+            MyTexField(
+              controller: urlController,
+              hint: 'Link (optional)',
             ),
           ],
         ),
@@ -91,7 +93,7 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
     ));
   }
 
-  Row _buttonsBlock(BibleStudy currentBibleStudy, int lessonNumber) {
+  Row _buttonsBlock() {
     return Row(
       children: [
         MyTextButton(
@@ -106,19 +108,24 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
         MyTextButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
-              currentBibleStudy.lessons.add(Lesson(
-                  title: titleController.text,
-                  text: textController.text,
-                  id: lessonNumber));
-              getIt<BibleStudyBloc>().add(BibleStudyEvent.addLesson(
-                bibleStudy: currentBibleStudy,
-                user: context.read<AuthBloc>().icocUser,
-              ));
-              Future.delayed(const Duration(seconds: 1)).then((_) {
-                context.read<BibleStudyBloc>().currentLesson.value =
-                    currentBibleStudy.lessons[lessonNumber - 1];
-                context.pop();
-              });
+              context.read<NotificationsBloc>().add(
+                    NotificationsEvent.add(
+                      user: context.read<AuthBloc>().icocUser,
+                      notification: NotificationsModel(
+                        id: DateTime.now().toString(),
+                        notifications: [
+                          NotificationVersion(
+                            id: DateTime.now().toString(),
+                            title: titleController.text,
+                            text: textController.text,
+                            lang: langController.text,
+                            link: urlController.text,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+              context.pop();
             }
           },
           label: 'Save',
