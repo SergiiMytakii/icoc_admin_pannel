@@ -35,6 +35,8 @@ const String fullLogoImageUrl =
     'https://firebasestorage.googleapis.com/v0/b/icoc-8f075.appspot.com/o/app%2Ffullicoclogo.png?alt=media&token=83d15371-2b6a-4cc1-8aca-7ad67a514827';
 const String placeholderImageUrl =
     'https://firebasestorage.googleapis.com/v0/b/icoc-8f075.appspot.com/o/app%2Flogo_icoc_drawer.png?alt=media&token=e9179408-a329-4554-863b-b4373f20d40d';
+const String videoGuideRussianId = 'luUmrJM3Ywg';
+const String videoGuideEnglishId = 'hnJOc9ltntk';
 
 class StorageKeys {
   static const String orderByTitle = 'orderByTitle';

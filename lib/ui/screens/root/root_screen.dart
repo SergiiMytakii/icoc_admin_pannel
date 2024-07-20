@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
+import 'package:icoc_admin_pannel/ui/screens/root/widget/giude_player.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class RootScreen extends StatefulWidget {
   final Widget? child;
@@ -75,6 +78,17 @@ class _RootScreenState extends State<RootScreen> {
                   ),
                 ),
                 const Spacer(),
+                IconButton(
+                  icon: const Icon(Icons.help, color: Colors.red),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const GuidePlayer();
+                      },
+                    );
+                  },
+                ),
                 IconButton(
                   onPressed: () {
                     context.read<AuthBloc>().add(const AuthEvent.logOut());

@@ -6,4 +6,4 @@
     * flutter run -d chrome --web-renderer html
 # to deploy to FB: 
     * flutter build web --web-renderer html
-    * flutter deploy
+    * firebase deploy
