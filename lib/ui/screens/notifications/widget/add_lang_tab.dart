@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/constants.dart';
-import 'package:icoc_admin_pannel/domain/model/notifications_model.dart';
-import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
+import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
-import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
+import 'package:icoc_admin_pannel/ui/bloc/notifications/notifications_bloc.dart';
 import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
@@ -107,9 +106,27 @@ class _AddLangTabState extends State<AddLangTab> {
 
   void _save() async {
     if (_formKey.currentState!.validate()) {
-      if (await showAlertDialog(context,
+      if (widget.notificationsModel
+          .getLanguages()
+          .contains(langController.text)) {
+        showAlertDialog(context,
+            'The notification in language ${languagesCodes[langController.text]} already exists',
+            showCancelButton: true);
+      } else if (await showAlertDialog(context,
           'The language of the notificationsModel is ${languagesCodes[langController.text]}?',
-          showCancelButton: true)) {}
+          showCancelButton: true)) {
+        final notification = widget.notificationsModel.addVersion(
+          title: titleController.text,
+          description: descriptionController.text,
+          text: textController.text,
+          url: urlController.text,
+          lang: langController.text,
+        );
+        getIt<NotificationsBloc>().add(NotificationsEvent.addVersion(
+            user: getIt<AuthBloc>().icocUser, notification: notification));
+        context.read<NotificationsBloc>().currentNotification.value =
+            notification;
+      }
     }
   }
 }

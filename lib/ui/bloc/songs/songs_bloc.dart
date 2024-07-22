@@ -69,7 +69,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     emit(const SongsState.loading());
 
     try {
-      SongDetail song = event.song;
+      final SongDetail song = event.song;
       song.title[event.textVersion.substring(0, 2)] = event.title;
       song.description?[event.textVersion.substring(0, 2)] = event.description;
       song.text[event.textVersion] = event.text;
@@ -113,7 +113,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
 
   FutureOr<void> _onSongUpdateRequested(
       SongsUpdate event, Emitter<SongsState> emit) async {
-    SongDetail song = event.song;
+    final SongDetail song = event.song;
     //check if version on the same lang exists
     String textKey = '';
     final textKeys = song.getAllTextKeys();
@@ -168,7 +168,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
 
   FutureOr<void> _onSongAddRequested(
       SongsAdd event, Emitter<SongsState> emit) async {
-    SongDetail song = event.song;
+    final SongDetail song = event.song;
     if (song.resources != null && song.resources!.isNotEmpty) {
       int i = 0;
       for (Resources resource in song.resources!) {

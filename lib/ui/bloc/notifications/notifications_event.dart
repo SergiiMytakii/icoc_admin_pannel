@@ -7,6 +7,10 @@ class NotificationsEvent with _$NotificationsEvent {
   const factory NotificationsEvent.add(
       {required IcocUser? user,
       required NotificationsModel notification}) = NotificationsAdd;
-  const factory NotificationsEvent.delete(IcocUser user, SongDetail song) =
-      NotificationsDelete;
+  const factory NotificationsEvent.addVersion(
+      {required IcocUser? user,
+      required NotificationsModel notification}) = NotificationsAddVersion;
+  const factory NotificationsEvent.delete(
+      {required IcocUser? user,
+      required NotificationsModel notification}) = NotificationsDelete;
 }

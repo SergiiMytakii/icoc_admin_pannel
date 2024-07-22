@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:icoc_admin_pannel/domain/helpers/extract_text_from_html.dart';
-import 'package:icoc_admin_pannel/domain/model/notifications_model.dart';
+import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
+import 'package:icoc_admin_pannel/injection.dart';
+import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
+import 'package:icoc_admin_pannel/ui/bloc/notifications/notifications_bloc.dart';
 import 'package:intl/intl.dart';
 
 class NotificationCard extends StatelessWidget {
@@ -20,8 +22,6 @@ class NotificationCard extends StatelessWidget {
           leading: const SizedBox(
             width: 20,
           ),
-          // Text(notificationsModel.id.toString(),
-          //     style: Theme.of(context).textTheme.titleSmall),
           title: Text(
             notificationsModel.notifications.first.title,
             overflow: TextOverflow.ellipsis,
@@ -38,7 +38,9 @@ class NotificationCard extends StatelessWidget {
           trailing: IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
-              // delete notification
+              getIt<NotificationsBloc>().add(NotificationsEvent.delete(
+                  notification: notificationsModel,
+                  user: getIt<AuthBloc>().icocUser));
             },
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 20),

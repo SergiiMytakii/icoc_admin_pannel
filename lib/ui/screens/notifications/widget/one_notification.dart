@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
-import 'package:icoc_admin_pannel/domain/model/notifications_model.dart';
+import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
 import 'package:icoc_admin_pannel/ui/screens/notifications/widget/add_lang_tab.dart';
 import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
@@ -38,27 +38,17 @@ class _OneNotificationState extends State<OneNotification>
   @override
   Widget build(BuildContext context) {
     tabsKeys = getAllKeys(widget.notificationsModel)..add('+');
-    logger(tabsKeys);
     tabController = TabController(length: tabsKeys.length, vsync: this);
     return DefaultTabController(
       length: tabsKeys.length,
       child: Scaffold(
-        appBar: _buildAppBar(
-          context,
-        ),
-        body: Stack(
-          alignment: AlignmentDirectional.bottomCenter,
-          children: [
-            _tabBarBuilder(widget.notificationsModel),
-          ],
-        ),
+        appBar: _buildAppBar(),
+        body: _tabBarBuilder(widget.notificationsModel),
       ),
     );
   }
 
-  AppBar _buildAppBar(
-    BuildContext context,
-  ) {
+  AppBar _buildAppBar() {
     return AppBar(
       toolbarHeight: 45,
       actions: [

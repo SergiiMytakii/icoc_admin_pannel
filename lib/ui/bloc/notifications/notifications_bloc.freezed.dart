@@ -21,21 +21,28 @@ mixin _$NotificationsEvent {
     required TResult Function() get,
     required TResult Function(IcocUser? user, NotificationsModel notification)
         add,
-    required TResult Function(IcocUser user, SongDetail song) delete,
+    required TResult Function(IcocUser? user, NotificationsModel notification)
+        addVersion,
+    required TResult Function(IcocUser? user, NotificationsModel notification)
+        delete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
     TResult? Function(IcocUser? user, NotificationsModel notification)? add,
-    TResult? Function(IcocUser user, SongDetail song)? delete,
+    TResult? Function(IcocUser? user, NotificationsModel notification)?
+        addVersion,
+    TResult? Function(IcocUser? user, NotificationsModel notification)? delete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
     TResult Function(IcocUser? user, NotificationsModel notification)? add,
-    TResult Function(IcocUser user, SongDetail song)? delete,
+    TResult Function(IcocUser? user, NotificationsModel notification)?
+        addVersion,
+    TResult Function(IcocUser? user, NotificationsModel notification)? delete,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -43,6 +50,7 @@ mixin _$NotificationsEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(NotificationsGet value) get,
     required TResult Function(NotificationsAdd value) add,
+    required TResult Function(NotificationsAddVersion value) addVersion,
     required TResult Function(NotificationsDelete value) delete,
   }) =>
       throw _privateConstructorUsedError;
@@ -50,6 +58,7 @@ mixin _$NotificationsEvent {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(NotificationsGet value)? get,
     TResult? Function(NotificationsAdd value)? add,
+    TResult? Function(NotificationsAddVersion value)? addVersion,
     TResult? Function(NotificationsDelete value)? delete,
   }) =>
       throw _privateConstructorUsedError;
@@ -57,6 +66,7 @@ mixin _$NotificationsEvent {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(NotificationsGet value)? get,
     TResult Function(NotificationsAdd value)? add,
+    TResult Function(NotificationsAddVersion value)? addVersion,
     TResult Function(NotificationsDelete value)? delete,
     required TResult orElse(),
   }) =>
@@ -122,7 +132,10 @@ class _$NotificationsGetImpl implements NotificationsGet {
     required TResult Function() get,
     required TResult Function(IcocUser? user, NotificationsModel notification)
         add,
-    required TResult Function(IcocUser user, SongDetail song) delete,
+    required TResult Function(IcocUser? user, NotificationsModel notification)
+        addVersion,
+    required TResult Function(IcocUser? user, NotificationsModel notification)
+        delete,
   }) {
     return get();
   }
@@ -132,7 +145,9 @@ class _$NotificationsGetImpl implements NotificationsGet {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
     TResult? Function(IcocUser? user, NotificationsModel notification)? add,
-    TResult? Function(IcocUser user, SongDetail song)? delete,
+    TResult? Function(IcocUser? user, NotificationsModel notification)?
+        addVersion,
+    TResult? Function(IcocUser? user, NotificationsModel notification)? delete,
   }) {
     return get?.call();
   }
@@ -142,7 +157,9 @@ class _$NotificationsGetImpl implements NotificationsGet {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
     TResult Function(IcocUser? user, NotificationsModel notification)? add,
-    TResult Function(IcocUser user, SongDetail song)? delete,
+    TResult Function(IcocUser? user, NotificationsModel notification)?
+        addVersion,
+    TResult Function(IcocUser? user, NotificationsModel notification)? delete,
     required TResult orElse(),
   }) {
     if (get != null) {
@@ -156,6 +173,7 @@ class _$NotificationsGetImpl implements NotificationsGet {
   TResult map<TResult extends Object?>({
     required TResult Function(NotificationsGet value) get,
     required TResult Function(NotificationsAdd value) add,
+    required TResult Function(NotificationsAddVersion value) addVersion,
     required TResult Function(NotificationsDelete value) delete,
   }) {
     return get(this);
@@ -166,6 +184,7 @@ class _$NotificationsGetImpl implements NotificationsGet {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(NotificationsGet value)? get,
     TResult? Function(NotificationsAdd value)? add,
+    TResult? Function(NotificationsAddVersion value)? addVersion,
     TResult? Function(NotificationsDelete value)? delete,
   }) {
     return get?.call(this);
@@ -176,6 +195,7 @@ class _$NotificationsGetImpl implements NotificationsGet {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(NotificationsGet value)? get,
     TResult Function(NotificationsAdd value)? add,
+    TResult Function(NotificationsAddVersion value)? addVersion,
     TResult Function(NotificationsDelete value)? delete,
     required TResult orElse(),
   }) {
@@ -197,6 +217,8 @@ abstract class _$$NotificationsAddImplCopyWith<$Res> {
       __$$NotificationsAddImplCopyWithImpl<$Res>;
   @useResult
   $Res call({IcocUser? user, NotificationsModel notification});
+
+  $NotificationsModelCopyWith<$Res> get notification;
 }
 
 /// @nodoc
@@ -223,6 +245,14 @@ class __$$NotificationsAddImplCopyWithImpl<$Res>
           : notification // ignore: cast_nullable_to_non_nullable
               as NotificationsModel,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $NotificationsModelCopyWith<$Res> get notification {
+    return $NotificationsModelCopyWith<$Res>(_value.notification, (value) {
+      return _then(_value.copyWith(notification: value));
+    });
   }
 }
 
@@ -268,7 +298,10 @@ class _$NotificationsAddImpl implements NotificationsAdd {
     required TResult Function() get,
     required TResult Function(IcocUser? user, NotificationsModel notification)
         add,
-    required TResult Function(IcocUser user, SongDetail song) delete,
+    required TResult Function(IcocUser? user, NotificationsModel notification)
+        addVersion,
+    required TResult Function(IcocUser? user, NotificationsModel notification)
+        delete,
   }) {
     return add(user, notification);
   }
@@ -278,7 +311,9 @@ class _$NotificationsAddImpl implements NotificationsAdd {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
     TResult? Function(IcocUser? user, NotificationsModel notification)? add,
-    TResult? Function(IcocUser user, SongDetail song)? delete,
+    TResult? Function(IcocUser? user, NotificationsModel notification)?
+        addVersion,
+    TResult? Function(IcocUser? user, NotificationsModel notification)? delete,
   }) {
     return add?.call(user, notification);
   }
@@ -288,7 +323,9 @@ class _$NotificationsAddImpl implements NotificationsAdd {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
     TResult Function(IcocUser? user, NotificationsModel notification)? add,
-    TResult Function(IcocUser user, SongDetail song)? delete,
+    TResult Function(IcocUser? user, NotificationsModel notification)?
+        addVersion,
+    TResult Function(IcocUser? user, NotificationsModel notification)? delete,
     required TResult orElse(),
   }) {
     if (add != null) {
@@ -302,6 +339,7 @@ class _$NotificationsAddImpl implements NotificationsAdd {
   TResult map<TResult extends Object?>({
     required TResult Function(NotificationsGet value) get,
     required TResult Function(NotificationsAdd value) add,
+    required TResult Function(NotificationsAddVersion value) addVersion,
     required TResult Function(NotificationsDelete value) delete,
   }) {
     return add(this);
@@ -312,6 +350,7 @@ class _$NotificationsAddImpl implements NotificationsAdd {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(NotificationsGet value)? get,
     TResult? Function(NotificationsAdd value)? add,
+    TResult? Function(NotificationsAddVersion value)? addVersion,
     TResult? Function(NotificationsDelete value)? delete,
   }) {
     return add?.call(this);
@@ -322,6 +361,7 @@ class _$NotificationsAddImpl implements NotificationsAdd {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(NotificationsGet value)? get,
     TResult Function(NotificationsAdd value)? add,
+    TResult Function(NotificationsAddVersion value)? addVersion,
     TResult Function(NotificationsDelete value)? delete,
     required TResult orElse(),
   }) {
@@ -345,12 +385,192 @@ abstract class NotificationsAdd implements NotificationsEvent {
 }
 
 /// @nodoc
+abstract class _$$NotificationsAddVersionImplCopyWith<$Res> {
+  factory _$$NotificationsAddVersionImplCopyWith(
+          _$NotificationsAddVersionImpl value,
+          $Res Function(_$NotificationsAddVersionImpl) then) =
+      __$$NotificationsAddVersionImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({IcocUser? user, NotificationsModel notification});
+
+  $NotificationsModelCopyWith<$Res> get notification;
+}
+
+/// @nodoc
+class __$$NotificationsAddVersionImplCopyWithImpl<$Res>
+    extends _$NotificationsEventCopyWithImpl<$Res,
+        _$NotificationsAddVersionImpl>
+    implements _$$NotificationsAddVersionImplCopyWith<$Res> {
+  __$$NotificationsAddVersionImplCopyWithImpl(
+      _$NotificationsAddVersionImpl _value,
+      $Res Function(_$NotificationsAddVersionImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? user = freezed,
+    Object? notification = null,
+  }) {
+    return _then(_$NotificationsAddVersionImpl(
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as IcocUser?,
+      notification: null == notification
+          ? _value.notification
+          : notification // ignore: cast_nullable_to_non_nullable
+              as NotificationsModel,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $NotificationsModelCopyWith<$Res> get notification {
+    return $NotificationsModelCopyWith<$Res>(_value.notification, (value) {
+      return _then(_value.copyWith(notification: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$NotificationsAddVersionImpl implements NotificationsAddVersion {
+  const _$NotificationsAddVersionImpl(
+      {required this.user, required this.notification});
+
+  @override
+  final IcocUser? user;
+  @override
+  final NotificationsModel notification;
+
+  @override
+  String toString() {
+    return 'NotificationsEvent.addVersion(user: $user, notification: $notification)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$NotificationsAddVersionImpl &&
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.notification, notification) ||
+                other.notification == notification));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, user, notification);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$NotificationsAddVersionImplCopyWith<_$NotificationsAddVersionImpl>
+      get copyWith => __$$NotificationsAddVersionImplCopyWithImpl<
+          _$NotificationsAddVersionImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() get,
+    required TResult Function(IcocUser? user, NotificationsModel notification)
+        add,
+    required TResult Function(IcocUser? user, NotificationsModel notification)
+        addVersion,
+    required TResult Function(IcocUser? user, NotificationsModel notification)
+        delete,
+  }) {
+    return addVersion(user, notification);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? get,
+    TResult? Function(IcocUser? user, NotificationsModel notification)? add,
+    TResult? Function(IcocUser? user, NotificationsModel notification)?
+        addVersion,
+    TResult? Function(IcocUser? user, NotificationsModel notification)? delete,
+  }) {
+    return addVersion?.call(user, notification);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? get,
+    TResult Function(IcocUser? user, NotificationsModel notification)? add,
+    TResult Function(IcocUser? user, NotificationsModel notification)?
+        addVersion,
+    TResult Function(IcocUser? user, NotificationsModel notification)? delete,
+    required TResult orElse(),
+  }) {
+    if (addVersion != null) {
+      return addVersion(user, notification);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(NotificationsGet value) get,
+    required TResult Function(NotificationsAdd value) add,
+    required TResult Function(NotificationsAddVersion value) addVersion,
+    required TResult Function(NotificationsDelete value) delete,
+  }) {
+    return addVersion(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(NotificationsGet value)? get,
+    TResult? Function(NotificationsAdd value)? add,
+    TResult? Function(NotificationsAddVersion value)? addVersion,
+    TResult? Function(NotificationsDelete value)? delete,
+  }) {
+    return addVersion?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(NotificationsGet value)? get,
+    TResult Function(NotificationsAdd value)? add,
+    TResult Function(NotificationsAddVersion value)? addVersion,
+    TResult Function(NotificationsDelete value)? delete,
+    required TResult orElse(),
+  }) {
+    if (addVersion != null) {
+      return addVersion(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class NotificationsAddVersion implements NotificationsEvent {
+  const factory NotificationsAddVersion(
+          {required final IcocUser? user,
+          required final NotificationsModel notification}) =
+      _$NotificationsAddVersionImpl;
+
+  IcocUser? get user;
+  NotificationsModel get notification;
+  @JsonKey(ignore: true)
+  _$$NotificationsAddVersionImplCopyWith<_$NotificationsAddVersionImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 abstract class _$$NotificationsDeleteImplCopyWith<$Res> {
   factory _$$NotificationsDeleteImplCopyWith(_$NotificationsDeleteImpl value,
           $Res Function(_$NotificationsDeleteImpl) then) =
       __$$NotificationsDeleteImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({IcocUser user, SongDetail song});
+  $Res call({IcocUser? user, NotificationsModel notification});
+
+  $NotificationsModelCopyWith<$Res> get notification;
 }
 
 /// @nodoc
@@ -364,35 +584,44 @@ class __$$NotificationsDeleteImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? user = null,
-    Object? song = null,
+    Object? user = freezed,
+    Object? notification = null,
   }) {
     return _then(_$NotificationsDeleteImpl(
-      null == user
+      user: freezed == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
-              as IcocUser,
-      null == song
-          ? _value.song
-          : song // ignore: cast_nullable_to_non_nullable
-              as SongDetail,
+              as IcocUser?,
+      notification: null == notification
+          ? _value.notification
+          : notification // ignore: cast_nullable_to_non_nullable
+              as NotificationsModel,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $NotificationsModelCopyWith<$Res> get notification {
+    return $NotificationsModelCopyWith<$Res>(_value.notification, (value) {
+      return _then(_value.copyWith(notification: value));
+    });
   }
 }
 
 /// @nodoc
 
 class _$NotificationsDeleteImpl implements NotificationsDelete {
-  const _$NotificationsDeleteImpl(this.user, this.song);
+  const _$NotificationsDeleteImpl(
+      {required this.user, required this.notification});
 
   @override
-  final IcocUser user;
+  final IcocUser? user;
   @override
-  final SongDetail song;
+  final NotificationsModel notification;
 
   @override
   String toString() {
-    return 'NotificationsEvent.delete(user: $user, song: $song)';
+    return 'NotificationsEvent.delete(user: $user, notification: $notification)';
   }
 
   @override
@@ -401,11 +630,12 @@ class _$NotificationsDeleteImpl implements NotificationsDelete {
         (other.runtimeType == runtimeType &&
             other is _$NotificationsDeleteImpl &&
             (identical(other.user, user) || other.user == user) &&
-            (identical(other.song, song) || other.song == song));
+            (identical(other.notification, notification) ||
+                other.notification == notification));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, user, song);
+  int get hashCode => Object.hash(runtimeType, user, notification);
 
   @JsonKey(ignore: true)
   @override
@@ -420,9 +650,12 @@ class _$NotificationsDeleteImpl implements NotificationsDelete {
     required TResult Function() get,
     required TResult Function(IcocUser? user, NotificationsModel notification)
         add,
-    required TResult Function(IcocUser user, SongDetail song) delete,
+    required TResult Function(IcocUser? user, NotificationsModel notification)
+        addVersion,
+    required TResult Function(IcocUser? user, NotificationsModel notification)
+        delete,
   }) {
-    return delete(user, song);
+    return delete(user, notification);
   }
 
   @override
@@ -430,9 +663,11 @@ class _$NotificationsDeleteImpl implements NotificationsDelete {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
     TResult? Function(IcocUser? user, NotificationsModel notification)? add,
-    TResult? Function(IcocUser user, SongDetail song)? delete,
+    TResult? Function(IcocUser? user, NotificationsModel notification)?
+        addVersion,
+    TResult? Function(IcocUser? user, NotificationsModel notification)? delete,
   }) {
-    return delete?.call(user, song);
+    return delete?.call(user, notification);
   }
 
   @override
@@ -440,11 +675,13 @@ class _$NotificationsDeleteImpl implements NotificationsDelete {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
     TResult Function(IcocUser? user, NotificationsModel notification)? add,
-    TResult Function(IcocUser user, SongDetail song)? delete,
+    TResult Function(IcocUser? user, NotificationsModel notification)?
+        addVersion,
+    TResult Function(IcocUser? user, NotificationsModel notification)? delete,
     required TResult orElse(),
   }) {
     if (delete != null) {
-      return delete(user, song);
+      return delete(user, notification);
     }
     return orElse();
   }
@@ -454,6 +691,7 @@ class _$NotificationsDeleteImpl implements NotificationsDelete {
   TResult map<TResult extends Object?>({
     required TResult Function(NotificationsGet value) get,
     required TResult Function(NotificationsAdd value) add,
+    required TResult Function(NotificationsAddVersion value) addVersion,
     required TResult Function(NotificationsDelete value) delete,
   }) {
     return delete(this);
@@ -464,6 +702,7 @@ class _$NotificationsDeleteImpl implements NotificationsDelete {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(NotificationsGet value)? get,
     TResult? Function(NotificationsAdd value)? add,
+    TResult? Function(NotificationsAddVersion value)? addVersion,
     TResult? Function(NotificationsDelete value)? delete,
   }) {
     return delete?.call(this);
@@ -474,6 +713,7 @@ class _$NotificationsDeleteImpl implements NotificationsDelete {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(NotificationsGet value)? get,
     TResult Function(NotificationsAdd value)? add,
+    TResult Function(NotificationsAddVersion value)? addVersion,
     TResult Function(NotificationsDelete value)? delete,
     required TResult orElse(),
   }) {
@@ -486,10 +726,12 @@ class _$NotificationsDeleteImpl implements NotificationsDelete {
 
 abstract class NotificationsDelete implements NotificationsEvent {
   const factory NotificationsDelete(
-      final IcocUser user, final SongDetail song) = _$NotificationsDeleteImpl;
+          {required final IcocUser? user,
+          required final NotificationsModel notification}) =
+      _$NotificationsDeleteImpl;
 
-  IcocUser get user;
-  SongDetail get song;
+  IcocUser? get user;
+  NotificationsModel get notification;
   @JsonKey(ignore: true)
   _$$NotificationsDeleteImplCopyWith<_$NotificationsDeleteImpl> get copyWith =>
       throw _privateConstructorUsedError;

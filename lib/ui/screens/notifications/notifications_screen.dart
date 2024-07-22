@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc_admin_pannel/domain/model/notifications_model.dart';
+import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/notifications/notifications_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/notifications/widget/notification_card.dart';
@@ -23,7 +23,8 @@ class NotificationsScreen extends StatelessWidget {
           success: (notifications) {
             final currentNotification =
                 context.read<NotificationsBloc>().currentNotification;
-            if (currentNotification.value is NotificationsModelInitial &&
+            if (currentNotification.value ==
+                    NotificationsModel.defaultNotification() &&
                 notifications.isNotEmpty) {
               currentNotification.value = notifications[0];
             }

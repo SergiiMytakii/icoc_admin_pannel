@@ -17,6 +17,7 @@ class SongsScreen extends StatefulWidget {
 }
 
 class _SongsScreenState extends State<SongsScreen> {
+  final TextEditingController _searchController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -47,6 +48,7 @@ class _SongsScreenState extends State<SongsScreen> {
                         Padding(
                           padding: const EdgeInsets.all(16),
                           child: SearchBar(
+                            controller: _searchController,
                             overlayColor: WidgetStateProperty.all(
                                 Theme.of(context).cardColor),
                             onChanged: (value) {
@@ -55,6 +57,7 @@ class _SongsScreenState extends State<SongsScreen> {
                               }
                             },
                             onSubmitted: (value) {
+                              _searchController.text = value;
                               getIt<SongsBloc>()
                                   .add(SongsEvent.get(query: value));
                             },

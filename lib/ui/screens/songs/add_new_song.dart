@@ -34,6 +34,7 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
 
   @override
   void initState() {
+    getIt<SongsBloc>().add(const SongsEvent.get());
     super.initState();
   }
 
@@ -72,7 +73,7 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
                     itemBuilder: (context, index) {
                       return ExpansionTile(
                         initiallyExpanded: _isOpen[index]['isOpen'],
-                        title: Text('Language ${index + 1}'),
+                        title: Text('Version ${index + 1}'),
                         children: [
                           AnimatedContainer(
                             duration: const Duration(milliseconds: 1000),

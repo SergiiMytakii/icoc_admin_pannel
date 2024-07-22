@@ -111,11 +111,11 @@ class _OneSongState extends State<OneSong> with TickerProviderStateMixin {
 
   void _startPlayVideo(Resources resources, String videoId) async {
     youtubePlayerController = YoutubePlayerController();
-    await youtubePlayerController!.loadVideoById(videoId: videoId);
+    youtubePlayerController!.loadVideoById(videoId: videoId);
     setState(() {
       videoIsPlaying = true;
     });
-    youtubePlayerController!.playVideo();
+    // youtubePlayerController!.playVideo();
     _controller.forward();
   }
 

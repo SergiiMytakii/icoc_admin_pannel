@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icoc_admin_pannel/domain/model/notifications_model.dart';
+import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/notifications/notifications_bloc.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
@@ -108,23 +108,25 @@ class _AddNewNotificationScreenState extends State<AddNewNotificationScreen> {
         MyTextButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
+              final notification = NotificationsModel(
+                id: DateTime.now().toString(),
+                notifications: [
+                  NotificationVersion(
+                    id: '0',
+                    title: titleController.text,
+                    text: textController.text,
+                    lang: langController.text,
+                    link: urlController.text,
+                  ),
+                ],
+              );
               context.read<NotificationsBloc>().add(
                     NotificationsEvent.add(
-                      user: context.read<AuthBloc>().icocUser,
-                      notification: NotificationsModel(
-                        id: DateTime.now().toString(),
-                        notifications: [
-                          NotificationVersion(
-                            id: DateTime.now().toString(),
-                            title: titleController.text,
-                            text: textController.text,
-                            lang: langController.text,
-                            link: urlController.text,
-                          ),
-                        ],
-                      ),
-                    ),
+                        user: context.read<AuthBloc>().icocUser,
+                        notification: notification),
                   );
+              context.read<NotificationsBloc>().currentNotification.value =
+                  notification;
               context.pop();
             }
           },
