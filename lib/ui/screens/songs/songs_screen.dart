@@ -36,10 +36,6 @@ class _SongsScreenState extends State<SongsScreen> {
           error: (message) => Center(child: Text(message)),
           success: (songs) {
             if (songs.isNotEmpty) {
-              final currentSong = context.read<SongsBloc>().currentSong;
-              if (currentSong.value is SongInitial) {
-                currentSong.value = songs[0];
-              }
               return Row(
                 children: [
                   Flexible(
@@ -50,7 +46,10 @@ class _SongsScreenState extends State<SongsScreen> {
                           child: ListView(
                             children: songs
                                 .map((song) => GestureDetector(
-                                    onTap: () => currentSong.value = song,
+                                    onTap: () => context
+                                        .read<SongsBloc>()
+                                        .currentSong
+                                        .value = song,
                                     child: SongCard(
                                       song: song,
                                     )))
@@ -64,7 +63,8 @@ class _SongsScreenState extends State<SongsScreen> {
                   Flexible(
                       flex: 2,
                       child: ValueListenableBuilder(
-                          valueListenable: currentSong,
+                          valueListenable:
+                              context.read<SongsBloc>().currentSong,
                           builder: (context, song, _) {
                             return OneSong(
                               song: song,

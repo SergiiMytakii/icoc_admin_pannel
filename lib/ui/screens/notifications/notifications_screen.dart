@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/notifications/notifications_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/notifications/widget/notification_card.dart';
@@ -21,13 +20,6 @@ class NotificationsScreen extends StatelessWidget {
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (message) => Center(child: Text(message)),
           success: (notifications) {
-            final currentNotification =
-                context.read<NotificationsBloc>().currentNotification;
-            if (currentNotification.value ==
-                    NotificationsModel.defaultNotification() &&
-                notifications.isNotEmpty) {
-              currentNotification.value = notifications[0];
-            }
             return Row(
               children: [
                 Flexible(
@@ -35,8 +27,10 @@ class NotificationsScreen extends StatelessWidget {
                       itemCount: notifications.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                            onTap: () => currentNotification.value =
-                                notifications[index],
+                            onTap: () => context
+                                .read<NotificationsBloc>()
+                                .currentNotification
+                                .value = notifications[index],
                             child: NotificationCard(
                               notificationsModel: notifications[index],
                             ));
@@ -46,7 +40,9 @@ class NotificationsScreen extends StatelessWidget {
                 Flexible(
                     flex: 2,
                     child: ValueListenableBuilder(
-                        valueListenable: currentNotification,
+                        valueListenable: context
+                            .read<NotificationsBloc>()
+                            .currentNotification,
                         builder: (context, notification, _) {
                           return OneNotification(
                             notificationsModel: notification,

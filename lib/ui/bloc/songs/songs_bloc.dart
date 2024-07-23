@@ -55,6 +55,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
       if (songs.isNotEmpty) {
         songs.sort((a, b) => a.id.compareTo(b.id));
         lastSongNumber = calculateLastNumber(songs);
+        currentSong.value = songs.first;
       }
 
       emit(SongsState.success(songs));

@@ -34,6 +34,9 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     try {
       final List<NotificationsModel> notifications =
           await notificationsRepository.getNotifications();
+      if (notifications.isNotEmpty) {
+        currentNotification.value = notifications.first;
+      }
 
       emit(NotificationsState.success(notifications));
     } catch (error, stackTrace) {
@@ -46,17 +49,23 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       NotificationsAdd event, Emitter<NotificationsState> emit) async {
     try {
       emit(const NotificationsState.loading());
-      final List<NotificationVersion> addedNotifications =
-          await notificationsRepository.getTranslations(
-              event.aditionalLanguages, event.notification.notifications.first);
-      final NotificationsModel updatedNotification = event.notification
-          .copyWith(notifications: [
-        ...event.notification.notifications,
-        ...addedNotifications
-      ]);
+      NotificationsModel? notificationToSend;
+
+      //add other languages if provided
+      if (event.aditionalLanguages.isNotEmpty) {
+        final List<NotificationVersion> addedNotifications =
+            await notificationsRepository.getTranslations(
+                event.aditionalLanguages,
+                event.notification.notifications.first);
+        notificationToSend = event.notification.copyWith(notifications: [
+          ...event.notification.notifications,
+          ...addedNotifications
+        ]);
+      }
+
       final List<NotificationsModel> notifications =
           await notificationsRepository.addNotifications(
-              event.user, updatedNotification);
+              event.user, notificationToSend ?? event.notification);
       emit(NotificationsState.success(notifications));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
