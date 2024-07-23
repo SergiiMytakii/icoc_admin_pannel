@@ -19,7 +19,8 @@ mixin _$NotificationsEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(IcocUser? user, NotificationsModel notification)
+    required TResult Function(IcocUser? user, NotificationsModel notification,
+            List<String> aditionalLanguages)
         add,
     required TResult Function(IcocUser? user, NotificationsModel notification)
         addVersion,
@@ -30,7 +31,9 @@ mixin _$NotificationsEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(IcocUser? user, NotificationsModel notification)? add,
+    TResult? Function(IcocUser? user, NotificationsModel notification,
+            List<String> aditionalLanguages)?
+        add,
     TResult? Function(IcocUser? user, NotificationsModel notification)?
         addVersion,
     TResult? Function(IcocUser? user, NotificationsModel notification)? delete,
@@ -39,7 +42,9 @@ mixin _$NotificationsEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(IcocUser? user, NotificationsModel notification)? add,
+    TResult Function(IcocUser? user, NotificationsModel notification,
+            List<String> aditionalLanguages)?
+        add,
     TResult Function(IcocUser? user, NotificationsModel notification)?
         addVersion,
     TResult Function(IcocUser? user, NotificationsModel notification)? delete,
@@ -130,7 +135,8 @@ class _$NotificationsGetImpl implements NotificationsGet {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(IcocUser? user, NotificationsModel notification)
+    required TResult Function(IcocUser? user, NotificationsModel notification,
+            List<String> aditionalLanguages)
         add,
     required TResult Function(IcocUser? user, NotificationsModel notification)
         addVersion,
@@ -144,7 +150,9 @@ class _$NotificationsGetImpl implements NotificationsGet {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(IcocUser? user, NotificationsModel notification)? add,
+    TResult? Function(IcocUser? user, NotificationsModel notification,
+            List<String> aditionalLanguages)?
+        add,
     TResult? Function(IcocUser? user, NotificationsModel notification)?
         addVersion,
     TResult? Function(IcocUser? user, NotificationsModel notification)? delete,
@@ -156,7 +164,9 @@ class _$NotificationsGetImpl implements NotificationsGet {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(IcocUser? user, NotificationsModel notification)? add,
+    TResult Function(IcocUser? user, NotificationsModel notification,
+            List<String> aditionalLanguages)?
+        add,
     TResult Function(IcocUser? user, NotificationsModel notification)?
         addVersion,
     TResult Function(IcocUser? user, NotificationsModel notification)? delete,
@@ -216,7 +226,10 @@ abstract class _$$NotificationsAddImplCopyWith<$Res> {
           $Res Function(_$NotificationsAddImpl) then) =
       __$$NotificationsAddImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({IcocUser? user, NotificationsModel notification});
+  $Res call(
+      {IcocUser? user,
+      NotificationsModel notification,
+      List<String> aditionalLanguages});
 
   $NotificationsModelCopyWith<$Res> get notification;
 }
@@ -234,6 +247,7 @@ class __$$NotificationsAddImplCopyWithImpl<$Res>
   $Res call({
     Object? user = freezed,
     Object? notification = null,
+    Object? aditionalLanguages = null,
   }) {
     return _then(_$NotificationsAddImpl(
       user: freezed == user
@@ -244,6 +258,10 @@ class __$$NotificationsAddImplCopyWithImpl<$Res>
           ? _value.notification
           : notification // ignore: cast_nullable_to_non_nullable
               as NotificationsModel,
+      aditionalLanguages: null == aditionalLanguages
+          ? _value._aditionalLanguages
+          : aditionalLanguages // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 
@@ -260,16 +278,27 @@ class __$$NotificationsAddImplCopyWithImpl<$Res>
 
 class _$NotificationsAddImpl implements NotificationsAdd {
   const _$NotificationsAddImpl(
-      {required this.user, required this.notification});
+      {required this.user,
+      required this.notification,
+      required final List<String> aditionalLanguages})
+      : _aditionalLanguages = aditionalLanguages;
 
   @override
   final IcocUser? user;
   @override
   final NotificationsModel notification;
+  final List<String> _aditionalLanguages;
+  @override
+  List<String> get aditionalLanguages {
+    if (_aditionalLanguages is EqualUnmodifiableListView)
+      return _aditionalLanguages;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_aditionalLanguages);
+  }
 
   @override
   String toString() {
-    return 'NotificationsEvent.add(user: $user, notification: $notification)';
+    return 'NotificationsEvent.add(user: $user, notification: $notification, aditionalLanguages: $aditionalLanguages)';
   }
 
   @override
@@ -279,11 +308,14 @@ class _$NotificationsAddImpl implements NotificationsAdd {
             other is _$NotificationsAddImpl &&
             (identical(other.user, user) || other.user == user) &&
             (identical(other.notification, notification) ||
-                other.notification == notification));
+                other.notification == notification) &&
+            const DeepCollectionEquality()
+                .equals(other._aditionalLanguages, _aditionalLanguages));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, user, notification);
+  int get hashCode => Object.hash(runtimeType, user, notification,
+      const DeepCollectionEquality().hash(_aditionalLanguages));
 
   @JsonKey(ignore: true)
   @override
@@ -296,40 +328,45 @@ class _$NotificationsAddImpl implements NotificationsAdd {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(IcocUser? user, NotificationsModel notification)
+    required TResult Function(IcocUser? user, NotificationsModel notification,
+            List<String> aditionalLanguages)
         add,
     required TResult Function(IcocUser? user, NotificationsModel notification)
         addVersion,
     required TResult Function(IcocUser? user, NotificationsModel notification)
         delete,
   }) {
-    return add(user, notification);
+    return add(user, notification, aditionalLanguages);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(IcocUser? user, NotificationsModel notification)? add,
+    TResult? Function(IcocUser? user, NotificationsModel notification,
+            List<String> aditionalLanguages)?
+        add,
     TResult? Function(IcocUser? user, NotificationsModel notification)?
         addVersion,
     TResult? Function(IcocUser? user, NotificationsModel notification)? delete,
   }) {
-    return add?.call(user, notification);
+    return add?.call(user, notification, aditionalLanguages);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(IcocUser? user, NotificationsModel notification)? add,
+    TResult Function(IcocUser? user, NotificationsModel notification,
+            List<String> aditionalLanguages)?
+        add,
     TResult Function(IcocUser? user, NotificationsModel notification)?
         addVersion,
     TResult Function(IcocUser? user, NotificationsModel notification)? delete,
     required TResult orElse(),
   }) {
     if (add != null) {
-      return add(user, notification);
+      return add(user, notification, aditionalLanguages);
     }
     return orElse();
   }
@@ -375,10 +412,12 @@ class _$NotificationsAddImpl implements NotificationsAdd {
 abstract class NotificationsAdd implements NotificationsEvent {
   const factory NotificationsAdd(
       {required final IcocUser? user,
-      required final NotificationsModel notification}) = _$NotificationsAddImpl;
+      required final NotificationsModel notification,
+      required final List<String> aditionalLanguages}) = _$NotificationsAddImpl;
 
   IcocUser? get user;
   NotificationsModel get notification;
+  List<String> get aditionalLanguages;
   @JsonKey(ignore: true)
   _$$NotificationsAddImplCopyWith<_$NotificationsAddImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -473,7 +512,8 @@ class _$NotificationsAddVersionImpl implements NotificationsAddVersion {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(IcocUser? user, NotificationsModel notification)
+    required TResult Function(IcocUser? user, NotificationsModel notification,
+            List<String> aditionalLanguages)
         add,
     required TResult Function(IcocUser? user, NotificationsModel notification)
         addVersion,
@@ -487,7 +527,9 @@ class _$NotificationsAddVersionImpl implements NotificationsAddVersion {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(IcocUser? user, NotificationsModel notification)? add,
+    TResult? Function(IcocUser? user, NotificationsModel notification,
+            List<String> aditionalLanguages)?
+        add,
     TResult? Function(IcocUser? user, NotificationsModel notification)?
         addVersion,
     TResult? Function(IcocUser? user, NotificationsModel notification)? delete,
@@ -499,7 +541,9 @@ class _$NotificationsAddVersionImpl implements NotificationsAddVersion {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(IcocUser? user, NotificationsModel notification)? add,
+    TResult Function(IcocUser? user, NotificationsModel notification,
+            List<String> aditionalLanguages)?
+        add,
     TResult Function(IcocUser? user, NotificationsModel notification)?
         addVersion,
     TResult Function(IcocUser? user, NotificationsModel notification)? delete,
@@ -648,7 +692,8 @@ class _$NotificationsDeleteImpl implements NotificationsDelete {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(IcocUser? user, NotificationsModel notification)
+    required TResult Function(IcocUser? user, NotificationsModel notification,
+            List<String> aditionalLanguages)
         add,
     required TResult Function(IcocUser? user, NotificationsModel notification)
         addVersion,
@@ -662,7 +707,9 @@ class _$NotificationsDeleteImpl implements NotificationsDelete {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(IcocUser? user, NotificationsModel notification)? add,
+    TResult? Function(IcocUser? user, NotificationsModel notification,
+            List<String> aditionalLanguages)?
+        add,
     TResult? Function(IcocUser? user, NotificationsModel notification)?
         addVersion,
     TResult? Function(IcocUser? user, NotificationsModel notification)? delete,
@@ -674,7 +721,9 @@ class _$NotificationsDeleteImpl implements NotificationsDelete {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(IcocUser? user, NotificationsModel notification)? add,
+    TResult Function(IcocUser? user, NotificationsModel notification,
+            List<String> aditionalLanguages)?
+        add,
     TResult Function(IcocUser? user, NotificationsModel notification)?
         addVersion,
     TResult Function(IcocUser? user, NotificationsModel notification)? delete,

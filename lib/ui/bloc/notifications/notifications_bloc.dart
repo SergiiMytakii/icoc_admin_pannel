@@ -46,9 +46,17 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       NotificationsAdd event, Emitter<NotificationsState> emit) async {
     try {
       emit(const NotificationsState.loading());
+      final List<NotificationVersion> addedNotifications =
+          await notificationsRepository.getTranslations(
+              event.aditionalLanguages, event.notification.notifications.first);
+      final NotificationsModel updatedNotification = event.notification
+          .copyWith(notifications: [
+        ...event.notification.notifications,
+        ...addedNotifications
+      ]);
       final List<NotificationsModel> notifications =
           await notificationsRepository.addNotifications(
-              event.user, event.notification);
+              event.user, updatedNotification);
       emit(NotificationsState.success(notifications));
     } catch (error, stackTrace) {
       logError(error, stackTrace);

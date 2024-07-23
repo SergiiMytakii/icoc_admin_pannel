@@ -32,7 +32,7 @@ class NotificationsModel with _$NotificationsModel {
     required String title,
     required String description,
     required String text,
-    required String url,
+    String? url,
     required String lang,
   }) {
     final newNotification = NotificationVersion(

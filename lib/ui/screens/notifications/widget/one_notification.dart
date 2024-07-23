@@ -80,7 +80,17 @@ class _OneNotificationState extends State<OneNotification>
       controller: tabController,
       children: [
         for (final item in widget.notificationsModel.notifications)
-          Tab(text: item.text),
+          Column(
+            children: [
+              Text(
+                item.title,
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              Text(item.text),
+              Text(item.link ?? '')
+            ],
+          ),
         AddLangTab(notificationsModel)
       ],
     );

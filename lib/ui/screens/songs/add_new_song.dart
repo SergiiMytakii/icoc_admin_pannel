@@ -31,6 +31,8 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
   TextEditingController textController = TextEditingController();
   TextEditingController urlController = TextEditingController();
   SongDetail song = SongDetail.defaultSong();
+  final ValueNotifier<bool> _sendNotificationNotifier =
+      ValueNotifier<bool>(false);
 
   @override
   void initState() {
@@ -60,6 +62,7 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
                       );
                       return Text('Song number: ${song.id}');
                     }),
+                    _buildSendNotificationCheckBox(),
                     const Spacer(),
                     _buttonsBlock(context)
                   ],
@@ -185,5 +188,27 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
         text: text,
         description: description,
         resources: resources);
+  }
+
+  Widget _buildSendNotificationCheckBox() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        children: [
+          ValueListenableBuilder<bool>(
+            valueListenable: _sendNotificationNotifier,
+            builder: (context, value, child) {
+              return Checkbox(
+                value: value,
+                onChanged: (newValue) {
+                  _sendNotificationNotifier.value = newValue!;
+                },
+              );
+            },
+          ),
+          const Text('Send notifications?'),
+        ],
+      ),
+    );
   }
 }

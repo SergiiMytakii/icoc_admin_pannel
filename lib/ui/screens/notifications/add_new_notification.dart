@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
+import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/notifications/notifications_bloc.dart';
+import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
 import 'package:icoc_admin_pannel/ui/widget/select_lang.dart';
@@ -24,6 +26,7 @@ class _AddNewNotificationScreenState extends State<AddNewNotificationScreen> {
   TextEditingController langController = TextEditingController()..text = 'ru';
   TextEditingController urlController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final List<String> selectedLangs = [];
 
   @override
   void initState() {
@@ -87,6 +90,7 @@ class _AddNewNotificationScreenState extends State<AddNewNotificationScreen> {
               controller: urlController,
               hint: 'Link (optional)',
             ),
+            _buildSelectLanguagesBlock()
           ],
         ),
       ),
@@ -122,6 +126,7 @@ class _AddNewNotificationScreenState extends State<AddNewNotificationScreen> {
               );
               context.read<NotificationsBloc>().add(
                     NotificationsEvent.add(
+                        aditionalLanguages: selectedLangs,
                         user: context.read<AuthBloc>().icocUser,
                         notification: notification),
                   );
@@ -133,6 +138,54 @@ class _AddNewNotificationScreenState extends State<AddNewNotificationScreen> {
           label: 'Save',
         ),
       ],
+    );
+  }
+
+  Widget _buildSelectLanguagesBlock() {
+    return BlocBuilder<SongsBloc, SongsState>(
+      builder: (context, state) {
+        return state.maybeWhen(
+            initial: () {
+              getIt<SongsBloc>().add(const SongsEvent.get());
+              return const SizedBox.shrink();
+            },
+            success: (songs) {
+              //get list of all languages.   We need them for notifications
+              final Set<String> allLanguages = {};
+              for (var song in songs) {
+                allLanguages.addAll(song.getAllTitleKeys());
+              }
+              final aditionalLangs = allLanguages.toList()
+                ..removeWhere((lang) => lang == langController.text);
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                      'Translate and post the notification to the following languages as well:'),
+                  Row(
+                    children: [
+                      for (String lang in aditionalLangs)
+                        Column(
+                          children: [
+                            Checkbox(
+                                value: selectedLangs.contains(lang),
+                                onChanged: (value) => setState(() {
+                                      if (selectedLangs.contains(lang)) {
+                                        selectedLangs.remove(lang);
+                                      } else {
+                                        selectedLangs.add(lang);
+                                      }
+                                    })),
+                            Text(lang)
+                          ],
+                        )
+                    ],
+                  ),
+                ],
+              );
+            },
+            orElse: () => const SizedBox.shrink());
+      },
     );
   }
 }

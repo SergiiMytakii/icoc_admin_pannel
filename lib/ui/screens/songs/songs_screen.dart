@@ -45,30 +45,7 @@ class _SongsScreenState extends State<SongsScreen> {
                   Flexible(
                     child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: SearchBar(
-                            controller: _searchController,
-                            overlayColor: WidgetStateProperty.all(
-                                Theme.of(context).cardColor),
-                            onChanged: (value) {
-                              if (value.isEmpty) {
-                                getIt<SongsBloc>().add(const SongsEvent.get());
-                              }
-                            },
-                            onSubmitted: (value) {
-                              _searchController.text = value;
-                              getIt<SongsBloc>()
-                                  .add(SongsEvent.get(query: value));
-                            },
-                            leading: const Icon(Icons.search),
-                            shadowColor: WidgetStateColor.transparent,
-                            backgroundColor: WidgetStateColor.transparent,
-                            constraints: const BoxConstraints(maxHeight: 50),
-                            side: const WidgetStatePropertyAll(
-                                BorderSide(color: Colors.grey)),
-                          ),
-                        ),
+                        _buildSearchBar(context),
                         Expanded(
                           child: ListView(
                             children: songs
@@ -103,5 +80,29 @@ class _SongsScreenState extends State<SongsScreen> {
             }
           });
     }));
+  }
+
+  Padding _buildSearchBar(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: SearchBar(
+        controller: _searchController,
+        overlayColor: WidgetStateProperty.all(Theme.of(context).cardColor),
+        onChanged: (value) {
+          if (value.isEmpty) {
+            getIt<SongsBloc>().add(const SongsEvent.get());
+          }
+        },
+        onSubmitted: (value) {
+          _searchController.text = value;
+          getIt<SongsBloc>().add(SongsEvent.get(query: value));
+        },
+        leading: const Icon(Icons.search),
+        shadowColor: WidgetStateColor.transparent,
+        backgroundColor: WidgetStateColor.transparent,
+        constraints: const BoxConstraints(maxHeight: 50),
+        side: const WidgetStatePropertyAll(BorderSide(color: Colors.grey)),
+      ),
+    );
   }
 }

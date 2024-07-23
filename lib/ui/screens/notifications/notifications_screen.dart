@@ -31,18 +31,16 @@ class NotificationsScreen extends StatelessWidget {
             return Row(
               children: [
                 Flexible(
-                  child: Expanded(
-                    child: ListView.builder(
-                        itemCount: notifications.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                              onTap: () => currentNotification.value =
-                                  notifications[index],
-                              child: NotificationCard(
-                                notificationsModel: notifications[index],
-                              ));
-                        }),
-                  ),
+                  child: ListView.builder(
+                      itemCount: notifications.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                            onTap: () => currentNotification.value =
+                                notifications[index],
+                            child: NotificationCard(
+                              notificationsModel: notifications[index],
+                            ));
+                      }),
                 ),
                 const VerticalDivider(thickness: 1, width: 1),
                 Flexible(

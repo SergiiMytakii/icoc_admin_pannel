@@ -9,4 +9,6 @@ abstract class NotificationsRepository {
       IcocUser? user, NotificationsModel notification);
   Future<List<NotificationsModel>> deleteNotifications(
       IcocUser? user, String id);
+  Future<List<NotificationVersion>> getTranslations(
+      List<String> languages, NotificationVersion notification);
 }

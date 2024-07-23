@@ -29,8 +29,8 @@ class NotificationCard extends StatelessWidget {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           subtitle: Text(
-            DateFormat('MMM d, yyyy HH:mm').format(
-                DateTime.parse(notificationsModel.notifications.first.id)),
+            DateFormat('MMM d, yyyy HH:mm')
+                .format(DateTime.parse(notificationsModel.id)),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             style: Theme.of(context).textTheme.bodyMedium,

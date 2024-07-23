@@ -31,6 +31,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
   final ValueNotifier<SongDetail> currentSong =
       ValueNotifier<SongDetail>(SongInitial.defaultSong());
   int lastSongNumber = -1;
+
   Future<void> _onSongsRequested(
     SongsGet event,
     Emitter<SongsState> emit,
@@ -39,6 +40,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     try {
       List<SongDetail> songs = await songsRepositoryImpl.getSongs();
 
+      //search by title
       if (event.query != null && event.query!.isNotEmpty) {
         songs = songs.where((song) {
           final titles = song.title.values;

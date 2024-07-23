@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:icoc_admin_pannel/app_router.dart';
 import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
@@ -23,6 +24,7 @@ void main() async {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+      // await dotenv.load(fileName: 'env');
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
