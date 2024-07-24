@@ -7,8 +7,8 @@ class VideosState with _$VideosState {
   const factory VideosState.error(String errorMessage) = _VideosErrorState;
   const factory VideosState.success(List<Playlist> playlists) =
       _VideosSuccessState;
-  const factory VideosState.playlistVideos(List<Resources>? resources) =
+  const factory VideosState.playlistVideos(List<YoutubeVideo>? resources) =
       _VideosPlaylistVideosState;
-  const factory VideosState.videoDetails(Resources? videoDetails) =
+  const factory VideosState.videoDetails(YoutubeVideo? videoDetails) =
       _VideosDetailsState;
 }

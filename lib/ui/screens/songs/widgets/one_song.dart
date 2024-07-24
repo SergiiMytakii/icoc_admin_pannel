@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/helpers/count_song_tabs.dart';
-import 'package:icoc_admin_pannel/domain/model/resources.dart';
+import 'package:icoc_admin_pannel/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/add_version_tab.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/song_text_on_song_screen.dart';
@@ -71,8 +71,8 @@ class _OneSongState extends State<OneSong> with TickerProviderStateMixin {
           children: [
             //adjust size text screen and player dynamicly
             _tabBarBuilder(widget.song),
-            if (widget.song.resources != null &&
-                widget.song.resources!.isNotEmpty &&
+            if (widget.song.youtubeVideos != null &&
+                widget.song.youtubeVideos!.isNotEmpty &&
                 !videoIsPlaying &&
                 _showVideoPreview)
               _buldVideoPreview(widget.song),
@@ -109,7 +109,7 @@ class _OneSongState extends State<OneSong> with TickerProviderStateMixin {
     );
   }
 
-  void _startPlayVideo(Resources resources, String videoId) async {
+  void _startPlayVideo(String videoId) async {
     youtubePlayerController = YoutubePlayerController();
     youtubePlayerController!.loadVideoById(videoId: videoId);
     setState(() {
@@ -217,9 +217,9 @@ class _OneSongState extends State<OneSong> with TickerProviderStateMixin {
         SizedBox(
             height: 200,
             child: HorizontalListView(
-              children: song.resources!
+              children: song.youtubeVideos!
                   .map((resource) =>
-                      VideoCard(resource: resource, onTap: _startPlayVideo))
+                      VideoCard(youtubeVideo: resource, onTap: _startPlayVideo))
                   .toList(),
             )),
         Positioned(

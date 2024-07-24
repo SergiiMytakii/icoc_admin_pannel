@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/constants.dart';
+import 'package:icoc_admin_pannel/domain/helpers/notification_tranlator.dart';
+import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
+import 'package:icoc_admin_pannel/ui/bloc/notifications/notifications_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
 import 'package:icoc_admin_pannel/ui/widget/select_lang.dart';
+import 'package:icoc_admin_pannel/ui/widget/send_notification_checkbax.dart';
 
 class AddVersionTab extends StatefulWidget {
   final SongDetail song;
@@ -28,6 +32,7 @@ class _AddVersionTabState extends State<AddVersionTab> {
   TextEditingController langController = TextEditingController()..text = 'ru';
   TextEditingController textController = TextEditingController();
   TextEditingController urlController = TextEditingController();
+  bool sendNotifications = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +49,9 @@ class _AddVersionTabState extends State<AddVersionTab> {
                   child: Row(
                     children: [
                       SelectLanguageWidget(langController: langController),
+                      SendNotificationCheckBox(
+                        onChanged: (value) => sendNotifications = value,
+                      ),
                       const Spacer(),
                       const Text(
                         'Add a new song version',
@@ -51,6 +59,9 @@ class _AddVersionTabState extends State<AddVersionTab> {
                         style: TextStyle(fontSize: 20),
                       ),
                       const Spacer(),
+                      const SizedBox(
+                        width: 80,
+                      )
                     ],
                   ),
                 ),
@@ -118,6 +129,30 @@ class _AddVersionTabState extends State<AddVersionTab> {
             text: textController.text,
             link: urlController.text));
       }
+      if (sendNotifications) {
+        _sendNotifications();
+      }
     }
+  }
+
+  void _sendNotifications() {
+    final user = context.read<AuthBloc>().icocUser;
+
+    final translatedNotification =
+        getTranslatedNotification(langController.text, titleController.text);
+
+    final notification =
+        NotificationsModel(id: DateTime.now().toString(), notifications: [
+      NotificationVersion(
+        id: '0',
+        title: translatedNotification['title']!,
+        text: translatedNotification['text']!,
+        lang: langController.text,
+        link:
+            '$ICOC_WEB_PAGE/songbook/songs/${widget.song.id}/${widget.song.text.entries.length + 1}?lang=${langController.text}',
+      )
+    ]);
+    getIt<NotificationsBloc>().add(NotificationsEvent.add(
+        user: user, notification: notification, aditionalLanguages: []));
   }
 }

@@ -135,7 +135,7 @@ class _AddNewNotificationScreenState extends State<AddNewNotificationScreen> {
               context.pop();
             }
           },
-          label: 'Save',
+          label: 'Send',
         ),
       ],
     );

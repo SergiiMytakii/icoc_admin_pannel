@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/domain/helpers/extract_text_from_html.dart';
-import 'package:icoc_admin_pannel/domain/model/resources.dart';
+import 'package:icoc_admin_pannel/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/injection.dart';
@@ -44,9 +44,9 @@ class _EditSongScreenState extends State<EditSongScreen> {
       text = FormatTextHelper.extractFormattedText(text);
     }
     textController = TextEditingController(text: text);
-    final res = widget.song?.resources?.firstWhere(
+    final res = widget.song?.youtubeVideos?.firstWhere(
       (res) => res.lang == widget.textVersion.substring(0, 2),
-      orElse: () => Resources.defaultResource(),
+      orElse: () => YoutubeVideo.defaultVideo(),
     );
     urlController = TextEditingController(text: res?.link);
     super.initState();

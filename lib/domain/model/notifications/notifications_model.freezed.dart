@@ -23,6 +23,7 @@ mixin _$NotificationsModel {
   String get id => throw _privateConstructorUsedError;
   List<NotificationVersion> get notifications =>
       throw _privateConstructorUsedError;
+  bool get isRead => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +37,7 @@ abstract class $NotificationsModelCopyWith<$Res> {
           NotificationsModel value, $Res Function(NotificationsModel) then) =
       _$NotificationsModelCopyWithImpl<$Res, NotificationsModel>;
   @useResult
-  $Res call({String id, List<NotificationVersion> notifications});
+  $Res call({String id, List<NotificationVersion> notifications, bool isRead});
 }
 
 /// @nodoc
@@ -54,6 +55,7 @@ class _$NotificationsModelCopyWithImpl<$Res, $Val extends NotificationsModel>
   $Res call({
     Object? id = null,
     Object? notifications = null,
+    Object? isRead = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -64,6 +66,10 @@ class _$NotificationsModelCopyWithImpl<$Res, $Val extends NotificationsModel>
           ? _value.notifications
           : notifications // ignore: cast_nullable_to_non_nullable
               as List<NotificationVersion>,
+      isRead: null == isRead
+          ? _value.isRead
+          : isRead // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -76,7 +82,7 @@ abstract class _$$NotificationsModelImplCopyWith<$Res>
       __$$NotificationsModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, List<NotificationVersion> notifications});
+  $Res call({String id, List<NotificationVersion> notifications, bool isRead});
 }
 
 /// @nodoc
@@ -92,6 +98,7 @@ class __$$NotificationsModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? notifications = null,
+    Object? isRead = null,
   }) {
     return _then(_$NotificationsModelImpl(
       id: null == id
@@ -102,6 +109,10 @@ class __$$NotificationsModelImplCopyWithImpl<$Res>
           ? _value._notifications
           : notifications // ignore: cast_nullable_to_non_nullable
               as List<NotificationVersion>,
+      isRead: null == isRead
+          ? _value.isRead
+          : isRead // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -112,7 +123,8 @@ class __$$NotificationsModelImplCopyWithImpl<$Res>
 class _$NotificationsModelImpl extends _NotificationsModel {
   const _$NotificationsModelImpl(
       {required this.id,
-      required final List<NotificationVersion> notifications})
+      required final List<NotificationVersion> notifications,
+      this.isRead = false})
       : _notifications = notifications,
         super._();
 
@@ -130,8 +142,12 @@ class _$NotificationsModelImpl extends _NotificationsModel {
   }
 
   @override
+  @JsonKey()
+  final bool isRead;
+
+  @override
   String toString() {
-    return 'NotificationsModel(id: $id, notifications: $notifications)';
+    return 'NotificationsModel(id: $id, notifications: $notifications, isRead: $isRead)';
   }
 
   @override
@@ -141,13 +157,14 @@ class _$NotificationsModelImpl extends _NotificationsModel {
             other is _$NotificationsModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             const DeepCollectionEquality()
-                .equals(other._notifications, _notifications));
+                .equals(other._notifications, _notifications) &&
+            (identical(other.isRead, isRead) || other.isRead == isRead));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, const DeepCollectionEquality().hash(_notifications));
+  int get hashCode => Object.hash(runtimeType, id,
+      const DeepCollectionEquality().hash(_notifications), isRead);
 
   @JsonKey(ignore: true)
   @override
@@ -166,9 +183,9 @@ class _$NotificationsModelImpl extends _NotificationsModel {
 
 abstract class _NotificationsModel extends NotificationsModel {
   const factory _NotificationsModel(
-          {required final String id,
-          required final List<NotificationVersion> notifications}) =
-      _$NotificationsModelImpl;
+      {required final String id,
+      required final List<NotificationVersion> notifications,
+      final bool isRead}) = _$NotificationsModelImpl;
   const _NotificationsModel._() : super._();
 
   factory _NotificationsModel.fromJson(Map<String, dynamic> json) =
@@ -178,6 +195,8 @@ abstract class _NotificationsModel extends NotificationsModel {
   String get id;
   @override
   List<NotificationVersion> get notifications;
+  @override
+  bool get isRead;
   @override
   @JsonKey(ignore: true)
   _$$NotificationsModelImplCopyWith<_$NotificationsModelImpl> get copyWith =>
@@ -195,7 +214,6 @@ mixin _$NotificationVersion {
   String get text => throw _privateConstructorUsedError;
   String get lang => throw _privateConstructorUsedError;
   String? get link => throw _privateConstructorUsedError;
-  bool get isRead => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -209,13 +227,7 @@ abstract class $NotificationVersionCopyWith<$Res> {
           NotificationVersion value, $Res Function(NotificationVersion) then) =
       _$NotificationVersionCopyWithImpl<$Res, NotificationVersion>;
   @useResult
-  $Res call(
-      {String id,
-      String title,
-      String text,
-      String lang,
-      String? link,
-      bool isRead});
+  $Res call({String id, String title, String text, String lang, String? link});
 }
 
 /// @nodoc
@@ -236,7 +248,6 @@ class _$NotificationVersionCopyWithImpl<$Res, $Val extends NotificationVersion>
     Object? text = null,
     Object? lang = null,
     Object? link = freezed,
-    Object? isRead = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -259,10 +270,6 @@ class _$NotificationVersionCopyWithImpl<$Res, $Val extends NotificationVersion>
           ? _value.link
           : link // ignore: cast_nullable_to_non_nullable
               as String?,
-      isRead: null == isRead
-          ? _value.isRead
-          : isRead // ignore: cast_nullable_to_non_nullable
-              as bool,
     ) as $Val);
   }
 }
@@ -275,13 +282,7 @@ abstract class _$$NotificationVersionImplCopyWith<$Res>
       __$$NotificationVersionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String id,
-      String title,
-      String text,
-      String lang,
-      String? link,
-      bool isRead});
+  $Res call({String id, String title, String text, String lang, String? link});
 }
 
 /// @nodoc
@@ -300,7 +301,6 @@ class __$$NotificationVersionImplCopyWithImpl<$Res>
     Object? text = null,
     Object? lang = null,
     Object? link = freezed,
-    Object? isRead = null,
   }) {
     return _then(_$NotificationVersionImpl(
       id: null == id
@@ -323,10 +323,6 @@ class __$$NotificationVersionImplCopyWithImpl<$Res>
           ? _value.link
           : link // ignore: cast_nullable_to_non_nullable
               as String?,
-      isRead: null == isRead
-          ? _value.isRead
-          : isRead // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -339,8 +335,7 @@ class _$NotificationVersionImpl extends _NotificationVersion {
       required this.title,
       required this.text,
       required this.lang,
-      this.link,
-      this.isRead = false})
+      this.link})
       : super._();
 
   factory _$NotificationVersionImpl.fromJson(Map<String, dynamic> json) =>
@@ -356,13 +351,10 @@ class _$NotificationVersionImpl extends _NotificationVersion {
   final String lang;
   @override
   final String? link;
-  @override
-  @JsonKey()
-  final bool isRead;
 
   @override
   String toString() {
-    return 'NotificationVersion(id: $id, title: $title, text: $text, lang: $lang, link: $link, isRead: $isRead)';
+    return 'NotificationVersion(id: $id, title: $title, text: $text, lang: $lang, link: $link)';
   }
 
   @override
@@ -374,14 +366,12 @@ class _$NotificationVersionImpl extends _NotificationVersion {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.lang, lang) || other.lang == lang) &&
-            (identical(other.link, link) || other.link == link) &&
-            (identical(other.isRead, isRead) || other.isRead == isRead));
+            (identical(other.link, link) || other.link == link));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, title, text, lang, link, isRead);
+  int get hashCode => Object.hash(runtimeType, id, title, text, lang, link);
 
   @JsonKey(ignore: true)
   @override
@@ -404,8 +394,7 @@ abstract class _NotificationVersion extends NotificationVersion {
       required final String title,
       required final String text,
       required final String lang,
-      final String? link,
-      final bool isRead}) = _$NotificationVersionImpl;
+      final String? link}) = _$NotificationVersionImpl;
   const _NotificationVersion._() : super._();
 
   factory _NotificationVersion.fromJson(Map<String, dynamic> json) =
@@ -421,8 +410,6 @@ abstract class _NotificationVersion extends NotificationVersion {
   String get lang;
   @override
   String? get link;
-  @override
-  bool get isRead;
   @override
   @JsonKey(ignore: true)
   _$$NotificationVersionImplCopyWith<_$NotificationVersionImpl> get copyWith =>

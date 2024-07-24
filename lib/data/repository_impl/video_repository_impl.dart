@@ -5,7 +5,7 @@ import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/data_sources/firebase_data_source.dart';
 import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
 import 'package:icoc_admin_pannel/domain/model/playlist.dart';
-import 'package:icoc_admin_pannel/domain/model/resources.dart';
+import 'package:icoc_admin_pannel/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc_admin_pannel/domain/repository/video_repository.dart';
 import 'package:injectable/injectable.dart';
 import 'package:icoc_admin_pannel/domain/data_sources/http_client.dart';
@@ -26,7 +26,7 @@ class VideoRepositoryImpl extends VideoRepository {
   }
 
   @override
-  Future<List<Resources>?> fetchVideosFromPlaylist(String playlistId) async {
+  Future<List<YoutubeVideo>?> fetchVideosFromPlaylist(String playlistId) async {
     final Map<String, String> headers = {
       'Content-Type': 'application/json',
     };
@@ -43,10 +43,10 @@ class VideoRepositoryImpl extends VideoRepository {
         final List<dynamic> videosJson = data['items'];
 
         // Fetch first eight playlists from uploads playlist
-        final List<Resources> playlists = [];
+        final List<YoutubeVideo> playlists = [];
         videosJson.forEach(
           (json) => playlists.add(
-            Resources.fromJsonYoutobePlaylists(json['snippet']),
+            YoutubeVideo.fromJsonYoutubePlaylists(json['snippet']),
           ),
         );
         return playlists;
@@ -64,7 +64,7 @@ class VideoRepositoryImpl extends VideoRepository {
   }
 
   @override
-  Future<Resources?> fetchVideoDetails(String videoId) async {
+  Future<YoutubeVideo?> fetchVideoDetails(String videoId) async {
     final Map<String, String> headers = {
       'Content-Type': 'application/json',
     };
@@ -78,8 +78,7 @@ class VideoRepositoryImpl extends VideoRepository {
       );
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-
-        return Resources.fromJsonYoutobeLink(data);
+        return YoutubeVideo.fromJsonYoutubeLink(data);
       } else {
         logError(
             json.decode(response.body)['error']['message'] ??

@@ -13,6 +13,7 @@ _$NotificationsModelImpl _$$NotificationsModelImplFromJson(
       notifications: (json['notifications'] as List<dynamic>)
           .map((e) => NotificationVersion.fromJson(e as Map<String, dynamic>))
           .toList(),
+      isRead: json['isRead'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$NotificationsModelImplToJson(
@@ -20,6 +21,7 @@ Map<String, dynamic> _$$NotificationsModelImplToJson(
     <String, dynamic>{
       'id': instance.id,
       'notifications': instance.notifications.map((e) => e.toJson()).toList(),
+      'isRead': instance.isRead,
     };
 
 _$NotificationVersionImpl _$$NotificationVersionImplFromJson(
@@ -30,7 +32,6 @@ _$NotificationVersionImpl _$$NotificationVersionImplFromJson(
       text: json['text'] as String,
       lang: json['lang'] as String,
       link: json['link'] as String?,
-      isRead: json['isRead'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$NotificationVersionImplToJson(
@@ -41,5 +42,4 @@ Map<String, dynamic> _$$NotificationVersionImplToJson(
       'text': instance.text,
       'lang': instance.lang,
       'link': instance.link,
-      'isRead': instance.isRead,
     };

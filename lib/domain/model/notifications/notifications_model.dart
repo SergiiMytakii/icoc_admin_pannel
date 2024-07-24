@@ -9,6 +9,7 @@ class NotificationsModel with _$NotificationsModel {
   const factory NotificationsModel({
     required String id,
     required List<NotificationVersion> notifications,
+    @Default(false) bool isRead,
   }) = _NotificationsModel;
 
   factory NotificationsModel.fromJson(Map<String, dynamic> json) =>
@@ -63,7 +64,6 @@ class NotificationVersion with _$NotificationVersion {
     required String text,
     required String lang,
     String? link,
-    @Default(false) bool isRead,
   }) = _NotificationVersion;
 
   factory NotificationVersion.fromJson(Map<String, dynamic> json) =>

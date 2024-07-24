@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/domain/helpers/calculate_song_number.dart';
 import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
 import 'package:icoc_admin_pannel/domain/helpers/get_video_id.dart';
-import 'package:icoc_admin_pannel/domain/model/resources.dart';
+import 'package:icoc_admin_pannel/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/domain/repository/songs_repository.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
@@ -29,7 +29,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
   final SongsRepository songsRepositoryImpl;
   final VideoRepository videoRepositoryImpl;
   final ValueNotifier<SongDetail> currentSong =
-      ValueNotifier<SongDetail>(SongInitial.defaultSong());
+      ValueNotifier<SongDetail>(SongDetail.defaultSong());
   int lastSongNumber = -1;
 
   Future<void> _onSongsRequested(
@@ -79,27 +79,28 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
       if (event.link.isNotEmpty) {
         //trying to get data from youtube api
         final videoId = getVideoId(event.link);
+        print('editsong');
         final details = await videoRepositoryImpl.fetchVideoDetails(videoId);
-        final resources = Resources(
+        final youtubeVideos = YoutubeVideo(
             lang: event.textVersion.substring(0, 2),
             title: details?.title ?? event.title,
             link: event.link);
 
-        if (song.resources != null) {
-          if (song.resources!.isEmpty) {
-            song.resources!.add(resources);
+        if (song.youtubeVideos != null) {
+          if (song.youtubeVideos!.isEmpty) {
+            song.youtubeVideos!.add(youtubeVideos);
           } else {
-            song.resources!.removeWhere(
+            song.youtubeVideos!.removeWhere(
                 (res) => res.lang == event.textVersion.substring(0, 2));
-            song.resources!.add(resources);
+            song.youtubeVideos!.add(youtubeVideos);
           }
         } else {
-          song.resources = [resources];
+          song.youtubeVideos = [youtubeVideos];
         }
       } else {
-        //just delete resources
-        if (song.resources != null && song.resources!.isNotEmpty) {
-          song.resources!.removeWhere(
+        //just delete youtubeVideos
+        if (song.youtubeVideos != null && song.youtubeVideos!.isNotEmpty) {
+          song.youtubeVideos!.removeWhere(
               (res) => res.lang == event.textVersion.substring(0, 2));
         }
       }
@@ -137,24 +138,28 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     }
     song.text[textKey] = event.text;
 
-    if (event.link != null) {
+    if (event.link != null && event.link!.isNotEmpty) {
       //trying to get data from youtube api
       final videoId = getVideoId(event.link!);
       final details = await videoRepositoryImpl.fetchVideoDetails(videoId);
-      final resources = Resources(
+      final youtubeVideo = YoutubeVideo(
           lang: event.lang,
           title: details?.title ?? event.title,
           link: event.link!);
-      song.resources == null
-          ? song.resources = [resources]
-          : song.resources!.add(resources);
+      if (song.youtubeVideos == null) {
+        song.youtubeVideos = [youtubeVideo];
+      } else {
+        song.youtubeVideos!.add(youtubeVideo);
+      }
     }
 
     final Map<String, dynamic> data = {
       'title': song.title,
       'description': song.description,
       'text': song.text,
-      'resources': song.resources?.map((resource) => resource.toJson()).toList()
+      'youtubeVideos': song.youtubeVideos
+          ?.map((youtubeVideo) => youtubeVideo.toJson())
+          .toList()
     };
 
     try {
@@ -172,14 +177,14 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
   FutureOr<void> _onSongAddRequested(
       SongsAdd event, Emitter<SongsState> emit) async {
     final SongDetail song = event.song;
-    if (song.resources != null && song.resources!.isNotEmpty) {
+    if (song.youtubeVideos != null && song.youtubeVideos!.isNotEmpty) {
       int i = 0;
-      for (Resources resource in song.resources!) {
-        final videoId = getVideoId(resource.link);
+      for (YoutubeVideo youtubeVideo in song.youtubeVideos!) {
+        final videoId = getVideoId(youtubeVideo.link);
         final details = await videoRepositoryImpl.fetchVideoDetails(videoId);
-        resource = resource.copyWith(
+        youtubeVideo = youtubeVideo.copyWith(
             title: details?.title, thumbnail: details?.thumbnail);
-        song.resources![i] = resource;
+        song.youtubeVideos![i] = youtubeVideo;
         i++;
       }
     }
