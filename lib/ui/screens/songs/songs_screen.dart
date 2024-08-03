@@ -17,6 +17,7 @@ class SongsScreen extends StatefulWidget {
 }
 
 class _SongsScreenState extends State<SongsScreen> {
+  final TextEditingController _searchController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -35,43 +36,20 @@ class _SongsScreenState extends State<SongsScreen> {
           error: (message) => Center(child: Text(message)),
           success: (songs) {
             if (songs.isNotEmpty) {
-              final currentSong = context.read<SongsBloc>().currentSong;
-              if (currentSong.value is SongInitial) {
-                currentSong.value = songs[0];
-              }
               return Row(
                 children: [
                   Flexible(
-                    flex: 1,
                     child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: SearchBar(
-                            overlayColor: WidgetStateProperty.all(
-                                Theme.of(context).cardColor),
-                            onChanged: (value) {
-                              if (value.isEmpty) {
-                                getIt<SongsBloc>().add(const SongsEvent.get());
-                              }
-                            },
-                            onSubmitted: (value) {
-                              getIt<SongsBloc>()
-                                  .add(SongsEvent.get(query: value));
-                            },
-                            leading: const Icon(Icons.search),
-                            shadowColor: WidgetStateColor.transparent,
-                            backgroundColor: WidgetStateColor.transparent,
-                            constraints: const BoxConstraints(maxHeight: 50),
-                            side: const WidgetStatePropertyAll(
-                                BorderSide(color: Colors.grey)),
-                          ),
-                        ),
+                        _buildSearchBar(context),
                         Expanded(
                           child: ListView(
                             children: songs
                                 .map((song) => GestureDetector(
-                                    onTap: () => currentSong.value = song,
+                                    onTap: () => context
+                                        .read<SongsBloc>()
+                                        .currentSong
+                                        .value = song,
                                     child: SongCard(
                                       song: song,
                                     )))
@@ -85,7 +63,8 @@ class _SongsScreenState extends State<SongsScreen> {
                   Flexible(
                       flex: 2,
                       child: ValueListenableBuilder(
-                          valueListenable: currentSong,
+                          valueListenable:
+                              context.read<SongsBloc>().currentSong,
                           builder: (context, song, _) {
                             return OneSong(
                               song: song,
@@ -101,5 +80,29 @@ class _SongsScreenState extends State<SongsScreen> {
             }
           });
     }));
+  }
+
+  Padding _buildSearchBar(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: SearchBar(
+        controller: _searchController,
+        overlayColor: WidgetStateProperty.all(Theme.of(context).cardColor),
+        onChanged: (value) {
+          if (value.isEmpty) {
+            getIt<SongsBloc>().add(const SongsEvent.get());
+          }
+        },
+        onSubmitted: (value) {
+          _searchController.text = value;
+          getIt<SongsBloc>().add(SongsEvent.get(query: value));
+        },
+        leading: const Icon(Icons.search),
+        shadowColor: WidgetStateColor.transparent,
+        backgroundColor: WidgetStateColor.transparent,
+        constraints: const BoxConstraints(maxHeight: 50),
+        side: const WidgetStatePropertyAll(BorderSide(color: Colors.grey)),
+      ),
+    );
   }
 }

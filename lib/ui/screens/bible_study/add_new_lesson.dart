@@ -45,10 +45,10 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
         calculateLastNumber(currentBibleStudy.value.lessons) + 1;
     return Scaffold(
         body: Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16),
       child: Form(
         key: _formKey,
-        child: Column(
+        child: ListView(
           children: [
             Row(
               children: [

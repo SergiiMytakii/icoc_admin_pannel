@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:icoc_admin_pannel/domain/model/identifable.dart';
-import 'package:icoc_admin_pannel/domain/model/resources.dart';
+import 'package:icoc_admin_pannel/domain/model/youtube_video/youtube_video.dart';
 
 class SongDetail implements Identifiable {
   @override
@@ -9,7 +9,7 @@ class SongDetail implements Identifiable {
   final Map? description;
   final Map title;
   final Map text;
-  List<Resources>? resources;
+  List<YoutubeVideo>? youtubeVideos;
   final Map? chords;
   String? searchTitle;
   String? searchText;
@@ -21,15 +21,12 @@ class SongDetail implements Identifiable {
       this.description,
       required this.text,
       this.chords,
-      this.resources,
+      this.youtubeVideos,
       this.searchLang,
       this.searchText,
       this.searchTitle});
 
   factory SongDetail.fromJson(Map parsedJson, int id) {
-    // log.d(parsedJson);
-    // Logger().f(parsedJson['resources'].runtimeType);
-    // Logger().f(parsedJson['resources']);
     final title = parsedJson['title'] as Map;
     title.removeWhere(
       (key, value) => value == null,
@@ -51,9 +48,9 @@ class SongDetail implements Identifiable {
       title: title,
       text: text,
       description: description,
-      resources: parsedJson['resources'] != null
-          ? List<Resources>.from(parsedJson['resources']
-              .map((resource) => Resources.fromJson(resource)))
+      youtubeVideos: parsedJson['resources'] != null
+          ? List<YoutubeVideo>.from(parsedJson['resources']
+              .map((resource) => YoutubeVideo.fromJson(resource)))
           : null,
       chords: chords,
     );
@@ -67,8 +64,8 @@ class SongDetail implements Identifiable {
     if (description != null) {
       data['description'] = description;
     }
-    if (resources != null) {
-      data['resources'] = resources?.map((v) => v.toJson()).toList();
+    if (youtubeVideos != null) {
+      data['resources'] = youtubeVideos?.map((v) => v.toJson()).toList();
     }
     if (chords != null) {
       data['chords'] = chords;
@@ -81,7 +78,7 @@ class SongDetail implements Identifiable {
     Map? description,
     Map? title,
     Map? text,
-    List<Resources>? resources,
+    List<YoutubeVideo>? youtubeVideos,
     Map? chords,
     String? searchTitle,
     String? searchText,
@@ -92,7 +89,7 @@ class SongDetail implements Identifiable {
       description: description ?? this.description,
       title: title ?? this.title,
       text: text ?? this.text,
-      resources: resources ?? this.resources,
+      youtubeVideos: youtubeVideos ?? this.youtubeVideos,
       chords: chords ?? this.chords,
       searchTitle: searchTitle ?? this.searchTitle,
       searchText: searchText ?? this.searchText,
@@ -100,7 +97,7 @@ class SongDetail implements Identifiable {
     );
   }
 
-  //provide list with all languages
+//provide list with all languages
   List<String> getAllTitleKeys() {
     final Set<String> allKeys = {};
 
@@ -140,9 +137,52 @@ class SongDetail implements Identifiable {
     return allKeys.toList();
   }
 
-  List<Resources> _sortResources(
-      List<Resources> resources, List<String> orderLanguages) {
-    resources.sort((a, b) {
+  SongDetail filterAndOrderLanguages(List<String> orderLanguages) {
+    final Map filteredTitle = Map.fromEntries(title.entries
+        .where((entry) => orderLanguages.contains(entry.key))
+        .toList()
+      ..sort((a, b) => orderLanguages
+          .indexOf(a.key)
+          .compareTo(orderLanguages.indexOf(b.key))));
+
+    final Map filteredText = Map.fromEntries(text.entries
+        .where((entry) =>
+            orderLanguages.contains(entry.key.toString().substring(0, 2)))
+        .toList()
+      ..sort((a, b) => orderLanguages
+          .indexOf(a.key.toString().substring(0, 2))
+          .compareTo(
+              orderLanguages.indexOf(b.key.toString().substring(0, 2)))));
+
+    return SongDetail(
+      id: id,
+      title: filteredTitle,
+      description: description,
+      text: filteredText,
+      chords: chords,
+      youtubeVideos: youtubeVideos,
+      searchLang: searchLang,
+      searchText: searchText,
+      searchTitle: searchTitle,
+    );
+  }
+
+  SongDetail orderByLanguage(List<String> orderLanguages) {
+    return SongDetail(
+      id: id,
+      title: _orderByLanguageInMap(title, orderLanguages),
+      description: _orderByLanguageInMap(description, orderLanguages),
+      text: _orderByLanguageInMap(text, orderLanguages),
+      chords: _orderByLanguageInMap(chords, orderLanguages),
+      youtubeVideos: youtubeVideos != null
+          ? _sortVideos(youtubeVideos!, orderLanguages)
+          : null,
+    );
+  }
+
+  List<YoutubeVideo> _sortVideos(
+      List<YoutubeVideo> youtubeVideos, List<String> orderLanguages) {
+    youtubeVideos.sort((a, b) {
       final int indexA = orderLanguages.indexOf(a.lang);
       final int indexB = orderLanguages.indexOf(b.lang);
 
@@ -152,7 +192,7 @@ class SongDetail implements Identifiable {
 
       return indexA.compareTo(indexB);
     });
-    return resources;
+    return youtubeVideos;
   }
 
   Map _orderByLanguageInMap(Map? map, List<String> orderLanguages) {
@@ -181,12 +221,5 @@ class SongDetail implements Identifiable {
 
   static SongDetail defaultSong() {
     return SongDetail(id: 0, title: {}, text: {});
-  }
-}
-
-class SongInitial extends SongDetail {
-  SongInitial({required super.id, required super.title, required super.text});
-  static SongInitial defaultSong() {
-    return SongInitial(id: 0, title: {}, text: {});
   }
 }

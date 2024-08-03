@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
 import 'package:icoc_admin_pannel/domain/model/playlist.dart';
-import 'package:icoc_admin_pannel/domain/model/resources.dart';
+import 'package:icoc_admin_pannel/domain/model/youtube_video/youtube_video.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:icoc_admin_pannel/domain/repository/video_repository.dart';
 import 'package:injectable/injectable.dart';
@@ -58,9 +58,9 @@ class VideosBloc extends Bloc<VideosEvent, VideosState> {
   ) async {
     emit(const VideosState.loading());
     try {
-      final List<Resources>? resources =
+      final List<YoutubeVideo>? youtubeVideo =
           await videoRepository.fetchVideosFromPlaylist(event.playlistId);
-      emit(VideosState.playlistVideos(resources));
+      emit(VideosState.playlistVideos(youtubeVideo));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
       emit(VideosState.error(error.toString()));
@@ -73,7 +73,7 @@ class VideosBloc extends Bloc<VideosEvent, VideosState> {
   ) async {
     emit(const VideosState.loading());
     try {
-      final Resources? videoDetails =
+      final YoutubeVideo? videoDetails =
           await videoRepository.fetchVideoDetails(event.videoId);
       emit(VideosState.videoDetails(videoDetails));
     } catch (error, stackTrace) {

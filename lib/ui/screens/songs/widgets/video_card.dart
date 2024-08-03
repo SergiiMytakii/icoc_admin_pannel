@@ -1,16 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:icoc_admin_pannel/constants.dart';
-import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
 import 'package:icoc_admin_pannel/domain/helpers/get_video_id.dart';
-import 'package:icoc_admin_pannel/domain/model/resources.dart';
-import 'package:logger/logger.dart';
+import 'package:icoc_admin_pannel/domain/model/youtube_video/youtube_video.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class VideoCard extends StatefulWidget {
-  const VideoCard({super.key, required this.resource, required this.onTap});
+  const VideoCard({super.key, required this.youtubeVideo, required this.onTap});
 
-  final Resources resource;
+  final YoutubeVideo youtubeVideo;
   final Function onTap;
 
   @override
@@ -26,17 +24,17 @@ class _VideoCardState extends State<VideoCard> {
 
   @override
   Widget build(BuildContext context) {
-    videoId = getVideoId(widget.resource.link);
+    videoId = getVideoId(widget.youtubeVideo.link);
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Container(
         decoration: BoxDecoration(border: Border.all(color: Colors.white)),
         child: GestureDetector(
-          onTap: () => widget.onTap(widget.resource, videoId),
+          onTap: () => widget.onTap(videoId),
           child: Stack(
             children: [
               CachedNetworkImage(
-                imageUrl: widget.resource.thumbnail ??
+                imageUrl: widget.youtubeVideo.thumbnail ??
                     YoutubePlayerController.getThumbnail(
                         videoId: videoId, webp: false),
 
@@ -53,7 +51,7 @@ class _VideoCardState extends State<VideoCard> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 6),
                 child: Text(
-                  widget.resource.lang,
+                  widget.youtubeVideo.lang,
                   style: const TextStyle(
                       color: ScreenColors.songBook,
                       fontSize: 16,

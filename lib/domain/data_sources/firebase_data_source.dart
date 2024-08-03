@@ -5,7 +5,7 @@ abstract class FirebaseDataSource {
   Future<QuerySnapshot> getFromFirebase(String collection,
       {dynamic orderBy, bool? descending});
   Future<QuerySnapshot> updateToFirebase(
-      IcocUser? user, String collection, int id, Map<String, dynamic> data);
+      IcocUser? user, String collection, String id, Map<String, dynamic> data);
 
   Future<QuerySnapshot> postToFirebase(
       IcocUser? user, String collection, Map<String, dynamic> data);

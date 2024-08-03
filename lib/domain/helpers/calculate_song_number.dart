@@ -7,6 +7,7 @@ int calculateLastNumber<T extends Identifiable>(List<T> items) {
     return 0;
   }
   final ids = items.map((item) => item.id).toList();
+  print(ids.last);
   final maximum = ids.reduce(max);
   return maximum;
 }

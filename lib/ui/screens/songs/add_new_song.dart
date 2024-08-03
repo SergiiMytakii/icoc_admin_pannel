@@ -3,14 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/helpers/calculate_song_number.dart';
-import 'package:icoc_admin_pannel/domain/model/resources.dart';
+import 'package:icoc_admin_pannel/domain/helpers/notification_tranlator.dart';
+import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
+import 'package:icoc_admin_pannel/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
+import 'package:icoc_admin_pannel/ui/bloc/notifications/notifications_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/add_song_block.dart';
 import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
+import 'package:icoc_admin_pannel/ui/widget/send_notification_checkbax.dart';
 
 class AddNewSongScreen extends StatefulWidget {
   const AddNewSongScreen({
@@ -31,9 +35,11 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
   TextEditingController textController = TextEditingController();
   TextEditingController urlController = TextEditingController();
   SongDetail song = SongDetail.defaultSong();
+  bool sendNotifications = false;
 
   @override
   void initState() {
+    getIt<SongsBloc>().add(const SongsEvent.get());
     super.initState();
   }
 
@@ -59,6 +65,9 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
                       );
                       return Text('Song number: ${song.id}');
                     }),
+                    SendNotificationCheckBox(
+                      onChanged: (value) => sendNotifications = value,
+                    ),
                     const Spacer(),
                     _buttonsBlock(context)
                   ],
@@ -72,7 +81,7 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
                     itemBuilder: (context, index) {
                       return ExpansionTile(
                         initiallyExpanded: _isOpen[index]['isOpen'],
-                        title: Text('Language ${index + 1}'),
+                        title: Text('Version ${index + 1}'),
                         children: [
                           AnimatedContainer(
                             duration: const Duration(milliseconds: 1000),
@@ -154,7 +163,10 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
                 _addToSong();
                 getIt<SongsBloc>().add(SongsEvent.add(
                     user: context.read<AuthBloc>().icocUser, song: song));
-                context.read<SongsBloc>().currentSong.value = song;
+                getIt<SongsBloc>().currentSong.value = song;
+                if (sendNotifications) {
+                  _sendNotifications();
+                }
                 context.pop();
               }
             }
@@ -166,15 +178,15 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
   }
 
   void _addToSong() {
-    List<Resources>? resources;
+    List<YoutubeVideo>? youtubeVideos;
     final title = song.title..[langController.text] = titleController.text;
     final text = song.text..['${langController.text}1'] = textController.text;
     final description = song.description ?? {};
     description[langController.text] = descriptionController.text;
 
     if (urlController.text.isNotEmpty) {
-      resources = song.resources ?? [];
-      resources.add(Resources(
+      youtubeVideos = song.youtubeVideos ?? [];
+      youtubeVideos.add(YoutubeVideo(
           lang: langController.text,
           title: titleController.text,
           link: urlController.text));
@@ -183,6 +195,30 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
         title: title,
         text: text,
         description: description,
-        resources: resources);
+        youtubeVideos: youtubeVideos);
+  }
+
+  void _sendNotifications() {
+    final user = context.read<AuthBloc>().icocUser;
+    //get languages from song
+    final Set<String> allLanguages = {};
+    allLanguages.addAll(song.getAllTitleKeys());
+
+    final notification = NotificationsModel(
+      id: DateTime.now().toString(),
+      notifications: allLanguages.toList().asMap().entries.map((entry) {
+        final translatedNotification =
+            getTranslatedNotification(entry.value, song.title[entry.value]);
+        return NotificationVersion(
+          id: '${entry.key + 1}',
+          title: translatedNotification['title']!,
+          text: translatedNotification['text']!,
+          lang: entry.value,
+          link: '$ICOC_WEB_PAGE/songbook/songs/${song.id}?lang=${entry.value}',
+        );
+      }).toList(),
+    );
+    getIt<NotificationsBloc>().add(NotificationsEvent.add(
+        user: user, notification: notification, aditionalLanguages: []));
   }
 }

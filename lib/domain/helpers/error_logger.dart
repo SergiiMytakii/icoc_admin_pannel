@@ -6,8 +6,8 @@ Future logError(Object error, StackTrace? stackTrace) async {
   log.e('$error', error: error, stackTrace: stackTrace);
 }
 
-Future log(dynamic data) async {
+Future logger(dynamic data) async {
   final log = Logger();
 
-  log.d(data);
+  log.f(data);
 }

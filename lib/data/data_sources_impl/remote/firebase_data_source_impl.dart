@@ -30,9 +30,9 @@ class DatabaseServiceFirebase implements FirebaseDataSource {
 
   @override
   Future<QuerySnapshot> updateToFirebase(IcocUser? user, String collectionName,
-      int id, Map<String, dynamic> data) async {
+      String id, Map<String, dynamic> data) async {
     final CollectionReference collection = db.collection(collectionName);
-    final DocumentReference documentRef = collection.doc(id.toString());
+    final DocumentReference documentRef = collection.doc(id);
     await documentRef.update(data);
     logToFirebase(user, 'Update', collectionName, data);
     final QuerySnapshot snapshot = await collection.get();

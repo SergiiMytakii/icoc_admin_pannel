@@ -5,7 +5,13 @@ class NotificationsEvent with _$NotificationsEvent {
   const factory NotificationsEvent.get() = NotificationsGet;
 
   const factory NotificationsEvent.add(
-      String lang, NotificationsModel notification) = NotificationsAdd;
-  const factory NotificationsEvent.delete(SongDetail song) =
-      NotificationsDelete;
+      {required IcocUser? user,
+      required NotificationsModel notification,
+      required List<String> aditionalLanguages}) = NotificationsAdd;
+  const factory NotificationsEvent.addVersion(
+      {required IcocUser? user,
+      required NotificationsModel notification}) = NotificationsAddVersion;
+  const factory NotificationsEvent.delete(
+      {required IcocUser? user,
+      required NotificationsModel notification}) = NotificationsDelete;
 }

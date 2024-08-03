@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/helpers/extract_text_from_html.dart';
 import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
-import 'package:logger/logger.dart';
 
 class SongCard extends StatelessWidget {
   final SongDetail song;
@@ -39,7 +37,7 @@ class SongCard extends StatelessWidget {
             maxLines: 2,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
-          trailing: song.resources != null && song.resources!.isNotEmpty
+          trailing: song.youtubeVideos != null && song.youtubeVideos!.isNotEmpty
               ? const Icon(
                   Icons.play_circle,
                   color: ScreenColors.songBook,
