@@ -214,8 +214,7 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
           title: translatedNotification['title']!,
           text: translatedNotification['text']!,
           lang: entry.value,
-          link:
-              '$ICOC_WEB_PAGE/songbook/songs/${song.id}/${song.text.entries.length}?lang=${entry.value}',
+          link: '$ICOC_WEB_PAGE/songbook/songs/${song.id}?lang=${entry.value}',
         );
       }).toList(),
     );

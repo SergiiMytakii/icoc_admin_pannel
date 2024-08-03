@@ -220,7 +220,6 @@ class SongDetail implements Identifiable {
   }
 
   static SongDetail defaultSong() {
-    return SongDetail(
-        id: 0, title: {'ru': 'default'}, text: {'ru1': 'default'});
+    return SongDetail(id: 0, title: {}, text: {});
   }
 }
