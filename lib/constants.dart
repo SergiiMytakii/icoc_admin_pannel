@@ -93,10 +93,47 @@ Map<String, String> languagesCodes = {
 };
 
 enum FirebaseCollections {
-  Songs,
+  SongsV2,
   BibleStudy,
   Notifications,
   Video,
   Feedback,
   UsersLogs
+}
+
+enum Languages {
+  en,
+  et,
+  fr,
+  de,
+  bg,
+  it,
+  lv,
+  lt,
+  no,
+  pl,
+  ro,
+  ru,
+  es,
+  sv,
+  uk,
+  sk,
+  sl,
+  fi,
+  sq,
+  eu,
+  be,
+  bs,
+  ca,
+  hr,
+  cs,
+  da,
+  nl,
+  el,
+  hu,
+  ga,
+  lb,
+  mk,
+  pt,
+  sr
 }

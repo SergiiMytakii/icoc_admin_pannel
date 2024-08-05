@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class MyTexField extends StatelessWidget {
-  const MyTexField(
+class MyTextField extends StatelessWidget {
+  const MyTextField(
       {super.key,
       required this.controller,
       required this.hint,

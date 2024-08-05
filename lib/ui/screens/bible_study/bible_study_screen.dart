@@ -222,7 +222,7 @@ class BibleStudyScreen extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    MyTexField(
+                    MyTextField(
                       controller: topicController,
                       hint: 'Topic',
                       validator: (value) {
@@ -233,7 +233,7 @@ class BibleStudyScreen extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 16),
-                    MyTexField(
+                    MyTextField(
                       controller: subTopicController,
                       hint: 'Description',
                       validator: (value) {

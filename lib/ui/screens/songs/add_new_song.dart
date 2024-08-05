@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/helpers/calculate_song_number.dart';
+import 'package:icoc_admin_pannel/domain/helpers/convert_languages_enum.dart';
 import 'package:icoc_admin_pannel/domain/helpers/notification_tranlator.dart';
 import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
+import 'package:icoc_admin_pannel/domain/model/songs/song_model.dart';
 import 'package:icoc_admin_pannel/domain/model/youtube_video/youtube_video.dart';
-import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/notifications/notifications_bloc.dart';
@@ -14,7 +15,8 @@ import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/add_song_block.dart';
 import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
-import 'package:icoc_admin_pannel/ui/widget/send_notification_checkbax.dart';
+import 'package:icoc_admin_pannel/ui/widget/send_notification_checkbox.dart';
+import 'package:logger/logger.dart';
 
 class AddNewSongScreen extends StatefulWidget {
   const AddNewSongScreen({
@@ -34,8 +36,9 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
   TextEditingController langController = TextEditingController()..text = 'en';
   TextEditingController textController = TextEditingController();
   TextEditingController urlController = TextEditingController();
-  SongDetail song = SongDetail.defaultSong();
+  SongModel song = SongModel.defaultSong();
   bool sendNotifications = false;
+  bool isChords = false;
 
   @override
   void initState() {
@@ -93,6 +96,7 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
                               descriptionController: descriptionController,
                               textController: textController,
                               urlController: urlController,
+                              callback: (val) => isChords = val,
                             ),
                           ),
                         ],
@@ -140,6 +144,7 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
                     descriptionController.clear();
                     textController.clear();
                     urlController.clear();
+                    langController.clear();
                   },
                 );
               }
@@ -178,43 +183,47 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
   }
 
   void _addToSong() {
-    List<YoutubeVideo>? youtubeVideos;
-    final title = song.title..[langController.text] = titleController.text;
-    final text = song.text..['${langController.text}1'] = textController.text;
-    final description = song.description ?? {};
-    description[langController.text] = descriptionController.text;
-
+    final List<YoutubeVideo> youtubeVideos = [];
     if (urlController.text.isNotEmpty) {
-      youtubeVideos = song.youtubeVideos ?? [];
       youtubeVideos.add(YoutubeVideo(
           lang: langController.text,
           title: titleController.text,
           link: urlController.text));
     }
-    song = song.copyWith(
-        title: title,
-        text: text,
-        description: description,
+    final songVersion = SongVersion(
+        id: song.id,
+        isChords: isChords,
+        lang: languagesToEnumMap[langController.text]!,
+        text: textController.text,
+        title: titleController.text,
+        description: descriptionController.text,
         youtubeVideos: youtubeVideos);
+
+    song.songVersions.add(songVersion);
   }
 
   void _sendNotifications() {
     final user = context.read<AuthBloc>().icocUser;
     //get languages from song
-    final Set<String> allLanguages = {};
-    allLanguages.addAll(song.getAllTitleKeys());
+    final Set<Languages> allLanguages = {};
+    allLanguages.addAll(song.getAllLangs());
 
     final notification = NotificationsModel(
       id: DateTime.now().toString(),
       notifications: allLanguages.toList().asMap().entries.map((entry) {
-        final translatedNotification =
-            getTranslatedNotification(entry.value, song.title[entry.value]);
+        final translatedNotification = getTranslatedNotification(
+            entry.value.name,
+            song.songVersions
+                .firstWhere(
+                    (songVersion) => songVersion.lang.name == entry.value.name)
+                .title);
         return NotificationVersion(
           id: '${entry.key + 1}',
           title: translatedNotification['title']!,
           text: translatedNotification['text']!,
-          lang: entry.value,
-          link: '$ICOC_WEB_PAGE/songbook/songs/${song.id}?lang=${entry.value}',
+          lang: entry.value.name,
+          link:
+              '$ICOC_WEB_PAGE/songbook/songs/${song.id}?lang=${entry.value.name}',
         );
       }).toList(),
     );

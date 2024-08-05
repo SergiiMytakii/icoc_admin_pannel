@@ -2,7 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
+import 'package:icoc_admin_pannel/constants.dart';
+import 'package:icoc_admin_pannel/domain/model/songs/song_model.dart';
 import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/auth/login_screen.dart';
@@ -88,21 +89,21 @@ final GoRouter router = GoRouter(
                 },
               ),
               GoRoute(
-                path: 'edit/:textVersion',
+                path: 'edit/:index',
                 pageBuilder: (BuildContext context, GoRouterState state) {
-                  final String? textVersion =
-                      state.pathParameters['textVersion'];
+                  final String? index = state.pathParameters['index'];
 
-                  SongDetail? song;
+                  SongModel? song;
 
-                  if (state.extra is SongDetail?) {
-                    song = state.extra as SongDetail?;
+                  if (state.extra is SongModel?) {
+                    song = state.extra as SongModel?;
                   }
 
                   return NoTransitionPage<void>(
                     key: state.pageKey,
                     child: EditSongScreen(
-                        song: song, textVersion: textVersion ?? ''),
+                        song: song ?? SongModel.defaultSong(),
+                        index: int.parse(index ?? '0')),
                   );
                 },
               ),

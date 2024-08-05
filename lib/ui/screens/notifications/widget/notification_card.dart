@@ -41,6 +41,8 @@ class NotificationCard extends StatelessWidget {
               getIt<NotificationsBloc>().add(NotificationsEvent.delete(
                   notification: notificationsModel,
                   user: getIt<AuthBloc>().icocUser));
+              getIt<NotificationsBloc>().currentNotification.value =
+                  NotificationsModel.defaultNotification();
             },
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 20),
