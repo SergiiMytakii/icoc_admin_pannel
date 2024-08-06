@@ -6,6 +6,8 @@ import 'package:icoc_admin_pannel/ui/screens/songs/widgets/one_song.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/song_card.dart';
 import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
 
+final bucket = PageStorageBucket();
+
 class SongsScreen extends StatefulWidget {
   const SongsScreen({
     super.key,
@@ -17,9 +19,34 @@ class SongsScreen extends StatefulWidget {
 
 class _SongsScreenState extends State<SongsScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   @override
   void initState() {
+    context.read<SongsBloc>().currentSong.addListener(_scrollToCurrentSong);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    context.read<SongsBloc>().currentSong.removeListener(_scrollToCurrentSong);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToCurrentSong() {
+    final currentSong = context.read<SongsBloc>().currentSong.value;
+    final songs = context.read<SongsBloc>().state.maybeWhen(
+          success: (songs) => songs,
+          orElse: () => [],
+        );
+    final index = songs.indexOf(currentSong);
+    if (index != -1) {
+      _scrollController.animateTo(
+        index * 100.0, // Adjust this value based on your SongCard height
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 
   @override
@@ -42,17 +69,22 @@ class _SongsScreenState extends State<SongsScreen> {
                       children: [
                         _buildSearchBar(context),
                         Expanded(
-                          child: ListView(
-                            children: songs
-                                .map((song) => GestureDetector(
-                                    onTap: () => context
-                                        .read<SongsBloc>()
-                                        .currentSong
-                                        .value = song,
-                                    child: SongCard(
-                                      song: song,
-                                    )))
-                                .toList(),
+                          child: PageStorage(
+                            bucket: bucket,
+                            child: ListView(
+                              key: const PageStorageKey<String>('songsList'),
+                              controller: _scrollController,
+                              children: songs
+                                  .map((song) => GestureDetector(
+                                      onTap: () => context
+                                          .read<SongsBloc>()
+                                          .currentSong
+                                          .value = song,
+                                      child: SongCard(
+                                        song: song,
+                                      )))
+                                  .toList(),
+                            ),
                           ),
                         ),
                       ],

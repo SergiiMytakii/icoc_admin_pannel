@@ -42,6 +42,7 @@ class _AddSongBlockState extends State<AddSongBlock> {
                   width: 150,
                   child: CheckboxListTile(
                       title: const Text('Chords'),
+                      controlAffinity: ListTileControlAffinity.leading,
                       value: isChords,
                       onChanged: (val) => setState(() {
                             isChords = !isChords;

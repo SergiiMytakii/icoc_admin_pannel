@@ -11,6 +11,7 @@ import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
 import 'package:icoc_admin_pannel/ui/widget/select_lang.dart';
+import 'dart:html' as html;
 
 class EditSongScreen extends StatefulWidget {
   final SongModel song;
@@ -54,6 +55,13 @@ class _EditSongScreenState extends State<EditSongScreen> {
     videos?.forEach((video) =>
         youtubeControllers.add(TextEditingController(text: video.link)));
 
+    html.window.onKeyDown.listen((html.KeyboardEvent event) {
+      if (event.metaKey && event.key == 's') {
+        event.preventDefault(); // Prevent the default browser action (save)
+        _save(); // Call your save function
+      }
+    });
+
     super.initState();
   }
 
@@ -92,6 +100,7 @@ class _EditSongScreenState extends State<EditSongScreen> {
                       width: 150,
                       child: CheckboxListTile(
                           title: const Text('Chords'),
+                          controlAffinity: ListTileControlAffinity.leading,
                           value: isChords,
                           onChanged: (val) => setState(() {
                                 isChords = !isChords;
@@ -122,7 +131,7 @@ class _EditSongScreenState extends State<EditSongScreen> {
                 ),
                 MyTextField(
                   controller: descriptionController,
-                  hint: 'Desctiption',
+                  hint: 'Description',
                   maxLength: 60,
                 ),
                 MyTextField(
@@ -188,8 +197,8 @@ class _EditSongScreenState extends State<EditSongScreen> {
         user: context.read<AuthBloc>().icocUser,
         song: widget.song,
       ));
-      context.read<SongsBloc>().currentSong.value = widget.song;
       context.pop();
+      context.read<SongsBloc>().currentSong.value = widget.song;
     }
   }
 }

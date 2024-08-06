@@ -35,6 +35,7 @@ class _AddVersionTabState extends State<AddVersionTab> {
   TextEditingController textController = TextEditingController();
   TextEditingController urlController = TextEditingController();
   bool sendNotifications = false;
+  bool isChords = false;
 
   @override
   Widget build(BuildContext context) {
@@ -46,24 +47,31 @@ class _AddVersionTabState extends State<AddVersionTab> {
             key: _formKey,
             child: ListView(
               children: [
+                const Text(
+                  'Add a new song version',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Row(
                     children: [
                       SelectLanguageWidget(langController: langController),
+                      const Spacer(),
+                      SizedBox(
+                        width: 150,
+                        child: CheckboxListTile(
+                            controlAffinity: ListTileControlAffinity.leading,
+                            title: const Text('Chords'),
+                            value: isChords,
+                            onChanged: (val) => setState(() {
+                                  isChords = !isChords;
+                                })),
+                      ),
+                      const Spacer(),
                       SendNotificationCheckBox(
                         onChanged: (value) => sendNotifications = value,
                       ),
-                      const Spacer(),
-                      const Text(
-                        'Add a new song version',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      const Spacer(),
-                      const SizedBox(
-                        width: 80,
-                      )
                     ],
                   ),
                 ),
@@ -133,6 +141,7 @@ class _AddVersionTabState extends State<AddVersionTab> {
             id: widget.song.id,
             lang: languagesToEnumMap[langController.text]!,
             text: textController.text,
+            isChords: isChords,
             title: titleController.text,
             description: descriptionController.text,
             youtubeVideos: youtubeVideos);
