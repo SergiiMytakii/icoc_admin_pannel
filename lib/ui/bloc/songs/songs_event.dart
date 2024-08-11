@@ -10,12 +10,8 @@ class SongsEvent with _$SongsEvent {
 
   const factory SongsEvent.add(
       {required IcocUser? user, required SongModel song}) = SongsAdd;
-  // const factory SongsEvent.update(
-  //     {required IcocUser? user,
-  //     required SongModel song,
-  //     required String lang,
-  //     required String title,
-  //     String? description,
-  //     String? link,
-  //     required String text}) = SongsUpdate;
+  const factory SongsEvent.delete({
+    required IcocUser? user,
+    required String songId,
+  }) = SongDelete;
 }

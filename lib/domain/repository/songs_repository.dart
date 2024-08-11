@@ -5,4 +5,5 @@ abstract class SongsRepository {
   Future<List<SongModel>> getSongs();
   Future<List<SongModel>> updateSong(IcocUser? user, SongModel song);
   Future<List<SongModel>> addSong(IcocUser? user, SongModel song);
+  Future<List<SongModel>> delete(IcocUser? user, String songId);
 }

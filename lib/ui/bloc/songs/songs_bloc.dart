@@ -25,6 +25,7 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     on<SongsGet>(_onSongsRequested);
     on<SongsEdit>(_onEditSongRequested);
     on<SongsAdd>(_onSongAddRequested);
+    on<SongDelete>(_onSongDeleteRequested);
   }
   final SongsRepository songsRepositoryImpl;
   final VideoRepository videoRepositoryImpl;
@@ -109,21 +110,18 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     return song.copyWith(songVersions: updatedVersions);
   }
 
-  // FutureOr<void> _onSongUpdateRequested(
-  //     SongsUpdate event, Emitter<SongsState> emit) async {
-  //   //todo find youtubeVideos titles
-
-  //   try {
-  //     emit(const SongsState.loading());
-  //     final songs =
-  //         await songsRepositoryImpl.updateSong(event.user, event.song);
-  //     songs.sort((a, b) => a.id.compareTo(b.id));
-  //     emit(SongsState.success(songs));
-  //   } catch (error, stackTrace) {
-  //     logError(error, stackTrace);
-  //     emit(SongsState.error(error.toString()));
-  //   }
-  // }
+  FutureOr<void> _onSongDeleteRequested(
+      SongDelete event, Emitter<SongsState> emit) async {
+    try {
+      emit(const SongsState.loading());
+      final songs = await songsRepositoryImpl.delete(event.user, event.songId);
+      emit(SongsState.success(songs));
+      songs.sort((a, b) => a.id.compareTo(b.id));
+    } catch (error, stackTrace) {
+      logError(error, stackTrace);
+      emit(SongsState.error(error.toString()));
+    }
+  }
 
   FutureOr<void> _onSongAddRequested(
       SongsAdd event, Emitter<SongsState> emit) async {

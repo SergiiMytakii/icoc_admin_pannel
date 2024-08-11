@@ -28,16 +28,7 @@ void main() async {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
-      // Check if it's a mobile browser
-      if (kIsWeb &&
-          PlatformDispatcher.instance.views.first.physicalSize.shortestSide <
-              600) {
-        // Set preferred orientations for mobile browser
-        await SystemChrome.setPreferredOrientations([
-          DeviceOrientation.landscapeLeft,
-          DeviceOrientation.landscapeRight,
-        ]);
-      }
+
       preventSystemContextMenu();
       setUrlStrategy(PathUrlStrategy());
       configureDependencies(Environment.dev);

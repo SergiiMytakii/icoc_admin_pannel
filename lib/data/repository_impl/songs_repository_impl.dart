@@ -54,4 +54,16 @@ class SongsRepositoryImpl implements SongsRepository {
     ).toList();
     return songs;
   }
+
+  @override
+  Future<List<SongModel>> delete(IcocUser? user, String songId) async {
+    final QuerySnapshot snapshot = await firebaseDataSource.deleteToFirebase(
+        user, FirebaseCollections.SongsV2.name, songId);
+    final List<SongModel> songs = snapshot.docs.map(
+      (doc) {
+        return SongModel.fromJson(doc.data() as Map<String, dynamic>);
+      },
+    ).toList();
+    return songs;
+  }
 }

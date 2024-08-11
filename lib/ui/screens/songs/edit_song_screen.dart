@@ -38,6 +38,9 @@ class _EditSongScreenState extends State<EditSongScreen> {
 
   @override
   void initState() {
+    if (widget.song.songVersions.isEmpty) {
+      context.pop();
+    }
     isChords = widget.song.songVersions[widget.index].isChords;
     titleController = TextEditingController(
         text: widget.song.songVersions[widget.index].title);
@@ -55,6 +58,9 @@ class _EditSongScreenState extends State<EditSongScreen> {
     videos?.forEach((video) =>
         youtubeControllers.add(TextEditingController(text: video.link)));
 
+//add empty controller for video
+    youtubeControllers.add(TextEditingController()..text = '');
+
     html.window.onKeyDown.listen((html.KeyboardEvent event) {
       if (event.metaKey && event.key == 's') {
         event.preventDefault(); // Prevent the default browser action (save)
@@ -63,12 +69,6 @@ class _EditSongScreenState extends State<EditSongScreen> {
     });
 
     super.initState();
-  }
-
-  void addYoutubeController() {
-    setState(() {
-      youtubeControllers.add(TextEditingController());
-    });
   }
 
   List<YoutubeVideo> getYoutubeVideos() {
@@ -146,9 +146,9 @@ class _EditSongScreenState extends State<EditSongScreen> {
                   },
                 ),
                 SizedBox(
-                  height: youtubeControllers.length * 100,
+                  height: youtubeControllers.length * 50,
                   child: ListView.builder(
-                    itemCount: youtubeControllers.length,
+                    itemCount: youtubeControllers.length - 1,
                     itemBuilder: (context, index) {
                       return MyTextField(
                         controller: youtubeControllers[index],
@@ -156,6 +156,10 @@ class _EditSongScreenState extends State<EditSongScreen> {
                       );
                     },
                   ),
+                ),
+                MyTextField(
+                  controller: youtubeControllers.last,
+                  hint: 'Add YouTube Link',
                 ),
                 const SizedBox(
                   height: 200,

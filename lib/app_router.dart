@@ -11,6 +11,7 @@ import 'package:icoc_admin_pannel/ui/screens/bible_study/add_new_lesson.dart';
 import 'package:icoc_admin_pannel/ui/screens/bible_study/bible_study_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/bible_study/edit_lesson.dart';
 import 'package:icoc_admin_pannel/ui/screens/feedback/feedbacks_screen.dart';
+import 'package:icoc_admin_pannel/ui/screens/feedback/widget/edit_feedback.dart';
 import 'package:icoc_admin_pannel/ui/screens/notifications/add_new_notification.dart';
 import 'package:icoc_admin_pannel/ui/screens/notifications/notifications_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/root/root_screen.dart';
@@ -142,12 +143,22 @@ final GoRouter router = GoRouter(
           },
         ),
         GoRoute(
-          path: '/feedbacks',
-          pageBuilder: (BuildContext context, GoRouterState state) {
-            return NoTransitionPage<void>(
-                key: state.pageKey, child: const FeedbacksScreen());
-          },
-        ),
+            path: '/feedbacks',
+            pageBuilder: (BuildContext context, GoRouterState state) {
+              return NoTransitionPage<void>(
+                  key: state.pageKey, child: const FeedbackScreen());
+            },
+            routes: [
+              GoRoute(
+                path: 'edit',
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  return NoTransitionPage<void>(
+                    key: state.pageKey,
+                    child: const EditFeedbackScreen(),
+                  );
+                },
+              ),
+            ]),
       ],
     ),
   ],

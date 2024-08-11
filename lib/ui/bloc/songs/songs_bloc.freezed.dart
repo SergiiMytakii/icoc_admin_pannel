@@ -21,6 +21,7 @@ mixin _$SongsEvent {
     required TResult Function(String? query) get,
     required TResult Function(SongModel song, IcocUser? user) edit,
     required TResult Function(IcocUser? user, SongModel song) add,
+    required TResult Function(IcocUser? user, String songId) delete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -28,6 +29,7 @@ mixin _$SongsEvent {
     TResult? Function(String? query)? get,
     TResult? Function(SongModel song, IcocUser? user)? edit,
     TResult? Function(IcocUser? user, SongModel song)? add,
+    TResult? Function(IcocUser? user, String songId)? delete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -35,6 +37,7 @@ mixin _$SongsEvent {
     TResult Function(String? query)? get,
     TResult Function(SongModel song, IcocUser? user)? edit,
     TResult Function(IcocUser? user, SongModel song)? add,
+    TResult Function(IcocUser? user, String songId)? delete,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -43,6 +46,7 @@ mixin _$SongsEvent {
     required TResult Function(SongsGet value) get,
     required TResult Function(SongsEdit value) edit,
     required TResult Function(SongsAdd value) add,
+    required TResult Function(SongDelete value) delete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -50,6 +54,7 @@ mixin _$SongsEvent {
     TResult? Function(SongsGet value)? get,
     TResult? Function(SongsEdit value)? edit,
     TResult? Function(SongsAdd value)? add,
+    TResult? Function(SongDelete value)? delete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -57,6 +62,7 @@ mixin _$SongsEvent {
     TResult Function(SongsGet value)? get,
     TResult Function(SongsEdit value)? edit,
     TResult Function(SongsAdd value)? add,
+    TResult Function(SongDelete value)? delete,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -147,6 +153,7 @@ class _$SongsGetImpl implements SongsGet {
     required TResult Function(String? query) get,
     required TResult Function(SongModel song, IcocUser? user) edit,
     required TResult Function(IcocUser? user, SongModel song) add,
+    required TResult Function(IcocUser? user, String songId) delete,
   }) {
     return get(query);
   }
@@ -157,6 +164,7 @@ class _$SongsGetImpl implements SongsGet {
     TResult? Function(String? query)? get,
     TResult? Function(SongModel song, IcocUser? user)? edit,
     TResult? Function(IcocUser? user, SongModel song)? add,
+    TResult? Function(IcocUser? user, String songId)? delete,
   }) {
     return get?.call(query);
   }
@@ -167,6 +175,7 @@ class _$SongsGetImpl implements SongsGet {
     TResult Function(String? query)? get,
     TResult Function(SongModel song, IcocUser? user)? edit,
     TResult Function(IcocUser? user, SongModel song)? add,
+    TResult Function(IcocUser? user, String songId)? delete,
     required TResult orElse(),
   }) {
     if (get != null) {
@@ -181,6 +190,7 @@ class _$SongsGetImpl implements SongsGet {
     required TResult Function(SongsGet value) get,
     required TResult Function(SongsEdit value) edit,
     required TResult Function(SongsAdd value) add,
+    required TResult Function(SongDelete value) delete,
   }) {
     return get(this);
   }
@@ -191,6 +201,7 @@ class _$SongsGetImpl implements SongsGet {
     TResult? Function(SongsGet value)? get,
     TResult? Function(SongsEdit value)? edit,
     TResult? Function(SongsAdd value)? add,
+    TResult? Function(SongDelete value)? delete,
   }) {
     return get?.call(this);
   }
@@ -201,6 +212,7 @@ class _$SongsGetImpl implements SongsGet {
     TResult Function(SongsGet value)? get,
     TResult Function(SongsEdit value)? edit,
     TResult Function(SongsAdd value)? add,
+    TResult Function(SongDelete value)? delete,
     required TResult orElse(),
   }) {
     if (get != null) {
@@ -304,6 +316,7 @@ class _$SongsEditImpl implements SongsEdit {
     required TResult Function(String? query) get,
     required TResult Function(SongModel song, IcocUser? user) edit,
     required TResult Function(IcocUser? user, SongModel song) add,
+    required TResult Function(IcocUser? user, String songId) delete,
   }) {
     return edit(song, user);
   }
@@ -314,6 +327,7 @@ class _$SongsEditImpl implements SongsEdit {
     TResult? Function(String? query)? get,
     TResult? Function(SongModel song, IcocUser? user)? edit,
     TResult? Function(IcocUser? user, SongModel song)? add,
+    TResult? Function(IcocUser? user, String songId)? delete,
   }) {
     return edit?.call(song, user);
   }
@@ -324,6 +338,7 @@ class _$SongsEditImpl implements SongsEdit {
     TResult Function(String? query)? get,
     TResult Function(SongModel song, IcocUser? user)? edit,
     TResult Function(IcocUser? user, SongModel song)? add,
+    TResult Function(IcocUser? user, String songId)? delete,
     required TResult orElse(),
   }) {
     if (edit != null) {
@@ -338,6 +353,7 @@ class _$SongsEditImpl implements SongsEdit {
     required TResult Function(SongsGet value) get,
     required TResult Function(SongsEdit value) edit,
     required TResult Function(SongsAdd value) add,
+    required TResult Function(SongDelete value) delete,
   }) {
     return edit(this);
   }
@@ -348,6 +364,7 @@ class _$SongsEditImpl implements SongsEdit {
     TResult? Function(SongsGet value)? get,
     TResult? Function(SongsEdit value)? edit,
     TResult? Function(SongsAdd value)? add,
+    TResult? Function(SongDelete value)? delete,
   }) {
     return edit?.call(this);
   }
@@ -358,6 +375,7 @@ class _$SongsEditImpl implements SongsEdit {
     TResult Function(SongsGet value)? get,
     TResult Function(SongsEdit value)? edit,
     TResult Function(SongsAdd value)? add,
+    TResult Function(SongDelete value)? delete,
     required TResult orElse(),
   }) {
     if (edit != null) {
@@ -464,6 +482,7 @@ class _$SongsAddImpl implements SongsAdd {
     required TResult Function(String? query) get,
     required TResult Function(SongModel song, IcocUser? user) edit,
     required TResult Function(IcocUser? user, SongModel song) add,
+    required TResult Function(IcocUser? user, String songId) delete,
   }) {
     return add(user, song);
   }
@@ -474,6 +493,7 @@ class _$SongsAddImpl implements SongsAdd {
     TResult? Function(String? query)? get,
     TResult? Function(SongModel song, IcocUser? user)? edit,
     TResult? Function(IcocUser? user, SongModel song)? add,
+    TResult? Function(IcocUser? user, String songId)? delete,
   }) {
     return add?.call(user, song);
   }
@@ -484,6 +504,7 @@ class _$SongsAddImpl implements SongsAdd {
     TResult Function(String? query)? get,
     TResult Function(SongModel song, IcocUser? user)? edit,
     TResult Function(IcocUser? user, SongModel song)? add,
+    TResult Function(IcocUser? user, String songId)? delete,
     required TResult orElse(),
   }) {
     if (add != null) {
@@ -498,6 +519,7 @@ class _$SongsAddImpl implements SongsAdd {
     required TResult Function(SongsGet value) get,
     required TResult Function(SongsEdit value) edit,
     required TResult Function(SongsAdd value) add,
+    required TResult Function(SongDelete value) delete,
   }) {
     return add(this);
   }
@@ -508,6 +530,7 @@ class _$SongsAddImpl implements SongsAdd {
     TResult? Function(SongsGet value)? get,
     TResult? Function(SongsEdit value)? edit,
     TResult? Function(SongsAdd value)? add,
+    TResult? Function(SongDelete value)? delete,
   }) {
     return add?.call(this);
   }
@@ -518,6 +541,7 @@ class _$SongsAddImpl implements SongsAdd {
     TResult Function(SongsGet value)? get,
     TResult Function(SongsEdit value)? edit,
     TResult Function(SongsAdd value)? add,
+    TResult Function(SongDelete value)? delete,
     required TResult orElse(),
   }) {
     if (add != null) {
@@ -536,6 +560,162 @@ abstract class SongsAdd implements SongsEvent {
   SongModel get song;
   @JsonKey(ignore: true)
   _$$SongsAddImplCopyWith<_$SongsAddImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$SongDeleteImplCopyWith<$Res> {
+  factory _$$SongDeleteImplCopyWith(
+          _$SongDeleteImpl value, $Res Function(_$SongDeleteImpl) then) =
+      __$$SongDeleteImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({IcocUser? user, String songId});
+}
+
+/// @nodoc
+class __$$SongDeleteImplCopyWithImpl<$Res>
+    extends _$SongsEventCopyWithImpl<$Res, _$SongDeleteImpl>
+    implements _$$SongDeleteImplCopyWith<$Res> {
+  __$$SongDeleteImplCopyWithImpl(
+      _$SongDeleteImpl _value, $Res Function(_$SongDeleteImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? user = freezed,
+    Object? songId = null,
+  }) {
+    return _then(_$SongDeleteImpl(
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as IcocUser?,
+      songId: null == songId
+          ? _value.songId
+          : songId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SongDeleteImpl implements SongDelete {
+  const _$SongDeleteImpl({required this.user, required this.songId});
+
+  @override
+  final IcocUser? user;
+  @override
+  final String songId;
+
+  @override
+  String toString() {
+    return 'SongsEvent.delete(user: $user, songId: $songId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SongDeleteImpl &&
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.songId, songId) || other.songId == songId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, user, songId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SongDeleteImplCopyWith<_$SongDeleteImpl> get copyWith =>
+      __$$SongDeleteImplCopyWithImpl<_$SongDeleteImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? query) get,
+    required TResult Function(SongModel song, IcocUser? user) edit,
+    required TResult Function(IcocUser? user, SongModel song) add,
+    required TResult Function(IcocUser? user, String songId) delete,
+  }) {
+    return delete(user, songId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? query)? get,
+    TResult? Function(SongModel song, IcocUser? user)? edit,
+    TResult? Function(IcocUser? user, SongModel song)? add,
+    TResult? Function(IcocUser? user, String songId)? delete,
+  }) {
+    return delete?.call(user, songId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? query)? get,
+    TResult Function(SongModel song, IcocUser? user)? edit,
+    TResult Function(IcocUser? user, SongModel song)? add,
+    TResult Function(IcocUser? user, String songId)? delete,
+    required TResult orElse(),
+  }) {
+    if (delete != null) {
+      return delete(user, songId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SongsGet value) get,
+    required TResult Function(SongsEdit value) edit,
+    required TResult Function(SongsAdd value) add,
+    required TResult Function(SongDelete value) delete,
+  }) {
+    return delete(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SongsGet value)? get,
+    TResult? Function(SongsEdit value)? edit,
+    TResult? Function(SongsAdd value)? add,
+    TResult? Function(SongDelete value)? delete,
+  }) {
+    return delete?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SongsGet value)? get,
+    TResult Function(SongsEdit value)? edit,
+    TResult Function(SongsAdd value)? add,
+    TResult Function(SongDelete value)? delete,
+    required TResult orElse(),
+  }) {
+    if (delete != null) {
+      return delete(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SongDelete implements SongsEvent {
+  const factory SongDelete(
+      {required final IcocUser? user,
+      required final String songId}) = _$SongDeleteImpl;
+
+  IcocUser? get user;
+  String get songId;
+  @JsonKey(ignore: true)
+  _$$SongDeleteImplCopyWith<_$SongDeleteImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

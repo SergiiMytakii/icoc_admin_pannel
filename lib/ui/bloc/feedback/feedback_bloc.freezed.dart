@@ -19,22 +19,22 @@ mixin _$FeedbackEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(String feedbackId) edit,
-    required TResult Function(String feedbackId) delete,
+    required TResult Function(IcocUser? user, FeedbackModel feedback) edit,
+    required TResult Function(IcocUser? user, String feedbackId) delete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(String feedbackId)? edit,
-    TResult? Function(String feedbackId)? delete,
+    TResult? Function(IcocUser? user, FeedbackModel feedback)? edit,
+    TResult? Function(IcocUser? user, String feedbackId)? delete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(String feedbackId)? edit,
-    TResult Function(String feedbackId)? delete,
+    TResult Function(IcocUser? user, FeedbackModel feedback)? edit,
+    TResult Function(IcocUser? user, String feedbackId)? delete,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -119,8 +119,8 @@ class _$FeedbackGetImpl implements FeedbackGet {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(String feedbackId) edit,
-    required TResult Function(String feedbackId) delete,
+    required TResult Function(IcocUser? user, FeedbackModel feedback) edit,
+    required TResult Function(IcocUser? user, String feedbackId) delete,
   }) {
     return get();
   }
@@ -129,8 +129,8 @@ class _$FeedbackGetImpl implements FeedbackGet {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(String feedbackId)? edit,
-    TResult? Function(String feedbackId)? delete,
+    TResult? Function(IcocUser? user, FeedbackModel feedback)? edit,
+    TResult? Function(IcocUser? user, String feedbackId)? delete,
   }) {
     return get?.call();
   }
@@ -139,8 +139,8 @@ class _$FeedbackGetImpl implements FeedbackGet {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(String feedbackId)? edit,
-    TResult Function(String feedbackId)? delete,
+    TResult Function(IcocUser? user, FeedbackModel feedback)? edit,
+    TResult Function(IcocUser? user, String feedbackId)? delete,
     required TResult orElse(),
   }) {
     if (get != null) {
@@ -194,7 +194,9 @@ abstract class _$$FeedbackEditImplCopyWith<$Res> {
           _$FeedbackEditImpl value, $Res Function(_$FeedbackEditImpl) then) =
       __$$FeedbackEditImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String feedbackId});
+  $Res call({IcocUser? user, FeedbackModel feedback});
+
+  $FeedbackModelCopyWith<$Res> get feedback;
 }
 
 /// @nodoc
@@ -208,28 +210,43 @@ class __$$FeedbackEditImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? feedbackId = null,
+    Object? user = freezed,
+    Object? feedback = null,
   }) {
     return _then(_$FeedbackEditImpl(
-      null == feedbackId
-          ? _value.feedbackId
-          : feedbackId // ignore: cast_nullable_to_non_nullable
-              as String,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as IcocUser?,
+      feedback: null == feedback
+          ? _value.feedback
+          : feedback // ignore: cast_nullable_to_non_nullable
+              as FeedbackModel,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $FeedbackModelCopyWith<$Res> get feedback {
+    return $FeedbackModelCopyWith<$Res>(_value.feedback, (value) {
+      return _then(_value.copyWith(feedback: value));
+    });
   }
 }
 
 /// @nodoc
 
 class _$FeedbackEditImpl implements FeedbackEdit {
-  const _$FeedbackEditImpl(this.feedbackId);
+  const _$FeedbackEditImpl({required this.user, required this.feedback});
 
   @override
-  final String feedbackId;
+  final IcocUser? user;
+  @override
+  final FeedbackModel feedback;
 
   @override
   String toString() {
-    return 'FeedbackEvent.edit(feedbackId: $feedbackId)';
+    return 'FeedbackEvent.edit(user: $user, feedback: $feedback)';
   }
 
   @override
@@ -237,12 +254,13 @@ class _$FeedbackEditImpl implements FeedbackEdit {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FeedbackEditImpl &&
-            (identical(other.feedbackId, feedbackId) ||
-                other.feedbackId == feedbackId));
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.feedback, feedback) ||
+                other.feedback == feedback));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, feedbackId);
+  int get hashCode => Object.hash(runtimeType, user, feedback);
 
   @JsonKey(ignore: true)
   @override
@@ -254,32 +272,32 @@ class _$FeedbackEditImpl implements FeedbackEdit {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(String feedbackId) edit,
-    required TResult Function(String feedbackId) delete,
+    required TResult Function(IcocUser? user, FeedbackModel feedback) edit,
+    required TResult Function(IcocUser? user, String feedbackId) delete,
   }) {
-    return edit(feedbackId);
+    return edit(user, feedback);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(String feedbackId)? edit,
-    TResult? Function(String feedbackId)? delete,
+    TResult? Function(IcocUser? user, FeedbackModel feedback)? edit,
+    TResult? Function(IcocUser? user, String feedbackId)? delete,
   }) {
-    return edit?.call(feedbackId);
+    return edit?.call(user, feedback);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(String feedbackId)? edit,
-    TResult Function(String feedbackId)? delete,
+    TResult Function(IcocUser? user, FeedbackModel feedback)? edit,
+    TResult Function(IcocUser? user, String feedbackId)? delete,
     required TResult orElse(),
   }) {
     if (edit != null) {
-      return edit(feedbackId);
+      return edit(user, feedback);
     }
     return orElse();
   }
@@ -320,9 +338,12 @@ class _$FeedbackEditImpl implements FeedbackEdit {
 }
 
 abstract class FeedbackEdit implements FeedbackEvent {
-  const factory FeedbackEdit(final String feedbackId) = _$FeedbackEditImpl;
+  const factory FeedbackEdit(
+      {required final IcocUser? user,
+      required final FeedbackModel feedback}) = _$FeedbackEditImpl;
 
-  String get feedbackId;
+  IcocUser? get user;
+  FeedbackModel get feedback;
   @JsonKey(ignore: true)
   _$$FeedbackEditImplCopyWith<_$FeedbackEditImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -334,7 +355,7 @@ abstract class _$$FeedbackDeleteImplCopyWith<$Res> {
           $Res Function(_$FeedbackDeleteImpl) then) =
       __$$FeedbackDeleteImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String feedbackId});
+  $Res call({IcocUser? user, String feedbackId});
 }
 
 /// @nodoc
@@ -348,10 +369,15 @@ class __$$FeedbackDeleteImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? user = freezed,
     Object? feedbackId = null,
   }) {
     return _then(_$FeedbackDeleteImpl(
-      null == feedbackId
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as IcocUser?,
+      feedbackId: null == feedbackId
           ? _value.feedbackId
           : feedbackId // ignore: cast_nullable_to_non_nullable
               as String,
@@ -362,14 +388,16 @@ class __$$FeedbackDeleteImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$FeedbackDeleteImpl implements FeedbackDelete {
-  const _$FeedbackDeleteImpl(this.feedbackId);
+  const _$FeedbackDeleteImpl({required this.user, required this.feedbackId});
 
+  @override
+  final IcocUser? user;
   @override
   final String feedbackId;
 
   @override
   String toString() {
-    return 'FeedbackEvent.delete(feedbackId: $feedbackId)';
+    return 'FeedbackEvent.delete(user: $user, feedbackId: $feedbackId)';
   }
 
   @override
@@ -377,12 +405,13 @@ class _$FeedbackDeleteImpl implements FeedbackDelete {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FeedbackDeleteImpl &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.feedbackId, feedbackId) ||
                 other.feedbackId == feedbackId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, feedbackId);
+  int get hashCode => Object.hash(runtimeType, user, feedbackId);
 
   @JsonKey(ignore: true)
   @override
@@ -395,32 +424,32 @@ class _$FeedbackDeleteImpl implements FeedbackDelete {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(String feedbackId) edit,
-    required TResult Function(String feedbackId) delete,
+    required TResult Function(IcocUser? user, FeedbackModel feedback) edit,
+    required TResult Function(IcocUser? user, String feedbackId) delete,
   }) {
-    return delete(feedbackId);
+    return delete(user, feedbackId);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(String feedbackId)? edit,
-    TResult? Function(String feedbackId)? delete,
+    TResult? Function(IcocUser? user, FeedbackModel feedback)? edit,
+    TResult? Function(IcocUser? user, String feedbackId)? delete,
   }) {
-    return delete?.call(feedbackId);
+    return delete?.call(user, feedbackId);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(String feedbackId)? edit,
-    TResult Function(String feedbackId)? delete,
+    TResult Function(IcocUser? user, FeedbackModel feedback)? edit,
+    TResult Function(IcocUser? user, String feedbackId)? delete,
     required TResult orElse(),
   }) {
     if (delete != null) {
-      return delete(feedbackId);
+      return delete(user, feedbackId);
     }
     return orElse();
   }
@@ -461,8 +490,11 @@ class _$FeedbackDeleteImpl implements FeedbackDelete {
 }
 
 abstract class FeedbackDelete implements FeedbackEvent {
-  const factory FeedbackDelete(final String feedbackId) = _$FeedbackDeleteImpl;
+  const factory FeedbackDelete(
+      {required final IcocUser? user,
+      required final String feedbackId}) = _$FeedbackDeleteImpl;
 
+  IcocUser? get user;
   String get feedbackId;
   @JsonKey(ignore: true)
   _$$FeedbackDeleteImplCopyWith<_$FeedbackDeleteImpl> get copyWith =>
@@ -476,7 +508,7 @@ mixin _$FeedbackState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String errorMessage) error,
-    required TResult Function(List<Feedback> feedbacks) success,
+    required TResult Function(List<FeedbackModel> feedbacks) success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -484,7 +516,7 @@ mixin _$FeedbackState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String errorMessage)? error,
-    TResult? Function(List<Feedback> feedbacks)? success,
+    TResult? Function(List<FeedbackModel> feedbacks)? success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -492,7 +524,7 @@ mixin _$FeedbackState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String errorMessage)? error,
-    TResult Function(List<Feedback> feedbacks)? success,
+    TResult Function(List<FeedbackModel> feedbacks)? success,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -583,7 +615,7 @@ class _$FeedbackInitialStateImpl implements _FeedbackInitialState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String errorMessage) error,
-    required TResult Function(List<Feedback> feedbacks) success,
+    required TResult Function(List<FeedbackModel> feedbacks) success,
   }) {
     return initial();
   }
@@ -594,7 +626,7 @@ class _$FeedbackInitialStateImpl implements _FeedbackInitialState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String errorMessage)? error,
-    TResult? Function(List<Feedback> feedbacks)? success,
+    TResult? Function(List<FeedbackModel> feedbacks)? success,
   }) {
     return initial?.call();
   }
@@ -605,7 +637,7 @@ class _$FeedbackInitialStateImpl implements _FeedbackInitialState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String errorMessage)? error,
-    TResult Function(List<Feedback> feedbacks)? success,
+    TResult Function(List<FeedbackModel> feedbacks)? success,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -698,7 +730,7 @@ class _$FeedbackLoadingStateImpl implements _FeedbackLoadingState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String errorMessage) error,
-    required TResult Function(List<Feedback> feedbacks) success,
+    required TResult Function(List<FeedbackModel> feedbacks) success,
   }) {
     return loading();
   }
@@ -709,7 +741,7 @@ class _$FeedbackLoadingStateImpl implements _FeedbackLoadingState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String errorMessage)? error,
-    TResult? Function(List<Feedback> feedbacks)? success,
+    TResult? Function(List<FeedbackModel> feedbacks)? success,
   }) {
     return loading?.call();
   }
@@ -720,7 +752,7 @@ class _$FeedbackLoadingStateImpl implements _FeedbackLoadingState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String errorMessage)? error,
-    TResult Function(List<Feedback> feedbacks)? success,
+    TResult Function(List<FeedbackModel> feedbacks)? success,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -840,7 +872,7 @@ class _$FeedbackErrorStateImpl implements _FeedbackErrorState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String errorMessage) error,
-    required TResult Function(List<Feedback> feedbacks) success,
+    required TResult Function(List<FeedbackModel> feedbacks) success,
   }) {
     return error(errorMessage);
   }
@@ -851,7 +883,7 @@ class _$FeedbackErrorStateImpl implements _FeedbackErrorState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String errorMessage)? error,
-    TResult? Function(List<Feedback> feedbacks)? success,
+    TResult? Function(List<FeedbackModel> feedbacks)? success,
   }) {
     return error?.call(errorMessage);
   }
@@ -862,7 +894,7 @@ class _$FeedbackErrorStateImpl implements _FeedbackErrorState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String errorMessage)? error,
-    TResult Function(List<Feedback> feedbacks)? success,
+    TResult Function(List<FeedbackModel> feedbacks)? success,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -925,7 +957,7 @@ abstract class _$$FeedbackSuccessStateImplCopyWith<$Res> {
           $Res Function(_$FeedbackSuccessStateImpl) then) =
       __$$FeedbackSuccessStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<Feedback> feedbacks});
+  $Res call({List<FeedbackModel> feedbacks});
 }
 
 /// @nodoc
@@ -945,7 +977,7 @@ class __$$FeedbackSuccessStateImplCopyWithImpl<$Res>
       null == feedbacks
           ? _value._feedbacks
           : feedbacks // ignore: cast_nullable_to_non_nullable
-              as List<Feedback>,
+              as List<FeedbackModel>,
     ));
   }
 }
@@ -953,12 +985,12 @@ class __$$FeedbackSuccessStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$FeedbackSuccessStateImpl implements _FeedbackSuccessState {
-  const _$FeedbackSuccessStateImpl(final List<Feedback> feedbacks)
+  const _$FeedbackSuccessStateImpl(final List<FeedbackModel> feedbacks)
       : _feedbacks = feedbacks;
 
-  final List<Feedback> _feedbacks;
+  final List<FeedbackModel> _feedbacks;
   @override
-  List<Feedback> get feedbacks {
+  List<FeedbackModel> get feedbacks {
     if (_feedbacks is EqualUnmodifiableListView) return _feedbacks;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_feedbacks);
@@ -996,7 +1028,7 @@ class _$FeedbackSuccessStateImpl implements _FeedbackSuccessState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String errorMessage) error,
-    required TResult Function(List<Feedback> feedbacks) success,
+    required TResult Function(List<FeedbackModel> feedbacks) success,
   }) {
     return success(feedbacks);
   }
@@ -1007,7 +1039,7 @@ class _$FeedbackSuccessStateImpl implements _FeedbackSuccessState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String errorMessage)? error,
-    TResult? Function(List<Feedback> feedbacks)? success,
+    TResult? Function(List<FeedbackModel> feedbacks)? success,
   }) {
     return success?.call(feedbacks);
   }
@@ -1018,7 +1050,7 @@ class _$FeedbackSuccessStateImpl implements _FeedbackSuccessState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String errorMessage)? error,
-    TResult Function(List<Feedback> feedbacks)? success,
+    TResult Function(List<FeedbackModel> feedbacks)? success,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -1066,10 +1098,10 @@ class _$FeedbackSuccessStateImpl implements _FeedbackSuccessState {
 }
 
 abstract class _FeedbackSuccessState implements FeedbackState {
-  const factory _FeedbackSuccessState(final List<Feedback> feedbacks) =
+  const factory _FeedbackSuccessState(final List<FeedbackModel> feedbacks) =
       _$FeedbackSuccessStateImpl;
 
-  List<Feedback> get feedbacks;
+  List<FeedbackModel> get feedbacks;
   @JsonKey(ignore: true)
   _$$FeedbackSuccessStateImplCopyWith<_$FeedbackSuccessStateImpl>
       get copyWith => throw _privateConstructorUsedError;

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/helpers/calculate_song_number.dart';
+import 'package:icoc_admin_pannel/domain/helpers/show_menu.dart';
 import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
@@ -75,8 +76,11 @@ class BibleStudyScreen extends StatelessWidget {
                                     },
                                     onSecondaryTapDown:
                                         (TapDownDetails details) {
-                                      _showContextMenu(context,
-                                          details.globalPosition, bibleStudy);
+                                      showContextMenu(
+                                          context,
+                                          details.globalPosition,
+                                          () => _deleteBibleStudy(
+                                              context, bibleStudy));
                                     },
                                     child: BibleStudyCard(
                                       bibleStudy: bibleStudy,
@@ -165,40 +169,15 @@ class BibleStudyScreen extends StatelessWidget {
     }));
   }
 
-  void _showContextMenu(
-      BuildContext context, Offset tapPosition, BibleStudy bibleStudy) {
-    final RenderBox overlay =
-        Overlay.of(context).context.findRenderObject() as RenderBox;
-
-    final RelativeRect position = RelativeRect.fromRect(
-      Rect.fromPoints(
-        tapPosition,
-        tapPosition,
-      ),
-      Offset.zero & overlay.size,
-    );
-    showMenu(
-      context: context,
-      position: position,
-      items: [
-        PopupMenuItem(
-          child: const Text(
-            'Delete',
-            style: TextStyle(color: ScreenColors.songBook),
-          ),
-          onTap: () async {
-            final result = await showAlertDialog(context,
-                'Do you really want to delete ${bibleStudy.topic}? Be carefull! ',
-                showCancelButton: true);
-            if (result) {
-              context.read<BibleStudyBloc>().add(BibleStudyEvent.delete(
-                  user: context.read<AuthBloc>().icocUser,
-                  id: bibleStudy.id.toString()));
-            }
-          },
-        ),
-      ],
-    );
+  Future _deleteBibleStudy(BuildContext context, BibleStudy bibleStudy) async {
+    final result = await showAlertDialog(context,
+        'Do you really want to delete ${bibleStudy.topic}? Be carefull! ',
+        showCancelButton: true);
+    if (result) {
+      context.read<BibleStudyBloc>().add(BibleStudyEvent.delete(
+          user: context.read<AuthBloc>().icocUser,
+          id: bibleStudy.id.toString()));
+    }
   }
 
   Future<dynamic> _showAddTopicDialog(

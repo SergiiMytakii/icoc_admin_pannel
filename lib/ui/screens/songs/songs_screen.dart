@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:icoc_admin_pannel/domain/helpers/show_menu.dart';
+import 'package:icoc_admin_pannel/domain/model/songs/song_model.dart';
 import 'package:icoc_admin_pannel/injection.dart';
+import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/one_song.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/song_card.dart';
 import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
+import 'dart:js' as js;
 
 final bucket = PageStorageBucket();
 
@@ -69,24 +74,37 @@ class _SongsScreenState extends State<SongsScreen> {
                       children: [
                         _buildSearchBar(context),
                         Expanded(
-                          child: PageStorage(
-                            bucket: bucket,
-                            child: ListView(
-                              key: const PageStorageKey<String>('songsList'),
-                              controller: _scrollController,
-                              children: songs
-                                  .map((song) => GestureDetector(
-                                      onTap: () => context
-                                          .read<SongsBloc>()
-                                          .currentSong
-                                          .value = song,
-                                      child: SongCard(
-                                        song: song,
-                                      )))
-                                  .toList(),
-                            ),
-                          ),
-                        ),
+                          child: LayoutBuilder(builder: (context, constraints) {
+                            if (constraints.maxWidth < 150) {
+                              js.context.callMethod('requestLandscape');
+                            }
+                            return PageStorage(
+                                bucket: bucket,
+                                child: ListView(
+                                  key:
+                                      const PageStorageKey<String>('songsList'),
+                                  controller: _scrollController,
+                                  children: songs
+                                      .map((song) => GestureDetector(
+                                          onTap: () => context
+                                              .read<SongsBloc>()
+                                              .currentSong
+                                              .value = song,
+                                          onSecondaryTapDown:
+                                              (TapDownDetails details) {
+                                            showContextMenu(
+                                                context,
+                                                details.globalPosition,
+                                                () =>
+                                                    _deleteSong(context, song));
+                                          },
+                                          child: SongCard(
+                                            song: song,
+                                          )))
+                                      .toList(),
+                                ));
+                          }),
+                        )
                       ],
                     ),
                   ),
@@ -135,5 +153,15 @@ class _SongsScreenState extends State<SongsScreen> {
         side: const WidgetStatePropertyAll(BorderSide(color: Colors.grey)),
       ),
     );
+  }
+
+  Future _deleteSong(BuildContext context, SongModel song) async {
+    final result = await showAlertDialog(
+        context, 'Do you really want to delete  song ${song.id}? Be carefull! ',
+        showCancelButton: true);
+    if (result) {
+      context.read<SongsBloc>().add(SongsEvent.delete(
+          user: context.read<AuthBloc>().icocUser, songId: song.id.toString()));
+    }
   }
 }
