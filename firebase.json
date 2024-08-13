@@ -1,0 +1,40 @@
+{
+  "flutter": {
+    "platforms": {
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "icoc-8f075",
+          "configurations": {
+            "web": "1:423282730331:web:b9a893012bb754f61ce67e"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(jpg|jpeg|gif|png)",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          }
+        ]
+      }
+    ],
+    "rewrites": [ {
+    "source": "**",
+    "destination": "/index.html"
+   } ],
+    "frameworksBackend": {
+      "region": "europe-west1"
+    }
+  }
+}
