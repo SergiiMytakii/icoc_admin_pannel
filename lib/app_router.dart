@@ -113,7 +113,7 @@ final GoRouter router = GoRouter(
             path: '/bible-study',
             pageBuilder: (BuildContext context, GoRouterState state) {
               return NoTransitionPage<void>(
-                  key: state.pageKey, child: const BibleStudyScreen());
+                  key: state.pageKey, child: BibleStudyScreen());
             },
             routes: [
               GoRoute(

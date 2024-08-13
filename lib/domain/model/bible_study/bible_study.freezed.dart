@@ -14,42 +14,43 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-BibleStudyV2 _$BibleStudyV2FromJson(Map<String, dynamic> json) {
+BibleStudy _$BibleStudyFromJson(Map<String, dynamic> json) {
   return _BibleStudy.fromJson(json);
 }
 
 /// @nodoc
-mixin _$BibleStudyV2 {
+mixin _$BibleStudy {
+  @override
+  int get id => throw _privateConstructorUsedError;
   String get topic => throw _privateConstructorUsedError;
   String get subtopic => throw _privateConstructorUsedError;
   Languages get lang => throw _privateConstructorUsedError;
-  int get id => throw _privateConstructorUsedError;
   List<Lesson> get lessons => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $BibleStudyV2CopyWith<BibleStudyV2> get copyWith =>
+  $BibleStudyCopyWith<BibleStudy> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $BibleStudyV2CopyWith<$Res> {
-  factory $BibleStudyV2CopyWith(
-          BibleStudyV2 value, $Res Function(BibleStudyV2) then) =
-      _$BibleStudyV2CopyWithImpl<$Res, BibleStudyV2>;
+abstract class $BibleStudyCopyWith<$Res> {
+  factory $BibleStudyCopyWith(
+          BibleStudy value, $Res Function(BibleStudy) then) =
+      _$BibleStudyCopyWithImpl<$Res, BibleStudy>;
   @useResult
   $Res call(
-      {String topic,
+      {@override int id,
+      String topic,
       String subtopic,
       Languages lang,
-      int id,
       List<Lesson> lessons});
 }
 
 /// @nodoc
-class _$BibleStudyV2CopyWithImpl<$Res, $Val extends BibleStudyV2>
-    implements $BibleStudyV2CopyWith<$Res> {
-  _$BibleStudyV2CopyWithImpl(this._value, this._then);
+class _$BibleStudyCopyWithImpl<$Res, $Val extends BibleStudy>
+    implements $BibleStudyCopyWith<$Res> {
+  _$BibleStudyCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -59,13 +60,17 @@ class _$BibleStudyV2CopyWithImpl<$Res, $Val extends BibleStudyV2>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? topic = null,
     Object? subtopic = null,
     Object? lang = null,
-    Object? id = null,
     Object? lessons = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       topic: null == topic
           ? _value.topic
           : topic // ignore: cast_nullable_to_non_nullable
@@ -78,10 +83,6 @@ class _$BibleStudyV2CopyWithImpl<$Res, $Val extends BibleStudyV2>
           ? _value.lang
           : lang // ignore: cast_nullable_to_non_nullable
               as Languages,
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
       lessons: null == lessons
           ? _value.lessons
           : lessons // ignore: cast_nullable_to_non_nullable
@@ -92,23 +93,23 @@ class _$BibleStudyV2CopyWithImpl<$Res, $Val extends BibleStudyV2>
 
 /// @nodoc
 abstract class _$$BibleStudyImplCopyWith<$Res>
-    implements $BibleStudyV2CopyWith<$Res> {
+    implements $BibleStudyCopyWith<$Res> {
   factory _$$BibleStudyImplCopyWith(
           _$BibleStudyImpl value, $Res Function(_$BibleStudyImpl) then) =
       __$$BibleStudyImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {String topic,
+      {@override int id,
+      String topic,
       String subtopic,
       Languages lang,
-      int id,
       List<Lesson> lessons});
 }
 
 /// @nodoc
 class __$$BibleStudyImplCopyWithImpl<$Res>
-    extends _$BibleStudyV2CopyWithImpl<$Res, _$BibleStudyImpl>
+    extends _$BibleStudyCopyWithImpl<$Res, _$BibleStudyImpl>
     implements _$$BibleStudyImplCopyWith<$Res> {
   __$$BibleStudyImplCopyWithImpl(
       _$BibleStudyImpl _value, $Res Function(_$BibleStudyImpl) _then)
@@ -117,13 +118,17 @@ class __$$BibleStudyImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? topic = null,
     Object? subtopic = null,
     Object? lang = null,
-    Object? id = null,
     Object? lessons = null,
   }) {
     return _then(_$BibleStudyImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       topic: null == topic
           ? _value.topic
           : topic // ignore: cast_nullable_to_non_nullable
@@ -136,10 +141,6 @@ class __$$BibleStudyImplCopyWithImpl<$Res>
           ? _value.lang
           : lang // ignore: cast_nullable_to_non_nullable
               as Languages,
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
       lessons: null == lessons
           ? _value._lessons
           : lessons // ignore: cast_nullable_to_non_nullable
@@ -151,26 +152,28 @@ class __$$BibleStudyImplCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true)
-class _$BibleStudyImpl implements _BibleStudy {
+class _$BibleStudyImpl extends _BibleStudy {
   const _$BibleStudyImpl(
-      {required this.topic,
+      {@override required this.id,
+      required this.topic,
       required this.subtopic,
       required this.lang,
-      required this.id,
       required final List<Lesson> lessons})
-      : _lessons = lessons;
+      : _lessons = lessons,
+        super._();
 
   factory _$BibleStudyImpl.fromJson(Map<String, dynamic> json) =>
       _$$BibleStudyImplFromJson(json);
 
+  @override
+  @override
+  final int id;
   @override
   final String topic;
   @override
   final String subtopic;
   @override
   final Languages lang;
-  @override
-  final int id;
   final List<Lesson> _lessons;
   @override
   List<Lesson> get lessons {
@@ -181,7 +184,7 @@ class _$BibleStudyImpl implements _BibleStudy {
 
   @override
   String toString() {
-    return 'BibleStudyV2(topic: $topic, subtopic: $subtopic, lang: $lang, id: $id, lessons: $lessons)';
+    return 'BibleStudy(id: $id, topic: $topic, subtopic: $subtopic, lang: $lang, lessons: $lessons)';
   }
 
   @override
@@ -189,17 +192,17 @@ class _$BibleStudyImpl implements _BibleStudy {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$BibleStudyImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.topic, topic) || other.topic == topic) &&
             (identical(other.subtopic, subtopic) ||
                 other.subtopic == subtopic) &&
             (identical(other.lang, lang) || other.lang == lang) &&
-            (identical(other.id, id) || other.id == id) &&
             const DeepCollectionEquality().equals(other._lessons, _lessons));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, topic, subtopic, lang, id,
+  int get hashCode => Object.hash(runtimeType, id, topic, subtopic, lang,
       const DeepCollectionEquality().hash(_lessons));
 
   @JsonKey(ignore: true)
@@ -216,25 +219,27 @@ class _$BibleStudyImpl implements _BibleStudy {
   }
 }
 
-abstract class _BibleStudy implements BibleStudyV2 {
+abstract class _BibleStudy extends BibleStudy {
   const factory _BibleStudy(
-      {required final String topic,
+      {@override required final int id,
+      required final String topic,
       required final String subtopic,
       required final Languages lang,
-      required final int id,
       required final List<Lesson> lessons}) = _$BibleStudyImpl;
+  const _BibleStudy._() : super._();
 
   factory _BibleStudy.fromJson(Map<String, dynamic> json) =
       _$BibleStudyImpl.fromJson;
 
+  @override
+  @override
+  int get id;
   @override
   String get topic;
   @override
   String get subtopic;
   @override
   Languages get lang;
-  @override
-  int get id;
   @override
   List<Lesson> get lessons;
   @override
@@ -249,6 +254,7 @@ Lesson _$LessonFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Lesson {
+  @override
   int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
@@ -263,7 +269,7 @@ abstract class $LessonCopyWith<$Res> {
   factory $LessonCopyWith(Lesson value, $Res Function(Lesson) then) =
       _$LessonCopyWithImpl<$Res, Lesson>;
   @useResult
-  $Res call({int id, String title, String text});
+  $Res call({@override int id, String title, String text});
 }
 
 /// @nodoc
@@ -307,7 +313,7 @@ abstract class _$$LessonImplCopyWith<$Res> implements $LessonCopyWith<$Res> {
       __$$LessonImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String title, String text});
+  $Res call({@override int id, String title, String text});
 }
 
 /// @nodoc
@@ -346,11 +352,12 @@ class __$$LessonImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$LessonImpl implements _Lesson {
   const _$LessonImpl(
-      {required this.id, required this.title, required this.text});
+      {@override required this.id, required this.title, required this.text});
 
   factory _$LessonImpl.fromJson(Map<String, dynamic> json) =>
       _$$LessonImplFromJson(json);
 
+  @override
   @override
   final int id;
   @override
@@ -393,12 +400,13 @@ class _$LessonImpl implements _Lesson {
 
 abstract class _Lesson implements Lesson {
   const factory _Lesson(
-      {required final int id,
+      {@override required final int id,
       required final String title,
       required final String text}) = _$LessonImpl;
 
   factory _Lesson.fromJson(Map<String, dynamic> json) = _$LessonImpl.fromJson;
 
+  @override
   @override
   int get id;
   @override

@@ -1,6 +1,6 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
-import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
+import 'package:icoc_admin_pannel/domain/model/bible_study/bible_study.dart';
 
 class OneLesson extends StatelessWidget {
   final Lesson lesson;
@@ -8,8 +8,16 @@ class OneLesson extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: html.Html(
+    return ListView(children: [
+      Text(
+        lesson.title,
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
+      const SizedBox(
+        width: 20,
+      ),
+      html.Html(
         data: lesson.text,
         style: {
           'body': html.Style(
@@ -23,6 +31,6 @@ class OneLesson extends StatelessWidget {
           ),
         },
       ),
-    );
+    ]);
   }
 }

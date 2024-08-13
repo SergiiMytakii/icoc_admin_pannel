@@ -385,6 +385,8 @@ abstract class _$$LessonEditImplCopyWith<$Res> {
       __$$LessonEditImplCopyWithImpl<$Res>;
   @useResult
   $Res call({IcocUser? user, BibleStudy bibleStudy});
+
+  $BibleStudyCopyWith<$Res> get bibleStudy;
 }
 
 /// @nodoc
@@ -411,6 +413,14 @@ class __$$LessonEditImplCopyWithImpl<$Res>
           : bibleStudy // ignore: cast_nullable_to_non_nullable
               as BibleStudy,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $BibleStudyCopyWith<$Res> get bibleStudy {
+    return $BibleStudyCopyWith<$Res>(_value.bibleStudy, (value) {
+      return _then(_value.copyWith(bibleStudy: value));
+    });
   }
 }
 
@@ -549,6 +559,8 @@ abstract class _$$BibleStudyAddImplCopyWith<$Res> {
       __$$BibleStudyAddImplCopyWithImpl<$Res>;
   @useResult
   $Res call({IcocUser? user, BibleStudy bibleStudy});
+
+  $BibleStudyCopyWith<$Res> get bibleStudy;
 }
 
 /// @nodoc
@@ -575,6 +587,14 @@ class __$$BibleStudyAddImplCopyWithImpl<$Res>
           : bibleStudy // ignore: cast_nullable_to_non_nullable
               as BibleStudy,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $BibleStudyCopyWith<$Res> get bibleStudy {
+    return $BibleStudyCopyWith<$Res>(_value.bibleStudy, (value) {
+      return _then(_value.copyWith(bibleStudy: value));
+    });
   }
 }
 
@@ -713,6 +733,8 @@ abstract class _$$LessonAddImplCopyWith<$Res> {
       __$$LessonAddImplCopyWithImpl<$Res>;
   @useResult
   $Res call({IcocUser? user, BibleStudy bibleStudy});
+
+  $BibleStudyCopyWith<$Res> get bibleStudy;
 }
 
 /// @nodoc
@@ -739,6 +761,14 @@ class __$$LessonAddImplCopyWithImpl<$Res>
           : bibleStudy // ignore: cast_nullable_to_non_nullable
               as BibleStudy,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $BibleStudyCopyWith<$Res> get bibleStudy {
+    return $BibleStudyCopyWith<$Res>(_value.bibleStudy, (value) {
+      return _then(_value.copyWith(bibleStudy: value));
+    });
   }
 }
 

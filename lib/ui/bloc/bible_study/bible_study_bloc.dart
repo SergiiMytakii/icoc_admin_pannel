@@ -4,8 +4,8 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
-import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:icoc_admin_pannel/domain/model/bible_study/bible_study.dart';
 import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/domain/repository/bible_study_repository.dart';
 import 'package:injectable/injectable.dart';
@@ -26,9 +26,9 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
   }
   final BibleStudyRepository bibleStudyRepository;
   final ValueNotifier<BibleStudy> currentBibleStudy =
-      ValueNotifier<BibleStudy>(BibleStudyInitial.defaultBibleStudy());
+      ValueNotifier<BibleStudy>(BibleStudy.defaultBibleStudy);
   final ValueNotifier<Lesson> currentLesson =
-      ValueNotifier<Lesson>(LessonInitial.defaultLesson());
+      ValueNotifier<Lesson>(Lesson.defaultLesson);
 
   Future<void> _onBibleStudyRequested(
     BibleStudyGet event,
@@ -40,6 +40,8 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
           await bibleStudyRepository.getBibleStudyList();
       if (bibleStudies.isNotEmpty) {
         bibleStudies.sort((a, b) => a.id.compareTo(b.id));
+        currentBibleStudy.value = bibleStudies.first;
+        currentLesson.value = bibleStudies.first.lessons.first;
       }
       emit(BibleStudyState.success(bibleStudies));
     } catch (error, stackTrace) {

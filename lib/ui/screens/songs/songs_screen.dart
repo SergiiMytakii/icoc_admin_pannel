@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/domain/helpers/show_menu.dart';
@@ -46,7 +45,7 @@ class _SongsScreenState extends State<SongsScreen> {
     final index = songs.indexOf(currentSong);
     if (index != -1) {
       _scrollController.animateTo(
-        index * 100.0, // Adjust this value based on your SongCard height
+        index * 100.0,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );

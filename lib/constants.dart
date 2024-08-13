@@ -95,10 +95,11 @@ Map<String, String> languagesCodes = {
 enum FirebaseCollections {
   SongsV2,
   BibleStudy,
+  BibleStudyV2,
   Notifications,
   Video,
   Feedback,
-  UsersLogs
+  UsersLogs,
 }
 
 enum Languages {

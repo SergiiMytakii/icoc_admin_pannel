@@ -1,36 +1,38 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:icoc_admin_pannel/constants.dart';
+import 'package:icoc_admin_pannel/domain/model/identifable.dart';
 
 part 'bible_study.freezed.dart';
 part 'bible_study.g.dart';
 
 @freezed
-class BibleStudyV2 with _$BibleStudyV2 {
+class BibleStudy with _$BibleStudy implements Identifiable {
   @JsonSerializable(explicitToJson: true)
-  const factory BibleStudyV2({
+  const factory BibleStudy({
+    @override required int id,
     required String topic,
     required String subtopic,
     required Languages lang,
-    required int id,
     required List<Lesson> lessons,
   }) = _BibleStudy;
 
-  factory BibleStudyV2.fromJson(Map<String, dynamic> json) =>
-      _$BibleStudyV2FromJson(json);
+  factory BibleStudy.fromJson(Map<String, dynamic> json) =>
+      _$BibleStudyFromJson(json);
 
-  static const BibleStudyV2 defaultBibleStudy = BibleStudyV2(
+  static const BibleStudy defaultBibleStudy = BibleStudy(
     lessons: [],
     topic: '',
     id: 0,
     subtopic: '',
     lang: Languages.defaultLang,
   );
+  const BibleStudy._();
 }
 
 @freezed
-class Lesson with _$Lesson {
+class Lesson with _$Lesson implements Identifiable {
   const factory Lesson({
-    required int id,
+    @override required int id,
     required String title,
     required String text,
   }) = _Lesson;

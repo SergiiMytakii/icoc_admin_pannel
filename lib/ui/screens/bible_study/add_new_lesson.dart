@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/domain/helpers/calculate_song_number.dart';
-import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
+import 'package:icoc_admin_pannel/domain/model/bible_study/bible_study.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/bible_study/bible_study_bloc.dart';
@@ -41,8 +41,8 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
   Widget build(BuildContext context) {
     final currentBibleStudy = context.read<BibleStudyBloc>().currentBibleStudy;
 
-    final int lessonNumber =
-        calculateLastNumber(currentBibleStudy.value.lessons) + 1;
+    final int lastLessonNumber =
+        calculateLastNumber(currentBibleStudy.value.lessons);
     return Scaffold(
         body: Padding(
       padding: const EdgeInsets.all(16),
@@ -52,7 +52,7 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
           children: [
             Row(
               children: [
-                Text('Lesson number: $lessonNumber'),
+                Text('Lesson number: ${lastLessonNumber + 1}'),
                 const Spacer(),
                 const Text(
                   'Add a new lesson',
@@ -60,7 +60,7 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
                   style: TextStyle(fontSize: 20),
                 ),
                 const Spacer(),
-                _buttonsBlock(currentBibleStudy.value, lessonNumber)
+                _buttonsBlock(currentBibleStudy.value, lastLessonNumber)
               ],
             ),
             MyTextField(
@@ -91,7 +91,7 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
     ));
   }
 
-  Row _buttonsBlock(BibleStudy currentBibleStudy, int lessonNumber) {
+  Row _buttonsBlock(BibleStudy currentBibleStudy, int lastLessonNumber) {
     return Row(
       children: [
         MyTextButton(
@@ -106,17 +106,24 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
         MyTextButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
-              currentBibleStudy.lessons.add(Lesson(
-                  title: titleController.text,
-                  text: textController.text,
-                  id: lessonNumber));
+              //lessons is unmodifible list
+              final updatedLessons =
+                  List<Lesson>.from(currentBibleStudy.lessons)
+                    ..add(Lesson(
+                        title: titleController.text,
+                        text: textController.text,
+                        id: lastLessonNumber + 1));
+              final updatedBibleStudy =
+                  currentBibleStudy.copyWith(lessons: updatedLessons);
               getIt<BibleStudyBloc>().add(BibleStudyEvent.addLesson(
-                bibleStudy: currentBibleStudy,
+                bibleStudy: updatedBibleStudy,
                 user: context.read<AuthBloc>().icocUser,
               ));
-              Future.delayed(const Duration(seconds: 1)).then((_) {
+              Future.delayed(const Duration(seconds: 2)).then((_) {
+                context.read<BibleStudyBloc>().currentBibleStudy.value =
+                    updatedBibleStudy;
                 context.read<BibleStudyBloc>().currentLesson.value =
-                    currentBibleStudy.lessons[lessonNumber - 1];
+                    updatedBibleStudy.lessons.last;
                 context.pop();
               });
             }

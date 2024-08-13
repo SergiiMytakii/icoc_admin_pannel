@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
+import 'package:icoc_admin_pannel/domain/model/bible_study/bible_study.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/bible_study/bible_study_bloc.dart';
@@ -54,7 +54,7 @@ class _EditLessonScreenState extends State<EditLessonScreen> {
             children: [
               Row(
                 children: [
-                  Text('Lesson number: ${currentLesson.id}'),
+                  Text('Lesson number: ${currentLesson.id + 1}'),
                   const Spacer(),
                   const Text(
                     'Edit lesson',

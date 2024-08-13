@@ -8,10 +8,10 @@ part of 'bible_study.dart';
 
 _$BibleStudyImpl _$$BibleStudyImplFromJson(Map<String, dynamic> json) =>
     _$BibleStudyImpl(
+      id: (json['id'] as num).toInt(),
       topic: json['topic'] as String,
       subtopic: json['subtopic'] as String,
       lang: $enumDecode(_$LanguagesEnumMap, json['lang']),
-      id: (json['id'] as num).toInt(),
       lessons: (json['lessons'] as List<dynamic>)
           .map((e) => Lesson.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -19,10 +19,10 @@ _$BibleStudyImpl _$$BibleStudyImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$BibleStudyImplToJson(_$BibleStudyImpl instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'topic': instance.topic,
       'subtopic': instance.subtopic,
       'lang': _$LanguagesEnumMap[instance.lang]!,
-      'id': instance.id,
       'lessons': instance.lessons.map((e) => e.toJson()).toList(),
     };
 

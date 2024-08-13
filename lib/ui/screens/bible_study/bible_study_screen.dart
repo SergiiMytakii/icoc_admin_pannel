@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/helpers/calculate_song_number.dart';
+import 'package:icoc_admin_pannel/domain/helpers/convert_languages_enum.dart';
 import 'package:icoc_admin_pannel/domain/helpers/show_menu.dart';
-import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
+import 'package:icoc_admin_pannel/domain/model/bible_study/bible_study.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/bible_study/bible_study_bloc.dart';
@@ -14,10 +14,41 @@ import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
 import 'package:icoc_admin_pannel/ui/widget/select_lang.dart';
-import 'package:logger/logger.dart';
 
-class BibleStudyScreen extends StatelessWidget {
-  const BibleStudyScreen({super.key});
+class BibleStudyScreen extends StatefulWidget {
+  BibleStudyScreen({super.key});
+
+  @override
+  State<BibleStudyScreen> createState() => _BibleStudyScreenState();
+}
+
+class _BibleStudyScreenState extends State<BibleStudyScreen> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToCurrentTopic(BibleStudy currentBibleStudy) {
+    final index = currentBibleStudy.id;
+    Future.delayed(Durations.extralong4, () {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          index * 55.0,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,127 +67,17 @@ class BibleStudyScreen extends StatelessWidget {
                   context.read<BibleStudyBloc>().currentBibleStudy;
               final currentLesson =
                   context.read<BibleStudyBloc>().currentLesson;
-              if (currentBibleStudy.value is BibleStudyInitial) {
-                currentBibleStudy.value = bibleStudies[0];
-              }
-              if (currentLesson.value is LessonInitial) {
-                currentLesson.value = currentBibleStudy.value.lessons[0];
-              }
+
+              _scrollToCurrentTopic(currentBibleStudy.value);
 
               return Row(
                 children: [
-                  Flexible(
-                    flex: 1,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            MyTextButton(
-                              label: 'Add topic',
-                              onPressed: () {
-                                _showAddTopicDialog(context, bibleStudies);
-                              },
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                          child: ListView(
-                            children: bibleStudies
-                                .map((bibleStudy) => GestureDetector(
-                                    onTap: () {
-                                      currentBibleStudy.value = bibleStudy;
-                                      if (bibleStudy.lessons.isNotEmpty) {
-                                        currentLesson.value =
-                                            bibleStudy.lessons[0];
-                                      } else {
-                                        currentLesson.value =
-                                            Lesson.defaultLesson;
-                                      }
-                                    },
-                                    onSecondaryTapDown:
-                                        (TapDownDetails details) {
-                                      showContextMenu(
-                                          context,
-                                          details.globalPosition,
-                                          () => _deleteBibleStudy(
-                                              context, bibleStudy));
-                                    },
-                                    child: BibleStudyCard(
-                                      bibleStudy: bibleStudy,
-                                    )))
-                                .toList(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  _buildListTopics(
+                      context, bibleStudies, currentBibleStudy, currentLesson),
                   const VerticalDivider(thickness: 1, width: 1),
-                  Flexible(
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            MyTextButton(
-                              label: 'Add lesson',
-                              onPressed: () => context.go(
-                                '/bible-study/addlesson',
-                              ),
-                            ),
-                          ],
-                        ),
-                        ValueListenableBuilder(
-                          valueListenable: currentBibleStudy,
-                          builder: (context, song, _) {
-                            return Expanded(
-                              child: ListView(
-                                children: [
-                                  ...currentBibleStudy.value.lessons
-                                      .map((lesson) => ListTile(
-                                            onTap: () =>
-                                                currentLesson.value = lesson,
-                                            title: Text(lesson.title),
-                                            leading: Text(lesson.id.toString()),
-                                            contentPadding:
-                                                const EdgeInsets.symmetric(
-                                                    horizontal: 16),
-                                          ))
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
+                  _buildListLessons(context, currentBibleStudy, currentLesson),
                   const VerticalDivider(thickness: 1, width: 1),
-                  Flexible(
-                    flex: 2,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            MyTextButton(
-                              label: 'Edit lesson',
-                              onPressed: () => context.go(
-                                '/bible-study/editlesson',
-                              ),
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                          child: ValueListenableBuilder(
-                            valueListenable: currentLesson,
-                            builder: (context, song, _) {
-                              return OneLesson(lesson: currentLesson.value);
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
+                  _buildLessonContent(context, currentLesson)
                 ],
               );
             } else {
@@ -167,6 +88,146 @@ class BibleStudyScreen extends StatelessWidget {
             }
           });
     }));
+  }
+
+  Flexible _buildLessonContent(
+      BuildContext context, ValueNotifier<Lesson> currentLesson) {
+    return Flexible(
+      flex: 2,
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              MyTextButton(
+                label: 'Edit lesson',
+                onPressed: () => context.go(
+                  '/bible-study/editlesson',
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+            child: ValueListenableBuilder(
+              valueListenable: currentLesson,
+              builder: (context, lesson, _) {
+                return OneLesson(lesson: currentLesson.value);
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Flexible _buildListLessons(
+      BuildContext context,
+      ValueNotifier<BibleStudy> currentBibleStudy,
+      ValueNotifier<Lesson> currentLesson) {
+    return Flexible(
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              MyTextButton(
+                label: 'Add lesson',
+                onPressed: () => context.go(
+                  '/bible-study/addlesson',
+                ),
+              ),
+            ],
+          ),
+          ValueListenableBuilder(
+            valueListenable: currentBibleStudy,
+            builder: (context, lesson, _) {
+              return Expanded(
+                child: ListView(
+                  children: [
+                    ...currentBibleStudy.value.lessons.map((lesson) =>
+                        _buildLessonCard(
+                            currentBibleStudy, currentLesson, lesson))
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Flexible _buildListTopics(
+      BuildContext context,
+      List<BibleStudy> bibleStudies,
+      ValueNotifier<BibleStudy> currentBibleStudy,
+      ValueNotifier<Lesson> currentLesson) {
+    return Flexible(
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              MyTextButton(
+                label: 'Add topic',
+                onPressed: () {
+                  _showAddTopicDialog(context, bibleStudies);
+                },
+              ),
+            ],
+          ),
+          Expanded(
+            child: ListView(
+                controller: _scrollController,
+                children: bibleStudies
+                    .map((bibleStudy) => GestureDetector(
+                        onTap: () {
+                          currentBibleStudy.value = bibleStudy;
+                          if (bibleStudy.lessons.isNotEmpty) {
+                            currentLesson.value = bibleStudy.lessons[0];
+                          } else {
+                            currentLesson.value = Lesson.defaultLesson;
+                          }
+                        },
+                        onSecondaryTapDown: (TapDownDetails details) {
+                          showContextMenu(context, details.globalPosition,
+                              () => _deleteBibleStudy(context, bibleStudy));
+                        },
+                        child: ValueListenableBuilder(
+                            valueListenable: currentBibleStudy,
+                            builder: (context, lesson, _) {
+                              return BibleStudyCard(
+                                bibleStudy: bibleStudy,
+                                currentBibleStudyId: currentBibleStudy.value.id,
+                              );
+                            })))
+                    .toList()),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLessonCard(ValueNotifier<BibleStudy> currentBibleStudy,
+      ValueNotifier<Lesson> currentLesson, Lesson lesson) {
+    return ValueListenableBuilder(
+        valueListenable: currentLesson,
+        builder: (context, song, _) {
+          return GestureDetector(
+            onSecondaryTapDown: (TapDownDetails details) {
+              showContextMenu(context, details.globalPosition,
+                  () => _deleteLesson(context, currentBibleStudy, lesson));
+            },
+            child: ListTile(
+              selected: lesson.id == currentLesson.value.id,
+              selectedColor: Theme.of(context).primaryColor,
+              onTap: () => currentLesson.value = lesson,
+              title: Text(lesson.title),
+              leading: Text((lesson.id + 1).toString()),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            ),
+          );
+        });
   }
 
   Future _deleteBibleStudy(BuildContext context, BibleStudy bibleStudy) async {
@@ -241,7 +302,7 @@ class BibleStudyScreen extends StatelessWidget {
                         topic: topicController.text,
                         id: calculateLastNumber(bibleStudies) + 1,
                         subtopic: subTopicController.text,
-                        lang: langController.text);
+                        lang: languagesToEnumMap[langController.text]!);
                     getIt<BibleStudyBloc>().add(BibleStudyEvent.addBibleStudy(
                       bibleStudy: bibleStudy,
                       user: context.read<AuthBloc>().icocUser,
@@ -256,5 +317,25 @@ class BibleStudyScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future _deleteLesson(BuildContext context,
+      ValueNotifier<BibleStudy> currentBibleStudy, Lesson lesson) async {
+    final result = await showAlertDialog(
+        context, 'Do you really want to delete ${lesson.title}? Be carefull! ',
+        showCancelButton: true);
+    if (result) {
+      final updatedBibleStudy = currentBibleStudy.value.copyWith(
+          lessons: currentBibleStudy.value.lessons
+              .where((element) => element.id != lesson.id)
+              .toList());
+
+      context.read<BibleStudyBloc>().add(BibleStudyEvent.editLesson(
+          user: context.read<AuthBloc>().icocUser,
+          bibleStudy: updatedBibleStudy));
+      currentBibleStudy.value = updatedBibleStudy;
+      getIt<BibleStudyBloc>().currentLesson.value =
+          updatedBibleStudy.lessons.firstOrNull ?? Lesson.defaultLesson;
+    }
   }
 }
