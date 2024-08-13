@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
-import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
+import 'package:icoc_admin_pannel/domain/model/bible_study/bible_study.dart';
 
 class OneLesson extends StatelessWidget {
   final Lesson lesson;

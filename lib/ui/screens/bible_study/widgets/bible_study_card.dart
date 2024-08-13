@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
+import 'package:icoc_admin_pannel/domain/model/bible_study/bible_study.dart';
 
 class BibleStudyCard extends StatelessWidget {
   final BibleStudy bibleStudy;
@@ -13,7 +13,7 @@ class BibleStudyCard extends StatelessWidget {
         children: [
           ListTile(
             contentPadding: EdgeInsets.zero,
-            leading: Text(bibleStudy.id.toString()),
+            leading: Text((bibleStudy.id + 1).toString()),
             title: Text(
               bibleStudy.topic,
               overflow: TextOverflow.ellipsis,
@@ -29,7 +29,7 @@ class BibleStudyCard extends StatelessWidget {
               maxLines: 3,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            trailing: Text(bibleStudy.lang),
+            trailing: Text(bibleStudy.lang.name),
           ),
           const Divider(),
         ],
