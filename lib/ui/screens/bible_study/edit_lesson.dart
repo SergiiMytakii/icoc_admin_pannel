@@ -46,11 +46,11 @@ class _EditLessonScreenState extends State<EditLessonScreen> {
     currentLesson = context.read<BibleStudyBloc>().currentLesson.value;
     return Scaffold(
         body: Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16),
       child: Builder(builder: (context) {
         return Form(
           key: _formKey,
-          child: Column(
+          child: ListView(
             children: [
               Row(
                 children: [
@@ -65,7 +65,7 @@ class _EditLessonScreenState extends State<EditLessonScreen> {
                   _buttonsBlock(currentBibleStudy)
                 ],
               ),
-              MyTexField(
+              MyTextField(
                 controller: titleController,
                 hint: 'Title',
                 maxLength: 50,
@@ -76,7 +76,7 @@ class _EditLessonScreenState extends State<EditLessonScreen> {
                   return null;
                 },
               ),
-              MyTexField(
+              MyTextField(
                 controller: textController,
                 hint: 'Text',
                 maxLines: 20,

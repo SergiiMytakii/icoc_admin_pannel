@@ -6,13 +6,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/domain/helpers/calculate_song_number.dart';
 import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
 import 'package:icoc_admin_pannel/domain/helpers/get_video_id.dart';
+import 'package:icoc_admin_pannel/domain/model/songs/song_model.dart';
 import 'package:icoc_admin_pannel/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/domain/repository/songs_repository.dart';
-import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:icoc_admin_pannel/domain/repository/video_repository.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 part 'songs_event.dart';
 part 'songs_state.dart';
 part 'songs_bloc.freezed.dart';
@@ -23,13 +24,13 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
       : super(const SongsState.initial()) {
     on<SongsGet>(_onSongsRequested);
     on<SongsEdit>(_onEditSongRequested);
-    on<SongsUpdate>(_onSongUpdateRequested);
     on<SongsAdd>(_onSongAddRequested);
+    on<SongDelete>(_onSongDeleteRequested);
   }
   final SongsRepository songsRepositoryImpl;
   final VideoRepository videoRepositoryImpl;
-  final ValueNotifier<SongDetail> currentSong =
-      ValueNotifier<SongDetail>(SongDetail.defaultSong());
+  final ValueNotifier<SongModel> currentSong =
+      ValueNotifier<SongModel>(SongModel.defaultSong());
   int lastSongNumber = -1;
 
   Future<void> _onSongsRequested(
@@ -38,12 +39,13 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
   ) async {
     emit(const SongsState.loading());
     try {
-      List<SongDetail> songs = await songsRepositoryImpl.getSongs();
+      List<SongModel> songs = await songsRepositoryImpl.getSongs();
 
       //search by title
       if (event.query != null && event.query!.isNotEmpty) {
         songs = songs.where((song) {
-          final titles = song.title.values;
+          final titles =
+              song.songVersions.map((version) => version.title).toList();
           for (final String title in titles) {
             if (title.toLowerCase().contains(event.query!.toLowerCase())) {
               return true;
@@ -72,41 +74,8 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     emit(const SongsState.loading());
 
     try {
-      final SongDetail song = event.song;
-      song.title[event.textVersion.substring(0, 2)] = event.title;
-      song.description?[event.textVersion.substring(0, 2)] = event.description;
-      song.text[event.textVersion] = event.text;
-      if (event.link.isNotEmpty) {
-        //trying to get data from youtube api
-        final videoId = getVideoId(event.link);
-        print('editsong');
-        final details = await videoRepositoryImpl.fetchVideoDetails(videoId);
-        final youtubeVideos = YoutubeVideo(
-            lang: event.textVersion.substring(0, 2),
-            title: details?.title ?? event.title,
-            link: event.link);
-
-        if (song.youtubeVideos != null) {
-          if (song.youtubeVideos!.isEmpty) {
-            song.youtubeVideos!.add(youtubeVideos);
-          } else {
-            song.youtubeVideos!.removeWhere(
-                (res) => res.lang == event.textVersion.substring(0, 2));
-            song.youtubeVideos!.add(youtubeVideos);
-          }
-        } else {
-          song.youtubeVideos = [youtubeVideos];
-        }
-      } else {
-        //just delete youtubeVideos
-        if (song.youtubeVideos != null && song.youtubeVideos!.isNotEmpty) {
-          song.youtubeVideos!.removeWhere(
-              (res) => res.lang == event.textVersion.substring(0, 2));
-        }
-      }
-
-      final songs = await songsRepositoryImpl.updateSong(
-          event.user, event.song.id, song.toJson());
+      final song = await _addVideoTitles(event.song);
+      final songs = await songsRepositoryImpl.updateSong(event.user, song);
       songs.sort((a, b) => a.id.compareTo(b.id));
       emit(SongsState.success(songs));
     } catch (error, stackTrace) {
@@ -115,59 +84,39 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
     }
   }
 
-  FutureOr<void> _onSongUpdateRequested(
-      SongsUpdate event, Emitter<SongsState> emit) async {
-    final SongDetail song = event.song;
-    //check if version on the same lang exists
-    String textKey = '';
-    final textKeys = song.getAllTextKeys();
-    final sameLangKeys = textKeys.where((key) => key.contains(event.lang));
-    if (sameLangKeys.isEmpty) {
-      textKey = '${event.lang}1';
-    } else {
-      //remove lang and convert to numbers
-      final List<int> versions =
-          sameLangKeys.map((key) => int.parse(key.substring(2))).toList();
-      final maximum = versions.reduce(max);
-      textKey = '${event.lang}${maximum + 1}';
-    }
+  Future<SongModel> _addVideoTitles(SongModel song) async {
+    final List<SongVersion> updatedVersions = [];
+    for (var version in song.songVersions) {
+      if (version.youtubeVideos != null) {
+        final List<YoutubeVideo> updatedVideos = [];
+        for (var video in version.youtubeVideos!) {
+          final videoId = getVideoId(video.link);
+          final details = await videoRepositoryImpl.fetchVideoDetails(videoId);
 
-    song.title[event.lang] = event.title;
-    if (event.description != null) {
-      song.description?[event.lang] = event.description;
-    }
-    song.text[textKey] = event.text;
-
-    if (event.link != null && event.link!.isNotEmpty) {
-      //trying to get data from youtube api
-      final videoId = getVideoId(event.link!);
-      final details = await videoRepositoryImpl.fetchVideoDetails(videoId);
-      final youtubeVideo = YoutubeVideo(
-          lang: event.lang,
-          title: details?.title ?? event.title,
-          link: event.link!);
-      if (song.youtubeVideos == null) {
-        song.youtubeVideos = [youtubeVideo];
+          if (details != null) {
+            updatedVideos.add(video.copyWith(
+                artist: details.artist,
+                title: details.title,
+                thumbnail: details.thumbnail));
+          } else {
+            updatedVideos.add(video);
+          }
+        }
+        updatedVersions.add(version.copyWith(youtubeVideos: updatedVideos));
       } else {
-        song.youtubeVideos!.add(youtubeVideo);
+        updatedVersions.add(version);
       }
     }
+    return song.copyWith(songVersions: updatedVersions);
+  }
 
-    final Map<String, dynamic> data = {
-      'title': song.title,
-      'description': song.description,
-      'text': song.text,
-      'youtubeVideos': song.youtubeVideos
-          ?.map((youtubeVideo) => youtubeVideo.toJson())
-          .toList()
-    };
-
+  FutureOr<void> _onSongDeleteRequested(
+      SongDelete event, Emitter<SongsState> emit) async {
     try {
       emit(const SongsState.loading());
-      final songs =
-          await songsRepositoryImpl.updateSong(event.user, event.song.id, data);
-      songs.sort((a, b) => a.id.compareTo(b.id));
+      final songs = await songsRepositoryImpl.delete(event.user, event.songId);
       emit(SongsState.success(songs));
+      songs.sort((a, b) => a.id.compareTo(b.id));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
       emit(SongsState.error(error.toString()));
@@ -176,22 +125,10 @@ class SongsBloc extends Bloc<SongsEvent, SongsState> {
 
   FutureOr<void> _onSongAddRequested(
       SongsAdd event, Emitter<SongsState> emit) async {
-    final SongDetail song = event.song;
-    if (song.youtubeVideos != null && song.youtubeVideos!.isNotEmpty) {
-      int i = 0;
-      for (YoutubeVideo youtubeVideo in song.youtubeVideos!) {
-        final videoId = getVideoId(youtubeVideo.link);
-        final details = await videoRepositoryImpl.fetchVideoDetails(videoId);
-        youtubeVideo = youtubeVideo.copyWith(
-            title: details?.title, thumbnail: details?.thumbnail);
-        song.youtubeVideos![i] = youtubeVideo;
-        i++;
-      }
-    }
     try {
       emit(const SongsState.loading());
-      final songs =
-          await songsRepositoryImpl.addSong(event.user, song.toJson());
+      final song = await _addVideoTitles(event.song);
+      final songs = await songsRepositoryImpl.addSong(event.user, song);
       songs.sort((a, b) => a.id.compareTo(b.id));
       emit(SongsState.success(songs));
     } catch (error, stackTrace) {

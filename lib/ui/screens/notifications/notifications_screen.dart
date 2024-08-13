@@ -30,9 +30,10 @@ class NotificationsScreen extends StatelessWidget {
                             onTap: () => context
                                 .read<NotificationsBloc>()
                                 .currentNotification
-                                .value = notifications[index],
+                                .value = notifications.reversed.toList()[index],
                             child: NotificationCard(
-                              notificationsModel: notifications[index],
+                              notificationsModel:
+                                  notifications.reversed.toList()[index],
                             ));
                       }),
                 ),

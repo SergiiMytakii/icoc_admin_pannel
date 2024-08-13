@@ -67,7 +67,7 @@ class DatabaseServiceFirebase implements FirebaseDataSource {
     final CollectionReference collection =
         db.collection(FirebaseCollections.UsersLogs.name);
     final DocumentReference documentRef =
-        collection.doc(DateTime.now().toString());
+        collection.doc('${DateTime.now()}_${user?.email}');
     final map = {
       'user': user?.email ?? 'Unauthenticated',
       'eventName': eventName,

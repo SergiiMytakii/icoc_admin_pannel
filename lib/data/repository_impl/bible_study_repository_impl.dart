@@ -5,7 +5,6 @@ import 'package:icoc_admin_pannel/domain/model/bible_study.dart';
 import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/domain/repository/bible_study_repository.dart';
 import 'package:injectable/injectable.dart';
-import 'package:logger/logger.dart';
 
 @dev
 @prod
@@ -23,6 +22,23 @@ class BibleStudyRepositoryImpl extends BibleStudyRepository {
       final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       return BibleStudy.fromJson(data);
     }).toList();
+    //migration to v2.  Remove later
+    // final user = getIt<AuthBloc>().icocUser;
+    // for (final bibleStudy in bibleStudies) {
+    //   final QuerySnapshot snapshot = await firebaseDataSource.postToFirebase(
+    //       user,
+    //       'BibleStudyV2',
+    //       bs.BibleStudyV2(
+    //         id: bibleStudy.id,
+    //         lang: languagesToEnumMap[bibleStudy.lang]!,
+    //         topic: bibleStudy.topic,
+    //         subtopic: bibleStudy.subtopic,
+    //         lessons: bibleStudy.lessons
+    //             .map((lesson) => bs.Lesson(
+    //                 id: lesson.id, title: lesson.title, text: lesson.text))
+    //             .toList(),
+    //       ).toJson());
+    // }
     return bibleStudies;
   }
 

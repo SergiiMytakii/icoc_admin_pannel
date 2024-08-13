@@ -13,12 +13,14 @@ class SelectLanguageWidget extends StatefulWidget {
 class _SelectLanguageWidgetState extends State<SelectLanguageWidget> {
   @override
   void initState() {
-    Future.delayed(Duration.zero).then((_) {
-      setState(() {
-        widget.langController.text =
-            View.of(context).platformDispatcher.locale.languageCode;
+    if (widget.langController.text.isEmpty) {
+      Future.delayed(Duration.zero).then((_) {
+        setState(() {
+          widget.langController.text =
+              View.of(context).platformDispatcher.locale.languageCode;
+        });
       });
-    });
+    }
     super.initState();
   }
 
@@ -32,7 +34,9 @@ class _SelectLanguageWidgetState extends State<SelectLanguageWidget> {
         DropdownButton<String>(
           elevation: 0,
           underline: const SizedBox.shrink(),
-          value: widget.langController.text,
+          value: widget.langController.text.isNotEmpty
+              ? widget.langController.text
+              : 'ru',
           onChanged: (String? newValue) {
             setState(() {
               widget.langController.text = newValue ?? '';

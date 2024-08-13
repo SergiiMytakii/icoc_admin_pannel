@@ -1,9 +1,9 @@
-import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
+import 'package:icoc_admin_pannel/domain/model/songs/song_model.dart';
 import 'package:icoc_admin_pannel/domain/model/user.dart';
 
 abstract class SongsRepository {
-  Future<List<SongDetail>> getSongs();
-  Future<List<SongDetail>> updateSong(
-      IcocUser? user, int songId, Map<String, dynamic> data);
-  Future<List<SongDetail>> addSong(IcocUser? user, Map<String, dynamic> data);
+  Future<List<SongModel>> getSongs();
+  Future<List<SongModel>> updateSong(IcocUser? user, SongModel song);
+  Future<List<SongModel>> addSong(IcocUser? user, SongModel song);
+  Future<List<SongModel>> delete(IcocUser? user, String songId);
 }

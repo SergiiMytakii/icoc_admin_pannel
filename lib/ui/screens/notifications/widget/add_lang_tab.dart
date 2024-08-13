@@ -54,7 +54,7 @@ class _AddLangTabState extends State<AddLangTab> {
                     ],
                   ),
                 ),
-                MyTexField(
+                MyTextField(
                   controller: titleController,
                   hint: 'Title',
                   maxLength: 50,
@@ -65,12 +65,12 @@ class _AddLangTabState extends State<AddLangTab> {
                     return null;
                   },
                 ),
-                MyTexField(
+                MyTextField(
                   controller: descriptionController,
                   hint: 'Desctiption',
                   maxLength: 50,
                 ),
-                MyTexField(
+                MyTextField(
                   controller: textController,
                   hint: 'Text',
                   maxLines: 15,
@@ -81,7 +81,7 @@ class _AddLangTabState extends State<AddLangTab> {
                     return null;
                   },
                 ),
-                MyTexField(
+                MyTextField(
                   controller: urlController,
                   hint: 'Youtube link',
                 ),

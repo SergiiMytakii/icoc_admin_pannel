@@ -1,7 +1,7 @@
 import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/data_sources/firebase_data_source.dart';
-import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
+import 'package:icoc_admin_pannel/domain/model/songs/song_model.dart';
 import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/domain/repository/songs_repository.dart';
 import 'package:injectable/injectable.dart';
@@ -16,43 +16,54 @@ class SongsRepositoryImpl implements SongsRepository {
     required this.firebaseDataSource,
   });
   @override
-  Future<List<SongDetail>> getSongs() async {
+  Future<List<SongModel>> getSongs() async {
     final QuerySnapshot snapshot = await firebaseDataSource.getFromFirebase(
-      FirebaseCollections.Songs.name,
+      FirebaseCollections.SongsV2.name,
     );
-    final List<SongDetail> songList = _songListFromSnapshot(snapshot);
-    return songList;
-  }
-
-  @override
-  Future<List<SongDetail>> addSong(
-      IcocUser? user, Map<String, dynamic> data) async {
-    final QuerySnapshot snapshot = await firebaseDataSource.postToFirebase(
-        user, FirebaseCollections.Songs.name, data);
-    final List<SongDetail> songList = _songListFromSnapshot(snapshot);
-    return songList;
-  }
-
-  @override
-  Future<List<SongDetail>> updateSong(
-      IcocUser? user, int songId, Map<String, dynamic> data) async {
-    final QuerySnapshot snapshot = await firebaseDataSource.updateToFirebase(
-        user, FirebaseCollections.Songs.name, songId.toString(), data);
-    final List<SongDetail> songList = _songListFromSnapshot(snapshot);
-    return songList;
-  }
-
-//converting  snapshot to song list
-  List<SongDetail> _songListFromSnapshot(QuerySnapshot snapshot) {
-    final List<SongDetail> songs = snapshot.docs.map(
+    final List<SongModel> songs = snapshot.docs.map(
       (doc) {
-        final Map data = doc.data() as Map;
-        final song = SongDetail.fromJson(data, int.parse(doc.id));
-        return song;
+        return SongModel.fromJson(doc.data() as Map<String, dynamic>);
       },
     ).toList();
-    songs.removeWhere((song) => song.text.isEmpty);
-    songs.removeWhere((song) => song.title.isEmpty);
+    return songs;
+  }
+
+  @override
+  Future<List<SongModel>> addSong(IcocUser? user, SongModel song) async {
+    final QuerySnapshot snapshot = await firebaseDataSource.postToFirebase(
+        user, FirebaseCollections.SongsV2.name, song.toJson());
+    final List<SongModel> songs = snapshot.docs.map(
+      (doc) {
+        return SongModel.fromJson(doc.data() as Map<String, dynamic>);
+      },
+    ).toList();
+    return songs;
+  }
+
+  @override
+  Future<List<SongModel>> updateSong(IcocUser? user, SongModel song) async {
+    final QuerySnapshot snapshot = await firebaseDataSource.updateToFirebase(
+        user,
+        FirebaseCollections.SongsV2.name,
+        song.id.toString(),
+        song.toJson());
+    final List<SongModel> songs = snapshot.docs.map(
+      (doc) {
+        return SongModel.fromJson(doc.data() as Map<String, dynamic>);
+      },
+    ).toList();
+    return songs;
+  }
+
+  @override
+  Future<List<SongModel>> delete(IcocUser? user, String songId) async {
+    final QuerySnapshot snapshot = await firebaseDataSource.deleteToFirebase(
+        user, FirebaseCollections.SongsV2.name, songId);
+    final List<SongModel> songs = snapshot.docs.map(
+      (doc) {
+        return SongModel.fromJson(doc.data() as Map<String, dynamic>);
+      },
+    ).toList();
     return songs;
   }
 }

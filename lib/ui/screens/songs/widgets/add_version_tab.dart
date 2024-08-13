@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/constants.dart';
+import 'package:icoc_admin_pannel/domain/helpers/convert_languages_enum.dart';
 import 'package:icoc_admin_pannel/domain/helpers/notification_tranlator.dart';
 import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
-import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
+import 'package:icoc_admin_pannel/domain/model/songs/song_model.dart';
+import 'package:icoc_admin_pannel/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/notifications/notifications_bloc.dart';
@@ -12,10 +14,10 @@ import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
 import 'package:icoc_admin_pannel/ui/widget/select_lang.dart';
-import 'package:icoc_admin_pannel/ui/widget/send_notification_checkbax.dart';
+import 'package:icoc_admin_pannel/ui/widget/send_notification_checkbox.dart';
 
 class AddVersionTab extends StatefulWidget {
-  final SongDetail song;
+  final SongModel song;
   const AddVersionTab(
     this.song, {
     super.key,
@@ -33,6 +35,7 @@ class _AddVersionTabState extends State<AddVersionTab> {
   TextEditingController textController = TextEditingController();
   TextEditingController urlController = TextEditingController();
   bool sendNotifications = false;
+  bool isChords = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,28 +47,35 @@ class _AddVersionTabState extends State<AddVersionTab> {
             key: _formKey,
             child: ListView(
               children: [
+                const Text(
+                  'Add a new song version',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Row(
                     children: [
                       SelectLanguageWidget(langController: langController),
+                      const Spacer(),
+                      SizedBox(
+                        width: 150,
+                        child: CheckboxListTile(
+                            controlAffinity: ListTileControlAffinity.leading,
+                            title: const Text('Chords'),
+                            value: isChords,
+                            onChanged: (val) => setState(() {
+                                  isChords = !isChords;
+                                })),
+                      ),
+                      const Spacer(),
                       SendNotificationCheckBox(
                         onChanged: (value) => sendNotifications = value,
                       ),
-                      const Spacer(),
-                      const Text(
-                        'Add a new song version',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      const Spacer(),
-                      const SizedBox(
-                        width: 80,
-                      )
                     ],
                   ),
                 ),
-                MyTexField(
+                MyTextField(
                   controller: titleController,
                   hint: 'Title',
                   maxLength: 50,
@@ -76,12 +86,12 @@ class _AddVersionTabState extends State<AddVersionTab> {
                     return null;
                   },
                 ),
-                MyTexField(
+                MyTextField(
                   controller: descriptionController,
                   hint: 'Desctiption',
                   maxLength: 50,
                 ),
-                MyTexField(
+                MyTextField(
                   controller: textController,
                   hint: 'Text',
                   maxLines: 15,
@@ -92,7 +102,7 @@ class _AddVersionTabState extends State<AddVersionTab> {
                     return null;
                   },
                 ),
-                MyTexField(
+                MyTextField(
                   controller: urlController,
                   hint: 'Youtube link',
                 ),
@@ -120,17 +130,32 @@ class _AddVersionTabState extends State<AddVersionTab> {
       if (await showAlertDialog(context,
           'The language of the song is ${languagesCodes[langController.text]}?',
           showCancelButton: true)) {
-        getIt<SongsBloc>().add(SongsEvent.update(
-            user: context.read<AuthBloc>().icocUser,
-            song: widget.song,
-            lang: langController.text.toLowerCase(),
+        final List<YoutubeVideo> youtubeVideos = [];
+        if (urlController.text.isNotEmpty) {
+          youtubeVideos.add(YoutubeVideo(
+              lang: langController.text,
+              title: titleController.text,
+              link: urlController.text));
+        }
+        final songVersion = SongVersion(
+            id: widget.song.id,
+            lang: languagesToEnumMap[langController.text]!,
+            text: textController.text,
+            isChords: isChords,
             title: titleController.text,
             description: descriptionController.text,
-            text: textController.text,
-            link: urlController.text));
-      }
-      if (sendNotifications) {
-        _sendNotifications();
+            youtubeVideos: youtubeVideos);
+
+        widget.song.songVersions.add(songVersion);
+
+        getIt<SongsBloc>().add(SongsEvent.edit(
+          user: context.read<AuthBloc>().icocUser,
+          song: widget.song,
+        ));
+
+        if (sendNotifications) {
+          _sendNotifications();
+        }
       }
     }
   }
@@ -149,7 +174,7 @@ class _AddVersionTabState extends State<AddVersionTab> {
         text: translatedNotification['text']!,
         lang: langController.text,
         link:
-            '$ICOC_WEB_PAGE/songbook/songs/${widget.song.id}/${widget.song.text.entries.length + 1}?lang=${langController.text}',
+            '$ICOC_WEB_PAGE/songbook/songs/${widget.song.id}?lang=${langController.text}',
       )
     ]);
     getIt<NotificationsBloc>().add(NotificationsEvent.add(

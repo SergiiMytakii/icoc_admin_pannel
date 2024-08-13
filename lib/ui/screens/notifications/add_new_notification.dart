@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:icoc_admin_pannel/constants.dart';
+import 'package:icoc_admin_pannel/domain/helpers/convert_languages_enum.dart';
 import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
@@ -64,7 +66,7 @@ class _AddNewNotificationScreenState extends State<AddNewNotificationScreen> {
                 _buttonsBlock()
               ],
             ),
-            MyTexField(
+            MyTextField(
               controller: titleController,
               hint: 'Title',
               maxLength: 50,
@@ -75,7 +77,7 @@ class _AddNewNotificationScreenState extends State<AddNewNotificationScreen> {
                 return null;
               },
             ),
-            MyTexField(
+            MyTextField(
               controller: textController,
               hint: 'Text',
               maxLines: 10,
@@ -86,7 +88,7 @@ class _AddNewNotificationScreenState extends State<AddNewNotificationScreen> {
                 return null;
               },
             ),
-            MyTexField(
+            MyTextField(
               controller: urlController,
               hint: 'Link (optional)',
             ),
@@ -151,12 +153,12 @@ class _AddNewNotificationScreenState extends State<AddNewNotificationScreen> {
             },
             success: (songs) {
               //get list of all languages.   We need them for notifications
-              final Set<String> allLanguages = {};
+              final Set<Languages> allLanguages = {};
               for (var song in songs) {
-                allLanguages.addAll(song.getAllTitleKeys());
+                allLanguages.addAll(song.getAllLangs());
               }
               final aditionalLangs = allLanguages.toList()
-                ..remove(langController.text);
+                ..remove(languagesToEnumMap[langController.text]);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -164,19 +166,19 @@ class _AddNewNotificationScreenState extends State<AddNewNotificationScreen> {
                       'Translate and post the notification to the following languages as well:'),
                   Row(
                     children: [
-                      for (String lang in aditionalLangs)
+                      for (Languages lang in aditionalLangs)
                         Column(
                           children: [
                             Checkbox(
-                                value: selectedLangs.contains(lang),
+                                value: selectedLangs.contains(lang.name),
                                 onChanged: (value) => setState(() {
-                                      if (selectedLangs.contains(lang)) {
-                                        selectedLangs.remove(lang);
+                                      if (selectedLangs.contains(lang.name)) {
+                                        selectedLangs.remove(lang.name);
                                       } else {
-                                        selectedLangs.add(lang);
+                                        selectedLangs.add(lang.name);
                                       }
                                     })),
-                            Text(lang)
+                            Text(lang.name)
                           ],
                         )
                     ],

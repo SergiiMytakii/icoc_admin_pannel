@@ -63,7 +63,7 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
                 _buttonsBlock(currentBibleStudy.value, lessonNumber)
               ],
             ),
-            MyTexField(
+            MyTextField(
               controller: titleController,
               hint: 'Title',
               maxLength: 50,
@@ -74,7 +74,7 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
                 return null;
               },
             ),
-            MyTexField(
+            MyTextField(
               controller: textController,
               hint: 'Text',
               maxLines: 20,

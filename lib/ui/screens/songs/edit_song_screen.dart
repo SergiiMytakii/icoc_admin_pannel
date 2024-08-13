@@ -1,22 +1,26 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:icoc_admin_pannel/domain/helpers/convert_languages_enum.dart';
 import 'package:icoc_admin_pannel/domain/helpers/extract_text_from_html.dart';
+import 'package:icoc_admin_pannel/domain/model/songs/song_model.dart';
 import 'package:icoc_admin_pannel/domain/model/youtube_video/youtube_video.dart';
-import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
-import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
+import 'package:icoc_admin_pannel/ui/widget/select_lang.dart';
+import 'dart:html' as html;
 
 class EditSongScreen extends StatefulWidget {
-  final String textVersion;
-  final SongDetail? song;
-  const EditSongScreen(
-      {super.key, required this.textVersion, required this.song});
+  final SongModel song;
+  final int index;
+  const EditSongScreen({
+    super.key,
+    required this.song,
+    required this.index,
+  });
 
   @override
   State<EditSongScreen> createState() => _EditSongScreenState();
@@ -25,37 +29,62 @@ class EditSongScreen extends StatefulWidget {
 class _EditSongScreenState extends State<EditSongScreen> {
   late final TextEditingController titleController;
   late final TextEditingController descriptionController;
-  late final TextEditingController textVersionController;
+  late final TextEditingController langController;
   late final TextEditingController textController;
   late final TextEditingController urlController;
   final _formKey = GlobalKey<FormState>();
+  late bool isChords;
+  final List<TextEditingController> youtubeControllers = [];
+
   @override
   void initState() {
+    if (widget.song.songVersions.isEmpty) {
+      context.pop();
+    }
+    isChords = widget.song.songVersions[widget.index].isChords;
     titleController = TextEditingController(
-        text: widget.song?.title[widget.textVersion.substring(0, 2)]);
-    final descr = widget.song?.description != null
-        ? widget.song?.description![widget.textVersion.substring(0, 2)]
-        : null;
-    descriptionController = TextEditingController(text: descr);
-    textVersionController = TextEditingController(text: widget.textVersion);
+        text: widget.song.songVersions[widget.index].title);
+    langController = TextEditingController(
+        text: widget.song.songVersions[widget.index].lang.name);
+    descriptionController = TextEditingController(
+        text: widget.song.songVersions[widget.index].description);
 
-    String text = widget.song?.text[widget.textVersion] ?? '';
+    String text = widget.song.songVersions[widget.index].text;
     if (text.startsWith('<')) {
       text = FormatTextHelper.extractFormattedText(text);
     }
     textController = TextEditingController(text: text);
-    final res = widget.song?.youtubeVideos?.firstWhere(
-      (res) => res.lang == widget.textVersion.substring(0, 2),
-      orElse: () => YoutubeVideo.defaultVideo(),
-    );
-    urlController = TextEditingController(text: res?.link);
+    final videos = widget.song.songVersions[widget.index].youtubeVideos;
+    videos?.forEach((video) =>
+        youtubeControllers.add(TextEditingController(text: video.link)));
+
+//add empty controller for video
+    youtubeControllers.add(TextEditingController()..text = '');
+
+    html.window.onKeyDown.listen((html.KeyboardEvent event) {
+      if (event.metaKey && event.key == 's') {
+        event.preventDefault(); // Prevent the default browser action (save)
+        _save(); // Call your save function
+      }
+    });
+
     super.initState();
+  }
+
+  List<YoutubeVideo> getYoutubeVideos() {
+    return youtubeControllers
+        .where((controller) => controller.text.isNotEmpty)
+        .map((controller) => YoutubeVideo(
+            link: controller.text,
+            lang: widget.song.songVersions[widget.index].lang.name,
+            title: null))
+        .toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16),
       child: Stack(
         children: [
           Form(
@@ -64,14 +93,18 @@ class _EditSongScreenState extends State<EditSongScreen> {
               children: [
                 Row(
                   children: [
+                    SelectLanguageWidget(
+                      langController: langController,
+                    ),
                     SizedBox(
                       width: 150,
-                      child: MyTexField(
-                        controller: textVersionController,
-                        hint: 'Text version',
-                        readOnly: true,
-                        maxLength: 3,
-                      ),
+                      child: CheckboxListTile(
+                          title: const Text('Chords'),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          value: isChords,
+                          onChanged: (val) => setState(() {
+                                isChords = !isChords;
+                              })),
                     ),
                     const Spacer(),
                     const Text(
@@ -85,7 +118,7 @@ class _EditSongScreenState extends State<EditSongScreen> {
                     ),
                   ],
                 ),
-                MyTexField(
+                MyTextField(
                   controller: titleController,
                   hint: 'Title',
                   maxLength: 50,
@@ -96,12 +129,12 @@ class _EditSongScreenState extends State<EditSongScreen> {
                     return null;
                   },
                 ),
-                MyTexField(
+                MyTextField(
                   controller: descriptionController,
-                  hint: 'Desctiption',
+                  hint: 'Description',
                   maxLength: 60,
                 ),
-                MyTexField(
+                MyTextField(
                   controller: textController,
                   hint: 'Text',
                   maxLines: 15,
@@ -112,9 +145,21 @@ class _EditSongScreenState extends State<EditSongScreen> {
                     return null;
                   },
                 ),
-                MyTexField(
-                  controller: urlController,
-                  hint: 'Youtube link',
+                SizedBox(
+                  height: youtubeControllers.length * 50,
+                  child: ListView.builder(
+                    itemCount: youtubeControllers.length - 1,
+                    itemBuilder: (context, index) {
+                      return MyTextField(
+                        controller: youtubeControllers[index],
+                        hint: 'YouTube Link ${index + 1}',
+                      );
+                    },
+                  ),
+                ),
+                MyTextField(
+                  controller: youtubeControllers.last,
+                  hint: 'Add YouTube Link',
                 ),
                 const SizedBox(
                   height: 200,
@@ -144,18 +189,20 @@ class _EditSongScreenState extends State<EditSongScreen> {
 
   void _save() {
     if (_formKey.currentState!.validate()) {
-      if (widget.song != null) {
-        getIt<SongsBloc>().add(SongsEvent.edit(
-            user: context.read<AuthBloc>().icocUser,
-            song: widget.song!,
-            textVersion: textVersionController.text.toLowerCase(),
-            title: titleController.text,
-            description: descriptionController.text,
-            text: textController.text,
-            link: urlController.text));
-        context.read<SongsBloc>().currentSong.value = widget.song!;
-        context.pop();
-      }
+      widget.song.songVersions[widget.index] = SongVersion(
+          id: widget.song.id,
+          text: textController.text,
+          isChords: isChords,
+          title: titleController.text,
+          description: descriptionController.text,
+          lang: languagesToEnumMap[langController.text]!,
+          youtubeVideos: getYoutubeVideos());
+      getIt<SongsBloc>().add(SongsEvent.edit(
+        user: context.read<AuthBloc>().icocUser,
+        song: widget.song,
+      ));
+      context.pop();
+      context.read<SongsBloc>().currentSong.value = widget.song;
     }
   }
 }

@@ -2,7 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:icoc_admin_pannel/domain/model/song_detail.dart';
+import 'package:icoc_admin_pannel/constants.dart';
+import 'package:icoc_admin_pannel/domain/model/songs/song_model.dart';
 import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/auth/login_screen.dart';
@@ -10,6 +11,7 @@ import 'package:icoc_admin_pannel/ui/screens/bible_study/add_new_lesson.dart';
 import 'package:icoc_admin_pannel/ui/screens/bible_study/bible_study_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/bible_study/edit_lesson.dart';
 import 'package:icoc_admin_pannel/ui/screens/feedback/feedbacks_screen.dart';
+import 'package:icoc_admin_pannel/ui/screens/feedback/widget/edit_feedback.dart';
 import 'package:icoc_admin_pannel/ui/screens/notifications/add_new_notification.dart';
 import 'package:icoc_admin_pannel/ui/screens/notifications/notifications_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/root/root_screen.dart';
@@ -88,21 +90,21 @@ final GoRouter router = GoRouter(
                 },
               ),
               GoRoute(
-                path: 'edit/:textVersion',
+                path: 'edit/:index',
                 pageBuilder: (BuildContext context, GoRouterState state) {
-                  final String? textVersion =
-                      state.pathParameters['textVersion'];
+                  final String? index = state.pathParameters['index'];
 
-                  SongDetail? song;
+                  SongModel? song;
 
-                  if (state.extra is SongDetail?) {
-                    song = state.extra as SongDetail?;
+                  if (state.extra is SongModel?) {
+                    song = state.extra as SongModel?;
                   }
 
                   return NoTransitionPage<void>(
                     key: state.pageKey,
                     child: EditSongScreen(
-                        song: song, textVersion: textVersion ?? ''),
+                        song: song ?? SongModel.defaultSong(),
+                        index: int.parse(index ?? '0')),
                   );
                 },
               ),
@@ -141,12 +143,22 @@ final GoRouter router = GoRouter(
           },
         ),
         GoRoute(
-          path: '/feedbacks',
-          pageBuilder: (BuildContext context, GoRouterState state) {
-            return NoTransitionPage<void>(
-                key: state.pageKey, child: const FeedbacksScreen());
-          },
-        ),
+            path: '/feedbacks',
+            pageBuilder: (BuildContext context, GoRouterState state) {
+              return NoTransitionPage<void>(
+                  key: state.pageKey, child: const FeedbackScreen());
+            },
+            routes: [
+              GoRoute(
+                path: 'edit',
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  return NoTransitionPage<void>(
+                    key: state.pageKey,
+                    child: const EditFeedbackScreen(),
+                  );
+                },
+              ),
+            ]),
       ],
     ),
   ],

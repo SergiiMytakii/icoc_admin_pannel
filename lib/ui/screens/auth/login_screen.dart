@@ -71,13 +71,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          MyTexField(
+                          MyTextField(
                             controller: _emailController,
                             hint: 'Email',
                             validator: _validateEmail,
                             maxLength: 30,
                           ),
-                          MyTexField(
+                          MyTextField(
                             controller: _passwordController,
                             obscureText: true,
                             hint: 'Password',

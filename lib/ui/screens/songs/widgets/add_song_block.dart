@@ -10,6 +10,7 @@ class AddSongBlock extends StatefulWidget {
   final TextEditingController langController;
   final TextEditingController textController;
   final TextEditingController urlController;
+  final Function callback;
   AddSongBlock(
       {super.key,
       required this.titleController,
@@ -17,6 +18,7 @@ class AddSongBlock extends StatefulWidget {
       required this.langController,
       required this.textController,
       required this.urlController,
+      required this.callback,
       required this.formKey});
 
   @override
@@ -24,6 +26,7 @@ class AddSongBlock extends StatefulWidget {
 }
 
 class _AddSongBlockState extends State<AddSongBlock> {
+  bool isChords = false;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -35,6 +38,17 @@ class _AddSongBlockState extends State<AddSongBlock> {
             Row(
               children: [
                 SelectLanguageWidget(langController: widget.langController),
+                SizedBox(
+                  width: 150,
+                  child: CheckboxListTile(
+                      title: const Text('Chords'),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      value: isChords,
+                      onChanged: (val) => setState(() {
+                            isChords = !isChords;
+                            widget.callback(val);
+                          })),
+                ),
                 const Spacer(),
                 const Text(
                   'Add a new song version',
@@ -47,7 +61,7 @@ class _AddSongBlockState extends State<AddSongBlock> {
                 )
               ],
             ),
-            MyTexField(
+            MyTextField(
               controller: widget.titleController,
               hint: 'Title',
               maxLength: 50,
@@ -58,12 +72,12 @@ class _AddSongBlockState extends State<AddSongBlock> {
                 return null;
               },
             ),
-            MyTexField(
+            MyTextField(
               controller: widget.descriptionController,
               hint: 'Desctiption',
               maxLength: 60,
             ),
-            MyTexField(
+            MyTextField(
               controller: widget.textController,
               hint: 'Text',
               maxLines: 15,
@@ -74,7 +88,7 @@ class _AddSongBlockState extends State<AddSongBlock> {
                 return null;
               },
             ),
-            MyTexField(
+            MyTextField(
               controller: widget.urlController,
               hint: 'Youtube link',
             ),

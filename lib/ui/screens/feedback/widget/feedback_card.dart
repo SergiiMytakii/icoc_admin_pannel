@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
+import 'package:icoc_admin_pannel/domain/model/feedback/feedback_model.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
-import 'package:icoc_admin_pannel/ui/bloc/notifications/notifications_bloc.dart';
+import 'package:icoc_admin_pannel/ui/bloc/feedback/feedback_bloc.dart';
 import 'package:intl/intl.dart';
 
-class NotificationCard extends StatelessWidget {
-  final NotificationsModel notificationsModel;
+class FeedbackCard extends StatelessWidget {
+  final FeedbackModel feedback;
 
-  NotificationCard({
+  FeedbackCard({
     super.key,
-    required this.notificationsModel,
+    required this.feedback,
   });
 
   @override
@@ -23,14 +23,14 @@ class NotificationCard extends StatelessWidget {
             width: 20,
           ),
           title: Text(
-            notificationsModel.notifications.first.title,
+            feedback.name,
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           subtitle: Text(
             DateFormat('MMM d, yyyy HH:mm')
-                .format(DateTime.parse(notificationsModel.id)),
+                .format(DateTime.parse(feedback.date)),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             style: Theme.of(context).textTheme.bodyMedium,
@@ -38,11 +38,10 @@ class NotificationCard extends StatelessWidget {
           trailing: IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
-              getIt<NotificationsBloc>().add(NotificationsEvent.delete(
-                  notification: notificationsModel,
-                  user: getIt<AuthBloc>().icocUser));
-              getIt<NotificationsBloc>().currentNotification.value =
-                  NotificationsModel.defaultNotification();
+              getIt<FeedbackBloc>().add(FeedbackEvent.delete(
+                  user: getIt<AuthBloc>().icocUser, feedbackId: feedback.id));
+              getIt<FeedbackBloc>().currentFeedback.value =
+                  FeedbackModel.defaultFeedback();
             },
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 20),
