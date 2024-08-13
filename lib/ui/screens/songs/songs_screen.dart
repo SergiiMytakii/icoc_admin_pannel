@@ -1,5 +1,5 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/domain/helpers/show_menu.dart';
 import 'package:icoc_admin_pannel/domain/model/songs/song_model.dart';
@@ -9,7 +9,6 @@ import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/one_song.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/song_card.dart';
 import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
-import 'dart:js' as js;
 
 final bucket = PageStorageBucket();
 
@@ -54,6 +53,7 @@ class _SongsScreenState extends State<SongsScreen> {
     }
   }
 
+  bool shown = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: Builder(builder: (context) {
@@ -75,8 +75,9 @@ class _SongsScreenState extends State<SongsScreen> {
                         _buildSearchBar(context),
                         Expanded(
                           child: LayoutBuilder(builder: (context, constraints) {
+                            //set landscape orientation on mobile deviices
                             if (constraints.maxWidth < 150) {
-                              js.context.callMethod('requestLandscape');
+                              if (!shown) _showRotateSuggestion();
                             }
                             return PageStorage(
                                 bucket: bucket,
@@ -163,5 +164,41 @@ class _SongsScreenState extends State<SongsScreen> {
       context.read<SongsBloc>().add(SongsEvent.delete(
           user: context.read<AuthBloc>().icocUser, songId: song.id.toString()));
     }
+  }
+
+  void _showRotateSuggestion() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            alignment: Alignment.center,
+            content: const SizedBox(
+              height: 120,
+              child: Column(
+                children: [
+                  SizedBox(height: 30),
+                  Icon(
+                    Icons.rotate_left,
+                    size: 36,
+                  ),
+                  SizedBox(height: 20),
+                  Text('Rotate your device to landscape orientation'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+              ),
+            ],
+          );
+        },
+      );
+      shown = true;
+    });
   }
 }

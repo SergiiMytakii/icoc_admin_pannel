@@ -50,7 +50,7 @@ class _EditLessonScreenState extends State<EditLessonScreen> {
       child: Builder(builder: (context) {
         return Form(
           key: _formKey,
-          child: Column(
+          child: ListView(
             children: [
               Row(
                 children: [

@@ -135,5 +135,6 @@ enum Languages {
   lb,
   mk,
   pt,
-  sr
+  sr,
+  defaultLang
 }
