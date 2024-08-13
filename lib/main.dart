@@ -20,11 +20,13 @@ import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/videos/videos_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+// ignore: prefer_const_declarations
+final openAIKey = const String.fromEnvironment('openAIKey');
+
 void main() async {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
-      // await dotenv.load(fileName: 'env');
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );

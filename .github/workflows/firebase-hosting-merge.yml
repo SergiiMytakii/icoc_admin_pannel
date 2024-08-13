@@ -17,7 +17,7 @@ jobs:
 
       # Run Flutter commands
       - run: flutter pub get # Install dependencies
-      - run: flutter build web --web-renderer html # Build the Flutter web app
+      - run: flutter build web --dart-define=openAIKey=${{ secrets.openAIKey }} --web-renderer html
 
       # Deploy to Firebase Hosting
       - uses: FirebaseExtended/action-hosting-deploy@v0

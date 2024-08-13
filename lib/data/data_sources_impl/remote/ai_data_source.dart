@@ -1,6 +1,6 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:icoc_admin_pannel/domain/data_sources/ai_data_source.dart';
-import 'package:icoc_admin_pannel/env.dart';
+import 'package:icoc_admin_pannel/main.dart';
+
 import 'package:injectable/injectable.dart';
 import 'package:langchain/langchain.dart';
 import 'package:langchain_openai/langchain_openai.dart';
