@@ -40,6 +40,8 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
           await bibleStudyRepository.getBibleStudyList();
       if (bibleStudies.isNotEmpty) {
         bibleStudies.sort((a, b) => a.id.compareTo(b.id));
+        currentBibleStudy.value = bibleStudies.first;
+        currentLesson.value = bibleStudies.first.lessons.first;
       }
       emit(BibleStudyState.success(bibleStudies));
     } catch (error, stackTrace) {
