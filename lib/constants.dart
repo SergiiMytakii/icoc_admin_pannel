@@ -100,6 +100,8 @@ enum FirebaseCollections {
   Video,
   Feedback,
   UsersLogs,
+  QandA,
+  QandALangs
 }
 
 enum Languages {
