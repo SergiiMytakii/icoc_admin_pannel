@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/constants.dart';
+import 'package:icoc_admin_pannel/domain/helpers/convert_languages_enum.dart';
 import 'package:icoc_admin_pannel/domain/model/q&a/q&a_model.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
+import 'package:icoc_admin_pannel/injection.dart';
+import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
+import 'package:icoc_admin_pannel/ui/bloc/q&a_bloc/q&a_bloc.dart';
+import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
+import 'package:icoc_admin_pannel/ui/widget/select_lang.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
@@ -18,6 +24,8 @@ class OneQandA extends StatelessWidget {
   static const fontStyle =
       TextStyle(color: ScreenColors.QandA, fontWeight: FontWeight.bold);
 
+  final TextEditingController langController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +37,7 @@ class OneQandA extends StatelessWidget {
             children: [
               Text(
                 'Document reference: ${article.documentRef}',
-                style: fontStyle,
+                style: OneQandA.fontStyle,
               ),
               const SizedBox(
                 height: 10,
@@ -37,14 +45,14 @@ class OneQandA extends StatelessWidget {
               if (article.lang == Languages.ru)
                 Text(
                   'Original En number: ${article.id - 884}',
-                  style: fontStyle,
+                  style: OneQandA.fontStyle,
                 ),
               const SizedBox(
                 height: 10,
               ),
               const Text(
                 'Question:',
-                style: fontStyle,
+                style: OneQandA.fontStyle,
               ),
               const SizedBox(
                 height: 10,
@@ -57,7 +65,7 @@ class OneQandA extends StatelessWidget {
               ),
               const Text(
                 'Answer:',
-                style: fontStyle,
+                style: OneQandA.fontStyle,
               ),
               const SizedBox(
                 height: 10,
@@ -89,17 +97,17 @@ class OneQandA extends StatelessWidget {
               if (article.date != null)
                 Text(
                   '${'Date:'} ${article.date}',
-                  style: fontStyle,
+                  style: OneQandA.fontStyle,
                 ),
               if (article.author != null)
                 Text(
                   '${'Author:'} ${article.author}',
-                  style: fontStyle,
+                  style: OneQandA.fontStyle,
                 ),
               if (article.translatedBy != null)
                 Text(
                   '${'Translated by:'} ${article.translatedBy}',
-                  style: fontStyle,
+                  style: OneQandA.fontStyle,
                 ),
               if (article.source != null)
                 _buildActiveLink(
@@ -117,6 +125,23 @@ class OneQandA extends StatelessWidget {
     return AppBar(
       toolbarHeight: 45,
       actions: [
+        SelectLanguageWidget(
+          langController: langController,
+          label: 'Translate Eng Q&As to the',
+        ),
+        MyTextButton(
+          label: 'Translate',
+          onPressed: () async {
+            final result = await showAlertDialog(context,
+                'Do you really want to translate all English Q&As to the ${langController.text}? It will take a long time to process 1660 Q&As. ',
+                showCancelButton: true);
+            if (result) {
+              getIt<QandABloc>().add(QandAEvent.translate(
+                  user: getIt<AuthBloc>().icocUser,
+                  lang: convertLanguagesEnum(langController.text)));
+            }
+          },
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: MyTextButton(
@@ -144,7 +169,7 @@ class OneQandA extends StatelessWidget {
         },
         child: Text(
           article.youtubeLink!,
-          style: fontStyle.copyWith(
+          style: OneQandA.fontStyle.copyWith(
             color: Colors.blue,
             decoration: TextDecoration.underline,
           ),
@@ -170,11 +195,11 @@ class OneQandA extends StatelessWidget {
       },
       child: Row(
         children: [
-          Text(label, style: fontStyle),
+          Text(label, style: OneQandA.fontStyle),
           Expanded(
             child: Text(
               url,
-              style: fontStyle.copyWith(
+              style: OneQandA.fontStyle.copyWith(
                 decoration: TextDecoration.underline,
                 color: Colors.blue,
               ),

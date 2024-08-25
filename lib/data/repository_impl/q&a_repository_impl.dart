@@ -43,8 +43,6 @@ class QandARepositoryImpl extends QandARepository {
         return article;
       },
     ).toList();
-    // await _insertToRus(articles);
-
     return articles;
   }
 
@@ -65,37 +63,44 @@ class QandARepositoryImpl extends QandARepository {
   }
 
 //used for translating articles to russian and inserting into firestore collection
-  Future<void> _insertToRus(List<QandAModel> articles) async {
+  @override
+  Future<void> insertArticlesInNewLangs(
+      IcocUser? user, Languages langToTranslate) async {
+    final articles = await getArticles(lang: Languages.en);
     for (var article in articles) {
-      if (article.id < 1662 && article.id > 1660) {
-        print('insert article: ${article.title}');
-        firebaseDataSource.postToFirebase(IcocUser.defaultUser(),
-            FirebaseCollections.QandA.name, article.toJson());
+      if (article.id < 1662 && article.id > 0 && article.lang == Languages.en) {
+        await _translateArticleToNewLang(user, article, langToTranslate);
       }
     }
   }
 
-  Future _translateArticleToRus(QandAModel article) async {
+// translate articles from eng to the new languages
+  Future _translateArticleToNewLang(
+      IcocUser? user, QandAModel article, Languages langToTranslate) async {
     final outputTemplate = {
       'translatedTitle': 'place here translatedTitle',
       'tags': ['translated tags']
     };
     final query = {
+      'lang': langToTranslate.name,
       'title': article.title,
       'tags': article.tags ?? [],
       'outputTemplate': outputTemplate
     };
 
     final promptTemplate = PromptTemplate.fromTemplate(r'''
-          Translate the following title and tags to the russian language:
+        You are an expert Biblical translator with deep knowledge of theological concepts.
+        Follow these steps:
+        1. Identify the target language from the provided language code: {lang}.
+        2. Translate the following title and tags to the target language
          title:  {title}. \n
          tags: [{tags}]. \n
-         Your responce shoud contain only translaed text without any additional words.
-         Keep in mind that context of the title is a Biblical quote and should be translated accordingly.
-         return result as valid JSON using the following structure:
+        3. Ensure the translation maintains the original Biblical and theological context.
+        4. Your responce shoud contain only translaed text without any additional words.
+        5. return result as valid JSON using the following structure:
             {outputTemplate}
           ''');
-    print(article.id);
+    print('Processing Q&A ${article.id}');
     final res = await aiDataSource.getAiResponse(promptTemplate, query);
     print(res.toString());
     final date = article.date;
@@ -115,14 +120,16 @@ class QandARepositoryImpl extends QandARepository {
       }
     }
     article = article.copyWith(
-        id: article.id + 884,
         title: res['translatedTitle'],
         tags: tags,
-        lang: Languages.ru,
+        lang: langToTranslate,
         translatedBy: 'ChatGPT',
-        author: 'Даглас Джакоби');
-    firebaseDataSource.postToFirebase(IcocUser.defaultUser(),
-        FirebaseCollections.QandA.name, article.toJson());
+        author: 'Douglas Jacoby');
+    firebaseDataSource.addToFirebase(
+        user,
+        // 'testQandA',
+        FirebaseCollections.QandA.name,
+        article.toJson());
   }
 
   @override

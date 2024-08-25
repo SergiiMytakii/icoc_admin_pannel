@@ -284,7 +284,10 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                       },
                     ),
                     const SizedBox(height: 16),
-                    SelectLanguageWidget(langController: langController),
+                    SelectLanguageWidget(
+                      langController: langController,
+                      label: 'Languages',
+                    ),
                   ],
                 ),
               ),

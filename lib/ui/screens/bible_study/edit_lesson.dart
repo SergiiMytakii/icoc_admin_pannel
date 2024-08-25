@@ -111,16 +111,18 @@ class _EditLessonScreenState extends State<EditLessonScreen> {
         MyTextButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
-              currentBibleStudy.lessons
-                  .removeWhere((lesson) => lesson.id == currentLesson.id);
+              final List<Lesson> lessons = List.from(currentBibleStudy.lessons);
 
-              currentBibleStudy.lessons.add(Lesson(
+              lessons.removeWhere((lesson) => lesson.id == currentLesson.id);
+
+              lessons.add(Lesson(
                   title: titleController.text,
                   text: textController.text,
                   id: currentLesson.id));
+
               getIt<BibleStudyBloc>().add(BibleStudyEvent.editLesson(
                   user: context.read<AuthBloc>().icocUser,
-                  bibleStudy: currentBibleStudy));
+                  bibleStudy: currentBibleStudy.copyWith(lessons: lessons)));
 
               context.pop();
             }

@@ -6,6 +6,7 @@ abstract class QandARepository {
   Future<List<QandAModel>> getArticles({required Languages lang});
   Future<List<QandAModel>> deleteQandA(IcocUser? user, String documentRef);
   Future<List<Languages>> getAllLangs();
-
+  Future<void> insertArticlesInNewLangs(
+      IcocUser? user, Languages langToTranslate);
   Future<List<QandAModel>> edit(IcocUser? user, QandAModel article);
 }

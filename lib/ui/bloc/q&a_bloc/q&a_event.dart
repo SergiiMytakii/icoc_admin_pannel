@@ -9,4 +9,6 @@ sealed class QandAEvent with _$QandAEvent {
       {required IcocUser? user, required QandAModel article}) = QandAEdit;
   const factory QandAEvent.delete(
       {required IcocUser? user, required String docReference}) = QandADelete;
+  const factory QandAEvent.translate(
+      {required IcocUser? user, required Languages lang}) = QandATranslate;
 }

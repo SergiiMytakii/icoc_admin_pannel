@@ -15,6 +15,12 @@ abstract class FirebaseDataSource {
       IcocUser? user, String collection, Map<String, dynamic> data,
       {String? docReference});
 
+  Future<QuerySnapshot> addToFirebase(
+    IcocUser? user,
+    String collection,
+    Map<String, dynamic> data,
+  );
+
   Future<QuerySnapshot> deleteToFirebase(
       IcocUser? user, String collection, String id);
   Future<void> updateQandALangsFirebase();

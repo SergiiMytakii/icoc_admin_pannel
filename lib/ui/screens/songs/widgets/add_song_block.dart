@@ -37,7 +37,10 @@ class _AddSongBlockState extends State<AddSongBlock> {
           children: [
             Row(
               children: [
-                SelectLanguageWidget(langController: widget.langController),
+                SelectLanguageWidget(
+                  langController: widget.langController,
+                  label: 'Languages',
+                ),
                 SizedBox(
                   width: 150,
                   child: CheckboxListTile(

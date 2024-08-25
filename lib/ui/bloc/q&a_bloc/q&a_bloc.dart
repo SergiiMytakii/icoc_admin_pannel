@@ -28,6 +28,7 @@ class QandABloc extends Bloc<QandAEvent, QandAState> {
         getLangs: () => _onGetLangs(emit),
         requested: (query, lang) => _onQandARequested(query, lang, emit),
         edit: (user, article) => _onEditRequested(user, article, emit),
+        translate: (user, lang) => _onTranslateRequested(user, lang, emit),
       );
     });
   }
@@ -38,7 +39,7 @@ class QandABloc extends Bloc<QandAEvent, QandAState> {
     Emitter<QandAState> emit,
   ) async {
     try {
-      if (query != null) emit(const QandAState.loading());
+      emit(const QandAState.loading());
       final List<QandAModel> articles =
           await qandARepository.getArticles(lang: lang);
       if (articles.isNotEmpty) {
@@ -91,5 +92,15 @@ class QandABloc extends Bloc<QandAEvent, QandAState> {
       logError(error, stackTrace);
       emit(QandAState.error(error.toString()));
     }
+  }
+
+  Future _onTranslateRequested(
+      IcocUser? user, Languages lang, Emitter<QandAState> emit) async {
+    emit(const QandAState.loading());
+    await qandARepository.insertArticlesInNewLangs(
+      user,
+      lang,
+    );
+    await _onQandARequested(null, lang, emit);
   }
 }

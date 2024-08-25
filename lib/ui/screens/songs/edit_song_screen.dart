@@ -95,6 +95,7 @@ class _EditSongScreenState extends State<EditSongScreen> {
                   children: [
                     SelectLanguageWidget(
                       langController: langController,
+                      label: 'Languages',
                     ),
                     SizedBox(
                       width: 150,

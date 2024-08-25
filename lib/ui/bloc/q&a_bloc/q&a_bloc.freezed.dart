@@ -22,6 +22,7 @@ mixin _$QandAEvent {
     required TResult Function() getLangs,
     required TResult Function(IcocUser? user, QandAModel article) edit,
     required TResult Function(IcocUser? user, String docReference) delete,
+    required TResult Function(IcocUser? user, Languages lang) translate,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -30,6 +31,7 @@ mixin _$QandAEvent {
     TResult? Function()? getLangs,
     TResult? Function(IcocUser? user, QandAModel article)? edit,
     TResult? Function(IcocUser? user, String docReference)? delete,
+    TResult? Function(IcocUser? user, Languages lang)? translate,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -38,6 +40,7 @@ mixin _$QandAEvent {
     TResult Function()? getLangs,
     TResult Function(IcocUser? user, QandAModel article)? edit,
     TResult Function(IcocUser? user, String docReference)? delete,
+    TResult Function(IcocUser? user, Languages lang)? translate,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -47,6 +50,7 @@ mixin _$QandAEvent {
     required TResult Function(QandAGetLangs value) getLangs,
     required TResult Function(QandAEdit value) edit,
     required TResult Function(QandADelete value) delete,
+    required TResult Function(QandATranslate value) translate,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -55,6 +59,7 @@ mixin _$QandAEvent {
     TResult? Function(QandAGetLangs value)? getLangs,
     TResult? Function(QandAEdit value)? edit,
     TResult? Function(QandADelete value)? delete,
+    TResult? Function(QandATranslate value)? translate,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -63,6 +68,7 @@ mixin _$QandAEvent {
     TResult Function(QandAGetLangs value)? getLangs,
     TResult Function(QandAEdit value)? edit,
     TResult Function(QandADelete value)? delete,
+    TResult Function(QandATranslate value)? translate,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -163,6 +169,7 @@ class _$QandARequestedImpl implements QandARequested {
     required TResult Function() getLangs,
     required TResult Function(IcocUser? user, QandAModel article) edit,
     required TResult Function(IcocUser? user, String docReference) delete,
+    required TResult Function(IcocUser? user, Languages lang) translate,
   }) {
     return requested(query, lang);
   }
@@ -174,6 +181,7 @@ class _$QandARequestedImpl implements QandARequested {
     TResult? Function()? getLangs,
     TResult? Function(IcocUser? user, QandAModel article)? edit,
     TResult? Function(IcocUser? user, String docReference)? delete,
+    TResult? Function(IcocUser? user, Languages lang)? translate,
   }) {
     return requested?.call(query, lang);
   }
@@ -185,6 +193,7 @@ class _$QandARequestedImpl implements QandARequested {
     TResult Function()? getLangs,
     TResult Function(IcocUser? user, QandAModel article)? edit,
     TResult Function(IcocUser? user, String docReference)? delete,
+    TResult Function(IcocUser? user, Languages lang)? translate,
     required TResult orElse(),
   }) {
     if (requested != null) {
@@ -200,6 +209,7 @@ class _$QandARequestedImpl implements QandARequested {
     required TResult Function(QandAGetLangs value) getLangs,
     required TResult Function(QandAEdit value) edit,
     required TResult Function(QandADelete value) delete,
+    required TResult Function(QandATranslate value) translate,
   }) {
     return requested(this);
   }
@@ -211,6 +221,7 @@ class _$QandARequestedImpl implements QandARequested {
     TResult? Function(QandAGetLangs value)? getLangs,
     TResult? Function(QandAEdit value)? edit,
     TResult? Function(QandADelete value)? delete,
+    TResult? Function(QandATranslate value)? translate,
   }) {
     return requested?.call(this);
   }
@@ -222,6 +233,7 @@ class _$QandARequestedImpl implements QandARequested {
     TResult Function(QandAGetLangs value)? getLangs,
     TResult Function(QandAEdit value)? edit,
     TResult Function(QandADelete value)? delete,
+    TResult Function(QandATranslate value)? translate,
     required TResult orElse(),
   }) {
     if (requested != null) {
@@ -285,6 +297,7 @@ class _$QandAGetLangsImpl implements QandAGetLangs {
     required TResult Function() getLangs,
     required TResult Function(IcocUser? user, QandAModel article) edit,
     required TResult Function(IcocUser? user, String docReference) delete,
+    required TResult Function(IcocUser? user, Languages lang) translate,
   }) {
     return getLangs();
   }
@@ -296,6 +309,7 @@ class _$QandAGetLangsImpl implements QandAGetLangs {
     TResult? Function()? getLangs,
     TResult? Function(IcocUser? user, QandAModel article)? edit,
     TResult? Function(IcocUser? user, String docReference)? delete,
+    TResult? Function(IcocUser? user, Languages lang)? translate,
   }) {
     return getLangs?.call();
   }
@@ -307,6 +321,7 @@ class _$QandAGetLangsImpl implements QandAGetLangs {
     TResult Function()? getLangs,
     TResult Function(IcocUser? user, QandAModel article)? edit,
     TResult Function(IcocUser? user, String docReference)? delete,
+    TResult Function(IcocUser? user, Languages lang)? translate,
     required TResult orElse(),
   }) {
     if (getLangs != null) {
@@ -322,6 +337,7 @@ class _$QandAGetLangsImpl implements QandAGetLangs {
     required TResult Function(QandAGetLangs value) getLangs,
     required TResult Function(QandAEdit value) edit,
     required TResult Function(QandADelete value) delete,
+    required TResult Function(QandATranslate value) translate,
   }) {
     return getLangs(this);
   }
@@ -333,6 +349,7 @@ class _$QandAGetLangsImpl implements QandAGetLangs {
     TResult? Function(QandAGetLangs value)? getLangs,
     TResult? Function(QandAEdit value)? edit,
     TResult? Function(QandADelete value)? delete,
+    TResult? Function(QandATranslate value)? translate,
   }) {
     return getLangs?.call(this);
   }
@@ -344,6 +361,7 @@ class _$QandAGetLangsImpl implements QandAGetLangs {
     TResult Function(QandAGetLangs value)? getLangs,
     TResult Function(QandAEdit value)? edit,
     TResult Function(QandADelete value)? delete,
+    TResult Function(QandATranslate value)? translate,
     required TResult orElse(),
   }) {
     if (getLangs != null) {
@@ -443,6 +461,7 @@ class _$QandAEditImpl implements QandAEdit {
     required TResult Function() getLangs,
     required TResult Function(IcocUser? user, QandAModel article) edit,
     required TResult Function(IcocUser? user, String docReference) delete,
+    required TResult Function(IcocUser? user, Languages lang) translate,
   }) {
     return edit(user, article);
   }
@@ -454,6 +473,7 @@ class _$QandAEditImpl implements QandAEdit {
     TResult? Function()? getLangs,
     TResult? Function(IcocUser? user, QandAModel article)? edit,
     TResult? Function(IcocUser? user, String docReference)? delete,
+    TResult? Function(IcocUser? user, Languages lang)? translate,
   }) {
     return edit?.call(user, article);
   }
@@ -465,6 +485,7 @@ class _$QandAEditImpl implements QandAEdit {
     TResult Function()? getLangs,
     TResult Function(IcocUser? user, QandAModel article)? edit,
     TResult Function(IcocUser? user, String docReference)? delete,
+    TResult Function(IcocUser? user, Languages lang)? translate,
     required TResult orElse(),
   }) {
     if (edit != null) {
@@ -480,6 +501,7 @@ class _$QandAEditImpl implements QandAEdit {
     required TResult Function(QandAGetLangs value) getLangs,
     required TResult Function(QandAEdit value) edit,
     required TResult Function(QandADelete value) delete,
+    required TResult Function(QandATranslate value) translate,
   }) {
     return edit(this);
   }
@@ -491,6 +513,7 @@ class _$QandAEditImpl implements QandAEdit {
     TResult? Function(QandAGetLangs value)? getLangs,
     TResult? Function(QandAEdit value)? edit,
     TResult? Function(QandADelete value)? delete,
+    TResult? Function(QandATranslate value)? translate,
   }) {
     return edit?.call(this);
   }
@@ -502,6 +525,7 @@ class _$QandAEditImpl implements QandAEdit {
     TResult Function(QandAGetLangs value)? getLangs,
     TResult Function(QandAEdit value)? edit,
     TResult Function(QandADelete value)? delete,
+    TResult Function(QandATranslate value)? translate,
     required TResult orElse(),
   }) {
     if (edit != null) {
@@ -600,6 +624,7 @@ class _$QandADeleteImpl implements QandADelete {
     required TResult Function() getLangs,
     required TResult Function(IcocUser? user, QandAModel article) edit,
     required TResult Function(IcocUser? user, String docReference) delete,
+    required TResult Function(IcocUser? user, Languages lang) translate,
   }) {
     return delete(user, docReference);
   }
@@ -611,6 +636,7 @@ class _$QandADeleteImpl implements QandADelete {
     TResult? Function()? getLangs,
     TResult? Function(IcocUser? user, QandAModel article)? edit,
     TResult? Function(IcocUser? user, String docReference)? delete,
+    TResult? Function(IcocUser? user, Languages lang)? translate,
   }) {
     return delete?.call(user, docReference);
   }
@@ -622,6 +648,7 @@ class _$QandADeleteImpl implements QandADelete {
     TResult Function()? getLangs,
     TResult Function(IcocUser? user, QandAModel article)? edit,
     TResult Function(IcocUser? user, String docReference)? delete,
+    TResult Function(IcocUser? user, Languages lang)? translate,
     required TResult orElse(),
   }) {
     if (delete != null) {
@@ -637,6 +664,7 @@ class _$QandADeleteImpl implements QandADelete {
     required TResult Function(QandAGetLangs value) getLangs,
     required TResult Function(QandAEdit value) edit,
     required TResult Function(QandADelete value) delete,
+    required TResult Function(QandATranslate value) translate,
   }) {
     return delete(this);
   }
@@ -648,6 +676,7 @@ class _$QandADeleteImpl implements QandADelete {
     TResult? Function(QandAGetLangs value)? getLangs,
     TResult? Function(QandAEdit value)? edit,
     TResult? Function(QandADelete value)? delete,
+    TResult? Function(QandATranslate value)? translate,
   }) {
     return delete?.call(this);
   }
@@ -659,6 +688,7 @@ class _$QandADeleteImpl implements QandADelete {
     TResult Function(QandAGetLangs value)? getLangs,
     TResult Function(QandAEdit value)? edit,
     TResult Function(QandADelete value)? delete,
+    TResult Function(QandATranslate value)? translate,
     required TResult orElse(),
   }) {
     if (delete != null) {
@@ -677,6 +707,169 @@ abstract class QandADelete implements QandAEvent {
   String get docReference;
   @JsonKey(ignore: true)
   _$$QandADeleteImplCopyWith<_$QandADeleteImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$QandATranslateImplCopyWith<$Res> {
+  factory _$$QandATranslateImplCopyWith(_$QandATranslateImpl value,
+          $Res Function(_$QandATranslateImpl) then) =
+      __$$QandATranslateImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({IcocUser? user, Languages lang});
+}
+
+/// @nodoc
+class __$$QandATranslateImplCopyWithImpl<$Res>
+    extends _$QandAEventCopyWithImpl<$Res, _$QandATranslateImpl>
+    implements _$$QandATranslateImplCopyWith<$Res> {
+  __$$QandATranslateImplCopyWithImpl(
+      _$QandATranslateImpl _value, $Res Function(_$QandATranslateImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? user = freezed,
+    Object? lang = null,
+  }) {
+    return _then(_$QandATranslateImpl(
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as IcocUser?,
+      lang: null == lang
+          ? _value.lang
+          : lang // ignore: cast_nullable_to_non_nullable
+              as Languages,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$QandATranslateImpl implements QandATranslate {
+  const _$QandATranslateImpl({required this.user, required this.lang});
+
+  @override
+  final IcocUser? user;
+  @override
+  final Languages lang;
+
+  @override
+  String toString() {
+    return 'QandAEvent.translate(user: $user, lang: $lang)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$QandATranslateImpl &&
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.lang, lang) || other.lang == lang));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, user, lang);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$QandATranslateImplCopyWith<_$QandATranslateImpl> get copyWith =>
+      __$$QandATranslateImplCopyWithImpl<_$QandATranslateImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? query, Languages lang) requested,
+    required TResult Function() getLangs,
+    required TResult Function(IcocUser? user, QandAModel article) edit,
+    required TResult Function(IcocUser? user, String docReference) delete,
+    required TResult Function(IcocUser? user, Languages lang) translate,
+  }) {
+    return translate(user, lang);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? query, Languages lang)? requested,
+    TResult? Function()? getLangs,
+    TResult? Function(IcocUser? user, QandAModel article)? edit,
+    TResult? Function(IcocUser? user, String docReference)? delete,
+    TResult? Function(IcocUser? user, Languages lang)? translate,
+  }) {
+    return translate?.call(user, lang);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? query, Languages lang)? requested,
+    TResult Function()? getLangs,
+    TResult Function(IcocUser? user, QandAModel article)? edit,
+    TResult Function(IcocUser? user, String docReference)? delete,
+    TResult Function(IcocUser? user, Languages lang)? translate,
+    required TResult orElse(),
+  }) {
+    if (translate != null) {
+      return translate(user, lang);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(QandARequested value) requested,
+    required TResult Function(QandAGetLangs value) getLangs,
+    required TResult Function(QandAEdit value) edit,
+    required TResult Function(QandADelete value) delete,
+    required TResult Function(QandATranslate value) translate,
+  }) {
+    return translate(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(QandARequested value)? requested,
+    TResult? Function(QandAGetLangs value)? getLangs,
+    TResult? Function(QandAEdit value)? edit,
+    TResult? Function(QandADelete value)? delete,
+    TResult? Function(QandATranslate value)? translate,
+  }) {
+    return translate?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(QandARequested value)? requested,
+    TResult Function(QandAGetLangs value)? getLangs,
+    TResult Function(QandAEdit value)? edit,
+    TResult Function(QandADelete value)? delete,
+    TResult Function(QandATranslate value)? translate,
+    required TResult orElse(),
+  }) {
+    if (translate != null) {
+      return translate(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class QandATranslate implements QandAEvent {
+  const factory QandATranslate(
+      {required final IcocUser? user,
+      required final Languages lang}) = _$QandATranslateImpl;
+
+  IcocUser? get user;
+  Languages get lang;
+  @JsonKey(ignore: true)
+  _$$QandATranslateImplCopyWith<_$QandATranslateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
