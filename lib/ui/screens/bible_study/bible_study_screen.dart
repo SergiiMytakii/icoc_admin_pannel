@@ -302,7 +302,7 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                         topic: topicController.text,
                         id: calculateLastNumber(bibleStudies) + 1,
                         subtopic: subTopicController.text,
-                        lang: languagesToEnumMap[langController.text]!);
+                        lang: convertLanguagesEnum(langController.text));
                     getIt<BibleStudyBloc>().add(BibleStudyEvent.addBibleStudy(
                       bibleStudy: bibleStudy,
                       user: context.read<AuthBloc>().icocUser,

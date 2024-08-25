@@ -12,7 +12,8 @@ abstract class FirebaseDataSource {
       IcocUser? user, String collection, String id, Map<String, dynamic> data);
 
   Future<QuerySnapshot> postToFirebase(
-      IcocUser? user, String collection, Map<String, dynamic> data);
+      IcocUser? user, String collection, Map<String, dynamic> data,
+      {String? docReference});
 
   Future<QuerySnapshot> deleteToFirebase(
       IcocUser? user, String collection, String id);

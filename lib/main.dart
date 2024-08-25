@@ -72,6 +72,11 @@ class MainApp extends StatelessWidget {
         BlocProvider<FeedbackBloc>(
           create: (BuildContext context) => getIt<FeedbackBloc>(),
         ),
+        BlocProvider<QandABloc>(
+          create: (BuildContext context) =>
+              getIt<QandABloc>()..add(const QandAEvent.getLangs()),
+          lazy: false,
+        ),
         BlocProvider<NotificationsBloc>(
           create: (BuildContext context) => getIt<NotificationsBloc>(),
         ),

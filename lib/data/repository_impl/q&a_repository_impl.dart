@@ -27,21 +27,23 @@ class QandARepositoryImpl extends QandARepository {
   }
 
   @override
-  Future<List<QandAModel>> getArticles() async {
-    final QuerySnapshot snapshot =
-        await firebaseDataSource.getFromFirebase('QandAEng',
-            //FirebaseCollections.QandA.name,
-            orderBy: {'id': true});
+  Future<List<QandAModel>> getArticles({
+    required Languages lang,
+  }) async {
+    final QuerySnapshot snapshot = await firebaseDataSource.getFromFirebase(
+        // 'QandAEng',
+        FirebaseCollections.QandA.name,
+        filters: {'lang': lang.name},
+        orderBy: {'id': true});
     final List<QandAModel> articles = snapshot.docs.map(
       (doc) {
-        final article = QandAModel.fromJson(doc.data() as Map<String, dynamic>);
-        // DatabaseServiceFirebase().deleteToFirebase(
-        //     FirebaseCollections.QandA.name, {'link': article.link});
+        final article =
+            QandAModel.fromJson(doc.data() as Map<String, dynamic>, doc.id);
 
         return article;
       },
     ).toList();
-    await _insertToRus(articles);
+    // await _insertToRus(articles);
 
     return articles;
   }
@@ -51,16 +53,22 @@ class QandARepositoryImpl extends QandARepository {
     final QuerySnapshot snapshot = await firebaseDataSource.getFromFirebase(
       FirebaseCollections.QandALangs.name,
     );
-    final List<Languages> langs = snapshot.docs.map((doc) {
-      return languagesToEnumMap[(doc.data() as String)]!;
-    }).toList();
+    final List<Languages> langs = [];
+
+    snapshot.docs.forEach((doc) {
+      final langsMap = doc.data() as Map<String, dynamic>;
+      for (final lang in langsMap['QandAlangs']) {
+        langs.add(convertLanguagesEnum(lang));
+      }
+    });
     return langs;
   }
 
 //used for translating articles to russian and inserting into firestore collection
   Future<void> _insertToRus(List<QandAModel> articles) async {
     for (var article in articles) {
-      if (article.id < 1662) {
+      if (article.id < 1662 && article.id > 1660) {
+        print('insert article: ${article.title}');
         firebaseDataSource.postToFirebase(IcocUser.defaultUser(),
             FirebaseCollections.QandA.name, article.toJson());
       }
@@ -110,10 +118,36 @@ class QandARepositoryImpl extends QandARepository {
         id: article.id + 884,
         title: res['translatedTitle'],
         tags: tags,
-        lang: 'ru',
+        lang: Languages.ru,
         translatedBy: 'ChatGPT',
         author: 'Даглас Джакоби');
     firebaseDataSource.postToFirebase(IcocUser.defaultUser(),
         FirebaseCollections.QandA.name, article.toJson());
+  }
+
+  @override
+  Future<List<QandAModel>> deleteQandA(
+      IcocUser? user, String documentRef) async {
+    final QuerySnapshot snapshot = await firebaseDataSource.deleteToFirebase(
+        user, FirebaseCollections.QandA.name, documentRef);
+    final List<QandAModel> articles = snapshot.docs.map(
+      (doc) {
+        final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return QandAModel.fromJson(data, doc.id);
+      },
+    ).toList();
+    return articles;
+  }
+
+  @override
+  Future<List<QandAModel>> edit(IcocUser? user, QandAModel article) async {
+    final QuerySnapshot snapshot = await firebaseDataSource.postToFirebase(
+        user, FirebaseCollections.QandA.name, article.toJson(),
+        docReference: article.documentRef);
+    final List<QandAModel> bibleStudies = snapshot.docs.map((doc) {
+      final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      return QandAModel.fromJson(data, doc.id);
+    }).toList();
+    return bibleStudies;
   }
 }

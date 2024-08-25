@@ -158,7 +158,7 @@ class _AddNewNotificationScreenState extends State<AddNewNotificationScreen> {
                 allLanguages.addAll(song.getAllLangs());
               }
               final aditionalLangs = allLanguages.toList()
-                ..remove(languagesToEnumMap[langController.text]);
+                ..remove(convertLanguagesEnum(langController.text));
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

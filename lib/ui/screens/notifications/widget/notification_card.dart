@@ -47,10 +47,7 @@ class NotificationCard extends StatelessWidget {
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 20),
         ),
-        const Divider(
-          indent: 50,
-          thickness: 1.2,
-        ),
+        const Divider(),
       ],
     );
   }

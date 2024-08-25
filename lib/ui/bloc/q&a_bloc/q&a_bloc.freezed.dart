@@ -16,42 +16,55 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$QandAEvent {
-  String? get query => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String? query) requested,
+    required TResult Function(String? query, Languages lang) requested,
+    required TResult Function() getLangs,
+    required TResult Function(IcocUser? user, QandAModel article) edit,
+    required TResult Function(IcocUser? user, String docReference) delete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String? query)? requested,
+    TResult? Function(String? query, Languages lang)? requested,
+    TResult? Function()? getLangs,
+    TResult? Function(IcocUser? user, QandAModel article)? edit,
+    TResult? Function(IcocUser? user, String docReference)? delete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? query)? requested,
+    TResult Function(String? query, Languages lang)? requested,
+    TResult Function()? getLangs,
+    TResult Function(IcocUser? user, QandAModel article)? edit,
+    TResult Function(IcocUser? user, String docReference)? delete,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(QandARequested value) requested,
+    required TResult Function(QandAGetLangs value) getLangs,
+    required TResult Function(QandAEdit value) edit,
+    required TResult Function(QandADelete value) delete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(QandARequested value)? requested,
+    TResult? Function(QandAGetLangs value)? getLangs,
+    TResult? Function(QandAEdit value)? edit,
+    TResult? Function(QandADelete value)? delete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(QandARequested value)? requested,
+    TResult Function(QandAGetLangs value)? getLangs,
+    TResult Function(QandAEdit value)? edit,
+    TResult Function(QandADelete value)? delete,
     required TResult orElse(),
   }) =>
-      throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $QandAEventCopyWith<QandAEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -60,8 +73,6 @@ abstract class $QandAEventCopyWith<$Res> {
   factory $QandAEventCopyWith(
           QandAEvent value, $Res Function(QandAEvent) then) =
       _$QandAEventCopyWithImpl<$Res, QandAEvent>;
-  @useResult
-  $Res call({String? query});
 }
 
 /// @nodoc
@@ -73,30 +84,15 @@ class _$QandAEventCopyWithImpl<$Res, $Val extends QandAEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? query = freezed,
-  }) {
-    return _then(_value.copyWith(
-      query: freezed == query
-          ? _value.query
-          : query // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
 }
 
 /// @nodoc
-abstract class _$$QandARequestedImplCopyWith<$Res>
-    implements $QandAEventCopyWith<$Res> {
+abstract class _$$QandARequestedImplCopyWith<$Res> {
   factory _$$QandARequestedImplCopyWith(_$QandARequestedImpl value,
           $Res Function(_$QandARequestedImpl) then) =
       __$$QandARequestedImplCopyWithImpl<$Res>;
-  @override
   @useResult
-  $Res call({String? query});
+  $Res call({String? query, Languages lang});
 }
 
 /// @nodoc
@@ -111,12 +107,17 @@ class __$$QandARequestedImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? query = freezed,
+    Object? lang = null,
   }) {
     return _then(_$QandARequestedImpl(
       query: freezed == query
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
               as String?,
+      lang: null == lang
+          ? _value.lang
+          : lang // ignore: cast_nullable_to_non_nullable
+              as Languages,
     ));
   }
 }
@@ -124,14 +125,16 @@ class __$$QandARequestedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$QandARequestedImpl implements QandARequested {
-  const _$QandARequestedImpl({this.query});
+  const _$QandARequestedImpl({this.query, required this.lang});
 
   @override
   final String? query;
+  @override
+  final Languages lang;
 
   @override
   String toString() {
-    return 'QandAEvent.requested(query: $query)';
+    return 'QandAEvent.requested(query: $query, lang: $lang)';
   }
 
   @override
@@ -139,11 +142,12 @@ class _$QandARequestedImpl implements QandARequested {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$QandARequestedImpl &&
-            (identical(other.query, query) || other.query == query));
+            (identical(other.query, query) || other.query == query) &&
+            (identical(other.lang, lang) || other.lang == lang));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, query);
+  int get hashCode => Object.hash(runtimeType, query, lang);
 
   @JsonKey(ignore: true)
   @override
@@ -155,27 +159,36 @@ class _$QandARequestedImpl implements QandARequested {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String? query) requested,
+    required TResult Function(String? query, Languages lang) requested,
+    required TResult Function() getLangs,
+    required TResult Function(IcocUser? user, QandAModel article) edit,
+    required TResult Function(IcocUser? user, String docReference) delete,
   }) {
-    return requested(query);
+    return requested(query, lang);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String? query)? requested,
+    TResult? Function(String? query, Languages lang)? requested,
+    TResult? Function()? getLangs,
+    TResult? Function(IcocUser? user, QandAModel article)? edit,
+    TResult? Function(IcocUser? user, String docReference)? delete,
   }) {
-    return requested?.call(query);
+    return requested?.call(query, lang);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? query)? requested,
+    TResult Function(String? query, Languages lang)? requested,
+    TResult Function()? getLangs,
+    TResult Function(IcocUser? user, QandAModel article)? edit,
+    TResult Function(IcocUser? user, String docReference)? delete,
     required TResult orElse(),
   }) {
     if (requested != null) {
-      return requested(query);
+      return requested(query, lang);
     }
     return orElse();
   }
@@ -184,6 +197,9 @@ class _$QandARequestedImpl implements QandARequested {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(QandARequested value) requested,
+    required TResult Function(QandAGetLangs value) getLangs,
+    required TResult Function(QandAEdit value) edit,
+    required TResult Function(QandADelete value) delete,
   }) {
     return requested(this);
   }
@@ -192,6 +208,9 @@ class _$QandARequestedImpl implements QandARequested {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(QandARequested value)? requested,
+    TResult? Function(QandAGetLangs value)? getLangs,
+    TResult? Function(QandAEdit value)? edit,
+    TResult? Function(QandADelete value)? delete,
   }) {
     return requested?.call(this);
   }
@@ -200,6 +219,9 @@ class _$QandARequestedImpl implements QandARequested {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(QandARequested value)? requested,
+    TResult Function(QandAGetLangs value)? getLangs,
+    TResult Function(QandAEdit value)? edit,
+    TResult Function(QandADelete value)? delete,
     required TResult orElse(),
   }) {
     if (requested != null) {
@@ -210,13 +232,451 @@ class _$QandARequestedImpl implements QandARequested {
 }
 
 abstract class QandARequested implements QandAEvent {
-  const factory QandARequested({final String? query}) = _$QandARequestedImpl;
+  const factory QandARequested(
+      {final String? query,
+      required final Languages lang}) = _$QandARequestedImpl;
 
-  @override
   String? get query;
-  @override
+  Languages get lang;
   @JsonKey(ignore: true)
   _$$QandARequestedImplCopyWith<_$QandARequestedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$QandAGetLangsImplCopyWith<$Res> {
+  factory _$$QandAGetLangsImplCopyWith(
+          _$QandAGetLangsImpl value, $Res Function(_$QandAGetLangsImpl) then) =
+      __$$QandAGetLangsImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$QandAGetLangsImplCopyWithImpl<$Res>
+    extends _$QandAEventCopyWithImpl<$Res, _$QandAGetLangsImpl>
+    implements _$$QandAGetLangsImplCopyWith<$Res> {
+  __$$QandAGetLangsImplCopyWithImpl(
+      _$QandAGetLangsImpl _value, $Res Function(_$QandAGetLangsImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$QandAGetLangsImpl implements QandAGetLangs {
+  const _$QandAGetLangsImpl();
+
+  @override
+  String toString() {
+    return 'QandAEvent.getLangs()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$QandAGetLangsImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? query, Languages lang) requested,
+    required TResult Function() getLangs,
+    required TResult Function(IcocUser? user, QandAModel article) edit,
+    required TResult Function(IcocUser? user, String docReference) delete,
+  }) {
+    return getLangs();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? query, Languages lang)? requested,
+    TResult? Function()? getLangs,
+    TResult? Function(IcocUser? user, QandAModel article)? edit,
+    TResult? Function(IcocUser? user, String docReference)? delete,
+  }) {
+    return getLangs?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? query, Languages lang)? requested,
+    TResult Function()? getLangs,
+    TResult Function(IcocUser? user, QandAModel article)? edit,
+    TResult Function(IcocUser? user, String docReference)? delete,
+    required TResult orElse(),
+  }) {
+    if (getLangs != null) {
+      return getLangs();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(QandARequested value) requested,
+    required TResult Function(QandAGetLangs value) getLangs,
+    required TResult Function(QandAEdit value) edit,
+    required TResult Function(QandADelete value) delete,
+  }) {
+    return getLangs(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(QandARequested value)? requested,
+    TResult? Function(QandAGetLangs value)? getLangs,
+    TResult? Function(QandAEdit value)? edit,
+    TResult? Function(QandADelete value)? delete,
+  }) {
+    return getLangs?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(QandARequested value)? requested,
+    TResult Function(QandAGetLangs value)? getLangs,
+    TResult Function(QandAEdit value)? edit,
+    TResult Function(QandADelete value)? delete,
+    required TResult orElse(),
+  }) {
+    if (getLangs != null) {
+      return getLangs(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class QandAGetLangs implements QandAEvent {
+  const factory QandAGetLangs() = _$QandAGetLangsImpl;
+}
+
+/// @nodoc
+abstract class _$$QandAEditImplCopyWith<$Res> {
+  factory _$$QandAEditImplCopyWith(
+          _$QandAEditImpl value, $Res Function(_$QandAEditImpl) then) =
+      __$$QandAEditImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({IcocUser? user, QandAModel article});
+
+  $QandAModelCopyWith<$Res> get article;
+}
+
+/// @nodoc
+class __$$QandAEditImplCopyWithImpl<$Res>
+    extends _$QandAEventCopyWithImpl<$Res, _$QandAEditImpl>
+    implements _$$QandAEditImplCopyWith<$Res> {
+  __$$QandAEditImplCopyWithImpl(
+      _$QandAEditImpl _value, $Res Function(_$QandAEditImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? user = freezed,
+    Object? article = null,
+  }) {
+    return _then(_$QandAEditImpl(
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as IcocUser?,
+      article: null == article
+          ? _value.article
+          : article // ignore: cast_nullable_to_non_nullable
+              as QandAModel,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $QandAModelCopyWith<$Res> get article {
+    return $QandAModelCopyWith<$Res>(_value.article, (value) {
+      return _then(_value.copyWith(article: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$QandAEditImpl implements QandAEdit {
+  const _$QandAEditImpl({required this.user, required this.article});
+
+  @override
+  final IcocUser? user;
+  @override
+  final QandAModel article;
+
+  @override
+  String toString() {
+    return 'QandAEvent.edit(user: $user, article: $article)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$QandAEditImpl &&
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.article, article) || other.article == article));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, user, article);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$QandAEditImplCopyWith<_$QandAEditImpl> get copyWith =>
+      __$$QandAEditImplCopyWithImpl<_$QandAEditImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? query, Languages lang) requested,
+    required TResult Function() getLangs,
+    required TResult Function(IcocUser? user, QandAModel article) edit,
+    required TResult Function(IcocUser? user, String docReference) delete,
+  }) {
+    return edit(user, article);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? query, Languages lang)? requested,
+    TResult? Function()? getLangs,
+    TResult? Function(IcocUser? user, QandAModel article)? edit,
+    TResult? Function(IcocUser? user, String docReference)? delete,
+  }) {
+    return edit?.call(user, article);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? query, Languages lang)? requested,
+    TResult Function()? getLangs,
+    TResult Function(IcocUser? user, QandAModel article)? edit,
+    TResult Function(IcocUser? user, String docReference)? delete,
+    required TResult orElse(),
+  }) {
+    if (edit != null) {
+      return edit(user, article);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(QandARequested value) requested,
+    required TResult Function(QandAGetLangs value) getLangs,
+    required TResult Function(QandAEdit value) edit,
+    required TResult Function(QandADelete value) delete,
+  }) {
+    return edit(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(QandARequested value)? requested,
+    TResult? Function(QandAGetLangs value)? getLangs,
+    TResult? Function(QandAEdit value)? edit,
+    TResult? Function(QandADelete value)? delete,
+  }) {
+    return edit?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(QandARequested value)? requested,
+    TResult Function(QandAGetLangs value)? getLangs,
+    TResult Function(QandAEdit value)? edit,
+    TResult Function(QandADelete value)? delete,
+    required TResult orElse(),
+  }) {
+    if (edit != null) {
+      return edit(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class QandAEdit implements QandAEvent {
+  const factory QandAEdit(
+      {required final IcocUser? user,
+      required final QandAModel article}) = _$QandAEditImpl;
+
+  IcocUser? get user;
+  QandAModel get article;
+  @JsonKey(ignore: true)
+  _$$QandAEditImplCopyWith<_$QandAEditImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$QandADeleteImplCopyWith<$Res> {
+  factory _$$QandADeleteImplCopyWith(
+          _$QandADeleteImpl value, $Res Function(_$QandADeleteImpl) then) =
+      __$$QandADeleteImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({IcocUser? user, String docReference});
+}
+
+/// @nodoc
+class __$$QandADeleteImplCopyWithImpl<$Res>
+    extends _$QandAEventCopyWithImpl<$Res, _$QandADeleteImpl>
+    implements _$$QandADeleteImplCopyWith<$Res> {
+  __$$QandADeleteImplCopyWithImpl(
+      _$QandADeleteImpl _value, $Res Function(_$QandADeleteImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? user = freezed,
+    Object? docReference = null,
+  }) {
+    return _then(_$QandADeleteImpl(
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as IcocUser?,
+      docReference: null == docReference
+          ? _value.docReference
+          : docReference // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$QandADeleteImpl implements QandADelete {
+  const _$QandADeleteImpl({required this.user, required this.docReference});
+
+  @override
+  final IcocUser? user;
+  @override
+  final String docReference;
+
+  @override
+  String toString() {
+    return 'QandAEvent.delete(user: $user, docReference: $docReference)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$QandADeleteImpl &&
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.docReference, docReference) ||
+                other.docReference == docReference));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, user, docReference);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$QandADeleteImplCopyWith<_$QandADeleteImpl> get copyWith =>
+      __$$QandADeleteImplCopyWithImpl<_$QandADeleteImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? query, Languages lang) requested,
+    required TResult Function() getLangs,
+    required TResult Function(IcocUser? user, QandAModel article) edit,
+    required TResult Function(IcocUser? user, String docReference) delete,
+  }) {
+    return delete(user, docReference);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? query, Languages lang)? requested,
+    TResult? Function()? getLangs,
+    TResult? Function(IcocUser? user, QandAModel article)? edit,
+    TResult? Function(IcocUser? user, String docReference)? delete,
+  }) {
+    return delete?.call(user, docReference);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? query, Languages lang)? requested,
+    TResult Function()? getLangs,
+    TResult Function(IcocUser? user, QandAModel article)? edit,
+    TResult Function(IcocUser? user, String docReference)? delete,
+    required TResult orElse(),
+  }) {
+    if (delete != null) {
+      return delete(user, docReference);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(QandARequested value) requested,
+    required TResult Function(QandAGetLangs value) getLangs,
+    required TResult Function(QandAEdit value) edit,
+    required TResult Function(QandADelete value) delete,
+  }) {
+    return delete(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(QandARequested value)? requested,
+    TResult? Function(QandAGetLangs value)? getLangs,
+    TResult? Function(QandAEdit value)? edit,
+    TResult? Function(QandADelete value)? delete,
+  }) {
+    return delete?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(QandARequested value)? requested,
+    TResult Function(QandAGetLangs value)? getLangs,
+    TResult Function(QandAEdit value)? edit,
+    TResult Function(QandADelete value)? delete,
+    required TResult orElse(),
+  }) {
+    if (delete != null) {
+      return delete(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class QandADelete implements QandAEvent {
+  const factory QandADelete(
+      {required final IcocUser? user,
+      required final String docReference}) = _$QandADeleteImpl;
+
+  IcocUser? get user;
+  String get docReference;
+  @JsonKey(ignore: true)
+  _$$QandADeleteImplCopyWith<_$QandADeleteImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

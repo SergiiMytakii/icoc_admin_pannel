@@ -193,7 +193,7 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
     final songVersion = SongVersion(
         id: song.id,
         isChords: isChords,
-        lang: languagesToEnumMap[langController.text]!,
+        lang: convertLanguagesEnum(langController.text),
         text: textController.text,
         title: titleController.text,
         description: descriptionController.text,

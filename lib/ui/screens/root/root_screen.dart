@@ -15,7 +15,7 @@ class RootScreen extends StatefulWidget {
 }
 
 class _RootScreenState extends State<RootScreen> {
-  int _selectedIndex = 0;
+  int? _selectedIndex;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +27,7 @@ class _RootScreenState extends State<RootScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ConstrainedBox(
-                  constraints: BoxConstraints.loose(const Size.fromHeight(250)),
+                  constraints: BoxConstraints.loose(const Size.fromHeight(300)),
                   child: NavigationRail(
                     selectedIndex: _selectedIndex,
                     labelType: NavigationRailLabelType.selected,
@@ -50,6 +50,8 @@ class _RootScreenState extends State<RootScreen> {
                           break;
                         case 4:
                           context.go('/feedbacks');
+                        case 5:
+                          context.go('/q&a');
                           break;
                       }
                     },
@@ -73,6 +75,10 @@ class _RootScreenState extends State<RootScreen> {
                       NavigationRailDestination(
                         icon: Icon(Icons.feedback),
                         label: Text('Feedbacks'),
+                      ),
+                      NavigationRailDestination(
+                        icon: Icon(Icons.question_answer),
+                        label: Text('Q&A'),
                       ),
                     ],
                   ),

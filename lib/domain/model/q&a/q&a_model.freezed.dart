@@ -21,10 +21,12 @@ QandAModel _$QandAModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$QandAModel {
   int get id => throw _privateConstructorUsedError;
+  @JsonKey(includeToJson: false)
+  String get documentRef => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get question => throw _privateConstructorUsedError;
   String get answer => throw _privateConstructorUsedError;
-  String get lang => throw _privateConstructorUsedError;
+  Languages get lang => throw _privateConstructorUsedError;
   String? get date => throw _privateConstructorUsedError;
   String? get author => throw _privateConstructorUsedError;
   String? get link => throw _privateConstructorUsedError;
@@ -48,10 +50,11 @@ abstract class $QandAModelCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
+      @JsonKey(includeToJson: false) String documentRef,
       String title,
       String question,
       String answer,
-      String lang,
+      Languages lang,
       String? date,
       String? author,
       String? link,
@@ -76,6 +79,7 @@ class _$QandAModelCopyWithImpl<$Res, $Val extends QandAModel>
   @override
   $Res call({
     Object? id = null,
+    Object? documentRef = null,
     Object? title = null,
     Object? question = null,
     Object? answer = null,
@@ -94,6 +98,10 @@ class _$QandAModelCopyWithImpl<$Res, $Val extends QandAModel>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
+      documentRef: null == documentRef
+          ? _value.documentRef
+          : documentRef // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -109,7 +117,7 @@ class _$QandAModelCopyWithImpl<$Res, $Val extends QandAModel>
       lang: null == lang
           ? _value.lang
           : lang // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Languages,
       date: freezed == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -156,10 +164,11 @@ abstract class _$$QandAModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {int id,
+      @JsonKey(includeToJson: false) String documentRef,
       String title,
       String question,
       String answer,
-      String lang,
+      Languages lang,
       String? date,
       String? author,
       String? link,
@@ -182,6 +191,7 @@ class __$$QandAModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? documentRef = null,
     Object? title = null,
     Object? question = null,
     Object? answer = null,
@@ -200,6 +210,10 @@ class __$$QandAModelImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
+      documentRef: null == documentRef
+          ? _value.documentRef
+          : documentRef // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -215,7 +229,7 @@ class __$$QandAModelImplCopyWithImpl<$Res>
       lang: null == lang
           ? _value.lang
           : lang // ignore: cast_nullable_to_non_nullable
-              as String,
+              as Languages,
       date: freezed == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -254,9 +268,10 @@ class __$$QandAModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$QandAModelImpl implements _QandAModel {
-  _$QandAModelImpl(
+class _$QandAModelImpl extends _QandAModel {
+  const _$QandAModelImpl(
       {required this.id,
+      @JsonKey(includeToJson: false) required this.documentRef,
       required this.title,
       required this.question,
       required this.answer,
@@ -269,7 +284,8 @@ class _$QandAModelImpl implements _QandAModel {
       this.translatedBy,
       this.youtubeLink,
       final List<String>? tags})
-      : _tags = tags;
+      : _tags = tags,
+        super._();
 
   factory _$QandAModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$QandAModelImplFromJson(json);
@@ -277,13 +293,16 @@ class _$QandAModelImpl implements _QandAModel {
   @override
   final int id;
   @override
+  @JsonKey(includeToJson: false)
+  final String documentRef;
+  @override
   final String title;
   @override
   final String question;
   @override
   final String answer;
   @override
-  final String lang;
+  final Languages lang;
   @override
   final String? date;
   @override
@@ -310,7 +329,7 @@ class _$QandAModelImpl implements _QandAModel {
 
   @override
   String toString() {
-    return 'QandAModel(id: $id, title: $title, question: $question, answer: $answer, lang: $lang, date: $date, author: $author, link: $link, image: $image, source: $source, translatedBy: $translatedBy, youtubeLink: $youtubeLink, tags: $tags)';
+    return 'QandAModel(id: $id, documentRef: $documentRef, title: $title, question: $question, answer: $answer, lang: $lang, date: $date, author: $author, link: $link, image: $image, source: $source, translatedBy: $translatedBy, youtubeLink: $youtubeLink, tags: $tags)';
   }
 
   @override
@@ -319,6 +338,8 @@ class _$QandAModelImpl implements _QandAModel {
         (other.runtimeType == runtimeType &&
             other is _$QandAModelImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.documentRef, documentRef) ||
+                other.documentRef == documentRef) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.question, question) ||
                 other.question == question) &&
@@ -341,6 +362,7 @@ class _$QandAModelImpl implements _QandAModel {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      documentRef,
       title,
       question,
       answer,
@@ -368,13 +390,14 @@ class _$QandAModelImpl implements _QandAModel {
   }
 }
 
-abstract class _QandAModel implements QandAModel {
-  factory _QandAModel(
+abstract class _QandAModel extends QandAModel {
+  const factory _QandAModel(
       {required final int id,
+      @JsonKey(includeToJson: false) required final String documentRef,
       required final String title,
       required final String question,
       required final String answer,
-      required final String lang,
+      required final Languages lang,
       final String? date,
       final String? author,
       final String? link,
@@ -383,6 +406,7 @@ abstract class _QandAModel implements QandAModel {
       final String? translatedBy,
       final String? youtubeLink,
       final List<String>? tags}) = _$QandAModelImpl;
+  const _QandAModel._() : super._();
 
   factory _QandAModel.fromJson(Map<String, dynamic> json) =
       _$QandAModelImpl.fromJson;
@@ -390,13 +414,16 @@ abstract class _QandAModel implements QandAModel {
   @override
   int get id;
   @override
+  @JsonKey(includeToJson: false)
+  String get documentRef;
+  @override
   String get title;
   @override
   String get question;
   @override
   String get answer;
   @override
-  String get lang;
+  Languages get lang;
   @override
   String? get date;
   @override

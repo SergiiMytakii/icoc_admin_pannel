@@ -139,7 +139,7 @@ class _AddVersionTabState extends State<AddVersionTab> {
         }
         final songVersion = SongVersion(
             id: widget.song.id,
-            lang: languagesToEnumMap[langController.text]!,
+            lang: convertLanguagesEnum(langController.text),
             text: textController.text,
             isChords: isChords,
             title: titleController.text,
