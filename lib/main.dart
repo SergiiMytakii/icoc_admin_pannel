@@ -16,6 +16,7 @@ import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/bible_study/bible_study_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/feedback/feedback_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/notifications/notifications_bloc.dart';
+import 'package:icoc_admin_pannel/ui/bloc/q&a_bloc/q&a_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/videos/videos_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -59,6 +60,9 @@ class MainApp extends StatelessWidget {
         BlocProvider<AuthBloc>(
           create: (BuildContext context) => getIt<AuthBloc>(),
         ),
+        BlocProvider<QandABloc>(
+          create: (BuildContext context) => getIt<QandABloc>(),
+        ),
         BlocProvider<VideosBloc>(
           create: (BuildContext context) => getIt<VideosBloc>(),
         ),
@@ -67,6 +71,11 @@ class MainApp extends StatelessWidget {
         ),
         BlocProvider<FeedbackBloc>(
           create: (BuildContext context) => getIt<FeedbackBloc>(),
+        ),
+        BlocProvider<QandABloc>(
+          create: (BuildContext context) =>
+              getIt<QandABloc>()..add(const QandAEvent.getLangs()),
+          lazy: false,
         ),
         BlocProvider<NotificationsBloc>(
           create: (BuildContext context) => getIt<NotificationsBloc>(),

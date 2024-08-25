@@ -4,7 +4,9 @@ import 'package:icoc_admin_pannel/constants.dart';
 
 class SelectLanguageWidget extends StatefulWidget {
   final TextEditingController langController;
-  const SelectLanguageWidget({super.key, required this.langController});
+  final String label;
+  const SelectLanguageWidget(
+      {super.key, required this.langController, required this.label});
 
   @override
   State<SelectLanguageWidget> createState() => _SelectLanguageWidgetState();
@@ -30,7 +32,7 @@ class _SelectLanguageWidgetState extends State<SelectLanguageWidget> {
 
     return Row(
       children: [
-        const Text('Language: '),
+        Text('${widget.label}: '),
         DropdownButton<String>(
           elevation: 0,
           underline: const SizedBox.shrink(),

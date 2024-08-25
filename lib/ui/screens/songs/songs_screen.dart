@@ -31,7 +31,7 @@ class _SongsScreenState extends State<SongsScreen> {
 
   @override
   void dispose() {
-    context.read<SongsBloc>().currentSong.removeListener(_scrollToCurrentSong);
+    getIt<SongsBloc>().currentSong.removeListener(_scrollToCurrentSong);
     _scrollController.dispose();
     super.dispose();
   }

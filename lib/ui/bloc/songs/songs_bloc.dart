@@ -13,7 +13,6 @@ import 'package:icoc_admin_pannel/domain/repository/songs_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:icoc_admin_pannel/domain/repository/video_repository.dart';
 import 'package:injectable/injectable.dart';
-import 'package:logger/logger.dart';
 part 'songs_event.dart';
 part 'songs_state.dart';
 part 'songs_bloc.freezed.dart';

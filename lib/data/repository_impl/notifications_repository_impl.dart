@@ -109,17 +109,23 @@ class NotificationsRepositoryImpl extends NotificationsRepository {
     };
 
     final promptTemplate = PromptTemplate.fromTemplate(r'''
-          translate the following message to the given languages:
-          {languages}, \n
-          The message contains the following title and text:
-          title: {title}
-          text: {text}
-          \n
-          return translated messages as valid JSON using the following structure:
-          
-            {outputTemplate}
-        
-          ''');
+        You are a professional translator. Your task is to translate the following message into the specified languages:
+          {languages}
+
+          Message to translate:
+          Title: {title}
+          Text: {text}
+
+          Translation guidelines:
+          1. Maintain the original structure and style of the text.
+          2. Ensure the translation is culturally appropriate for each target language.
+          3. Preserve any formatting or special characters present in the original text.
+
+          Provide the translated messages as valid JSON using this structure:
+          {outputTemplate}
+
+          Remember to translate both the title and text for each language.
+    ''');
 
     final query = {
       'title': notification.title,

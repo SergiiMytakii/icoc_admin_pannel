@@ -56,7 +56,10 @@ class _AddVersionTabState extends State<AddVersionTab> {
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Row(
                     children: [
-                      SelectLanguageWidget(langController: langController),
+                      SelectLanguageWidget(
+                        langController: langController,
+                        label: 'Languages',
+                      ),
                       const Spacer(),
                       SizedBox(
                         width: 150,
@@ -139,7 +142,7 @@ class _AddVersionTabState extends State<AddVersionTab> {
         }
         final songVersion = SongVersion(
             id: widget.song.id,
-            lang: languagesToEnumMap[langController.text]!,
+            lang: convertLanguagesEnum(langController.text),
             text: textController.text,
             isChords: isChords,
             title: titleController.text,

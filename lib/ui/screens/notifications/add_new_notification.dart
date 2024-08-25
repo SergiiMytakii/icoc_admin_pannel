@@ -55,7 +55,10 @@ class _AddNewNotificationScreenState extends State<AddNewNotificationScreen> {
           children: [
             Row(
               children: [
-                SelectLanguageWidget(langController: langController),
+                SelectLanguageWidget(
+                  langController: langController,
+                  label: 'Languages',
+                ),
                 const Spacer(),
                 const Text(
                   'Add a new notification',
@@ -158,7 +161,7 @@ class _AddNewNotificationScreenState extends State<AddNewNotificationScreen> {
                 allLanguages.addAll(song.getAllLangs());
               }
               final aditionalLangs = allLanguages.toList()
-                ..remove(languagesToEnumMap[langController.text]);
+                ..remove(convertLanguagesEnum(langController.text));
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

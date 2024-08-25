@@ -95,6 +95,7 @@ class _EditSongScreenState extends State<EditSongScreen> {
                   children: [
                     SelectLanguageWidget(
                       langController: langController,
+                      label: 'Languages',
                     ),
                     SizedBox(
                       width: 150,
@@ -195,7 +196,7 @@ class _EditSongScreenState extends State<EditSongScreen> {
           isChords: isChords,
           title: titleController.text,
           description: descriptionController.text,
-          lang: languagesToEnumMap[langController.text]!,
+          lang: convertLanguagesEnum(langController.text),
           youtubeVideos: getYoutubeVideos());
       getIt<SongsBloc>().add(SongsEvent.edit(
         user: context.read<AuthBloc>().icocUser,

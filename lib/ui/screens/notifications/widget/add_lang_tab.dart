@@ -43,7 +43,10 @@ class _AddLangTabState extends State<AddLangTab> {
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Row(
                     children: [
-                      SelectLanguageWidget(langController: langController),
+                      SelectLanguageWidget(
+                        langController: langController,
+                        label: 'Languages',
+                      ),
                       const Spacer(),
                       const Text(
                         'Add a new notification version',

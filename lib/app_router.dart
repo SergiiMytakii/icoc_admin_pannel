@@ -14,6 +14,8 @@ import 'package:icoc_admin_pannel/ui/screens/feedback/feedbacks_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/feedback/widget/edit_feedback.dart';
 import 'package:icoc_admin_pannel/ui/screens/notifications/add_new_notification.dart';
 import 'package:icoc_admin_pannel/ui/screens/notifications/notifications_screen.dart';
+import 'package:icoc_admin_pannel/ui/screens/q_and_a/q_and_a_screen.dart';
+import 'package:icoc_admin_pannel/ui/screens/q_and_a/widget/edit_q_and_a.dart';
 import 'package:icoc_admin_pannel/ui/screens/root/root_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/add_new_song.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/edit_song_screen.dart';
@@ -155,6 +157,23 @@ final GoRouter router = GoRouter(
                   return NoTransitionPage<void>(
                     key: state.pageKey,
                     child: const EditFeedbackScreen(),
+                  );
+                },
+              ),
+            ]),
+        GoRoute(
+            path: '/q&a',
+            pageBuilder: (BuildContext context, GoRouterState state) {
+              return NoTransitionPage<void>(
+                  key: state.pageKey, child: QandAScreen());
+            },
+            routes: [
+              GoRoute(
+                path: 'edit',
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  return NoTransitionPage<void>(
+                    key: state.pageKey,
+                    child: const EditQandAScreen(),
                   );
                 },
               ),
