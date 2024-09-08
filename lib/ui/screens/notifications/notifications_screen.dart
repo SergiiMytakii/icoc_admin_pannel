@@ -31,10 +31,18 @@ class NotificationsScreen extends StatelessWidget {
                                 .read<NotificationsBloc>()
                                 .currentNotification
                                 .value = notifications.reversed.toList()[index],
-                            child: NotificationCard(
-                              notificationsModel:
-                                  notifications.reversed.toList()[index],
-                            ));
+                            child: ValueListenableBuilder(
+                                valueListenable: context
+                                    .read<NotificationsBloc>()
+                                    .currentNotification,
+                                builder: (context, currentNotification, _) {
+                                  return NotificationCard(
+                                    notificationsModel:
+                                        notifications.reversed.toList()[index],
+                                    currentNotificationId:
+                                        currentNotification.id,
+                                  );
+                                }));
                       }),
                 ),
                 const VerticalDivider(thickness: 1, width: 1),

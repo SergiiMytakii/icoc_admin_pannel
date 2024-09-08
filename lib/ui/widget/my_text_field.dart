@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class MyTextField extends StatelessWidget {
   const MyTextField(
       {super.key,
       required this.controller,
       required this.hint,
-      this.maxLength = 100000,
+      this.maxLength = 300000,
       this.maxLines = 1,
       this.readOnly = false,
       this.obscureText = false,

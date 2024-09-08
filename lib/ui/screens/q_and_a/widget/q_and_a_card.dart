@@ -24,7 +24,7 @@ class QandACard extends StatelessWidget {
           title: Text(
             article.title,
             style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w500,
                 color: isSelected ? Theme.of(context).primaryColor : null),
           ),
           subtitle: Text(article.author ?? ''),

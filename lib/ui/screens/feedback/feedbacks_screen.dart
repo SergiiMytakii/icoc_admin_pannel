@@ -31,9 +31,15 @@ class FeedbackScreen extends StatelessWidget {
                                 .read<FeedbackBloc>()
                                 .currentFeedback
                                 .value = feedbacks[index],
-                            child: FeedbackCard(
-                              feedback: feedbacks[index],
-                            ));
+                            child: ValueListenableBuilder(
+                                valueListenable:
+                                    getIt<FeedbackBloc>().currentFeedback,
+                                builder: (context, currentFeedback, _) {
+                                  return FeedbackCard(
+                                    feedback: feedbacks[index],
+                                    currentFeedbackId: currentFeedback.id,
+                                  );
+                                }));
                       }),
                 ),
                 const VerticalDivider(thickness: 1, width: 1),

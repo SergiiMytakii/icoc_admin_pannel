@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
 import 'package:icoc_admin_pannel/ui/screens/notifications/widget/add_lang_tab.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
+import 'package:flutter_html/flutter_html.dart' as html;
 
 class OneNotification extends StatefulWidget {
   final NotificationsModel notificationsModel;
@@ -85,7 +86,16 @@ class _OneNotificationState extends State<OneNotification>
                 style:
                     const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              Text(item.text),
+              item.text.startsWith('<')
+                  ? html.Html(
+                      data: item.text,
+                      style: {
+                        'body': html.Style(
+                            alignment: Alignment.center,
+                            fontSize: html.FontSize(14)),
+                      },
+                    )
+                  : Text(item.text),
               Text(item.link ?? '')
             ],
           ),

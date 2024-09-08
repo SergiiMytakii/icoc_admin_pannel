@@ -21,7 +21,7 @@ class BibleStudyCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: 3,
             style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
                 color: isSelected ? Theme.of(context).primaryColor : null),
           ),
           subtitle: Text(

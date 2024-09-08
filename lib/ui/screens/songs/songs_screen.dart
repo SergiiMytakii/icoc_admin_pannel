@@ -79,30 +79,39 @@ class _SongsScreenState extends State<SongsScreen> {
                               if (!shown) _showRotateSuggestion();
                             }
                             return PageStorage(
-                                bucket: bucket,
-                                child: ListView(
-                                  key:
-                                      const PageStorageKey<String>('songsList'),
-                                  controller: _scrollController,
-                                  children: songs
-                                      .map((song) => GestureDetector(
-                                          onTap: () => context
-                                              .read<SongsBloc>()
-                                              .currentSong
-                                              .value = song,
-                                          onSecondaryTapDown:
-                                              (TapDownDetails details) {
-                                            showContextMenu(
-                                                context,
-                                                details.globalPosition,
-                                                () =>
-                                                    _deleteSong(context, song));
-                                          },
-                                          child: SongCard(
-                                            song: song,
-                                          )))
-                                      .toList(),
-                                ));
+                              bucket: bucket,
+                              child: ListView.builder(
+                                key: const PageStorageKey<String>('songsList'),
+                                controller: _scrollController,
+                                itemCount: songs.length,
+                                itemBuilder: (context, index) {
+                                  final song = songs[index];
+                                  return GestureDetector(
+                                    onTap: () => getIt<SongsBloc>()
+                                        .currentSong
+                                        .value = song,
+                                    onSecondaryTapDown:
+                                        (TapDownDetails details) {
+                                      showContextMenu(
+                                        context,
+                                        details.globalPosition,
+                                        () => _deleteSong(context, song),
+                                      );
+                                    },
+                                    child: ValueListenableBuilder(
+                                      valueListenable:
+                                          getIt<SongsBloc>().currentSong,
+                                      builder: (context, currentSong, _) {
+                                        return SongCard(
+                                          song: song,
+                                          currentSongId: currentSong.id,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
                           }),
                         )
                       ],

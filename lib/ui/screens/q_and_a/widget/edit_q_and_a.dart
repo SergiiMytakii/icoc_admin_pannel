@@ -79,23 +79,11 @@ class _EditQandAScreenState extends State<EditQandAScreen> {
                 controller: questionController,
                 hint: 'Question',
                 maxLines: 6,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter question text';
-                  }
-                  return null;
-                },
               ),
               MyTextField(
                 controller: answerController,
                 hint: 'Answer',
                 maxLines: 6,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter answer text';
-                  }
-                  return null;
-                },
               ),
             ],
           ),
