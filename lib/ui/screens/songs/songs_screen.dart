@@ -59,7 +59,13 @@ class _SongsScreenState extends State<SongsScreen> {
       final state = context.watch<SongsBloc>().state;
       return state.when(
           initial: () {
-            getIt<SongsBloc>().add(const SongsEvent.get());
+            final isAuthed = context
+                .read<AuthBloc>()
+                .state
+                .maybeWhen(authenticated: (_) => true, orElse: () => false);
+            if (isAuthed) {
+              getIt<SongsBloc>().add(const SongsEvent.get());
+            }
             return const SizedBox.shrink();
           },
           loading: () => const Center(child: CircularProgressIndicator()),

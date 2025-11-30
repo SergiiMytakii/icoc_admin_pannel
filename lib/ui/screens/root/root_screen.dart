@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
+import 'package:icoc_admin_pannel/ui/bloc/q&a_bloc/q&a_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/root/widget/giude_player.dart';
 
 class RootScreen extends StatefulWidget {
@@ -14,6 +16,11 @@ class RootScreen extends StatefulWidget {
 
 class _RootScreenState extends State<RootScreen> {
   int? _selectedIndex;
+  @override
+  void initState() {
+    Future.microtask(() => getIt<QandABloc>().add(const QandAEvent.getLangs()));
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

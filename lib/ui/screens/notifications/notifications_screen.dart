@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/notifications/notifications_bloc.dart';
+import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/notifications/widget/notification_card.dart';
 import 'package:icoc_admin_pannel/ui/screens/notifications/widget/one_notification.dart';
 
@@ -14,7 +15,13 @@ class NotificationsScreen extends StatelessWidget {
       final state = context.watch<NotificationsBloc>().state;
       return state.when(
           initial: () {
-            getIt<NotificationsBloc>().add(const NotificationsEvent.get());
+            final isAuthed = context
+                .read<AuthBloc>()
+                .state
+                .maybeWhen(authenticated: (_) => true, orElse: () => false);
+            if (isAuthed) {
+              getIt<NotificationsBloc>().add(const NotificationsEvent.get());
+            }
             return const SizedBox.shrink();
           },
           loading: () => const Center(child: CircularProgressIndicator()),

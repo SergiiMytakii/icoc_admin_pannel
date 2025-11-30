@@ -56,6 +56,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   Image.network(
                     fullLogoImageUrl,
                     width: 400,
+                    errorBuilder: (context, error, stackTrace) => Image.network(
+                      placeholderImageUrl,
+                      width: 400,
+                      errorBuilder: (context, error, stackTrace) => const SizedBox(height: 120),
+                    ),
                   ),
                   const SizedBox(
                     height: 30,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/injection.dart';
+import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/feedback/feedback_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/feedback/widget/feedback_card.dart';
 import 'package:icoc_admin_pannel/ui/screens/feedback/widget/one_feedback.dart';
@@ -14,7 +15,13 @@ class FeedbackScreen extends StatelessWidget {
       final state = context.watch<FeedbackBloc>().state;
       return state.when(
           initial: () {
-            getIt<FeedbackBloc>().add(const FeedbackEvent.get());
+            final isAuthed = context
+                .read<AuthBloc>()
+                .state
+                .maybeWhen(authenticated: (_) => true, orElse: () => false);
+            if (isAuthed) {
+              getIt<FeedbackBloc>().add(const FeedbackEvent.get());
+            }
             return const SizedBox.shrink();
           },
           loading: () => const Center(child: CircularProgressIndicator()),

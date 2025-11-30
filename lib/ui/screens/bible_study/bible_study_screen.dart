@@ -56,7 +56,13 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
       final state = context.watch<BibleStudyBloc>().state;
       return state.when(
           initial: () {
-            getIt<BibleStudyBloc>().add(const BibleStudyEvent.get());
+            final isAuthed = context
+                .read<AuthBloc>()
+                .state
+                .maybeWhen(authenticated: (_) => true, orElse: () => false);
+            if (isAuthed) {
+              getIt<BibleStudyBloc>().add(const BibleStudyEvent.get());
+            }
             return const SizedBox.shrink();
           },
           loading: () => const Center(child: CircularProgressIndicator()),

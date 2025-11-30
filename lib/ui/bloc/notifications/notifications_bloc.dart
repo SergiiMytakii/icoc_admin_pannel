@@ -7,6 +7,7 @@ import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/domain/repository/notifications_repository.dart';
+import 'package:icoc_admin_pannel/data/data_sources_impl/remote/admin_push_sender.dart';
 import 'package:injectable/injectable.dart';
 part 'notifications_event.dart';
 part 'notifications_state.dart';
@@ -63,9 +64,17 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
         ]);
       }
 
+      final toSend = notificationToSend ?? event.notification;
       final List<NotificationsModel> notifications =
-          await notificationsRepository.addNotifications(
-              event.user, notificationToSend ?? event.notification);
+          await notificationsRepository.addNotifications(event.user, toSend);
+      final sender = AdminPushSender();
+      await sender.sendByLanguages(toSend);
+      final enList = toSend.notifications.where((v) => v.lang == 'en');
+      if (enList.isNotEmpty) {
+        final en = enList.first;
+        await sender.sendBroadcast(
+            title: en.title, body: en.text, id: toSend.id, link: en.link);
+      }
       emit(NotificationsState.success(notifications));
     } catch (error, stackTrace) {
       logError(error, stackTrace);

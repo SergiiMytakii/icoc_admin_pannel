@@ -29,7 +29,13 @@ class _QandAScreenState extends State<QandAScreen> {
       final state = context.watch<QandABloc>().state;
       return state.when(
           initial: () {
-            getIt<QandABloc>().add(QandAEvent.requested(lang: activeLang));
+            final isAuthed = context
+                .read<AuthBloc>()
+                .state
+                .maybeWhen(authenticated: (_) => true, orElse: () => false);
+            if (isAuthed) {
+              getIt<QandABloc>().add(QandAEvent.requested(lang: activeLang));
+            }
             return const SizedBox.shrink();
           },
           loading: () => const Center(child: CircularProgressIndicator()),
