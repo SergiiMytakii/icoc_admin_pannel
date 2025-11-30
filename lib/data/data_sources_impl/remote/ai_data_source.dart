@@ -13,9 +13,7 @@ class AiDataSourceImpl implements AiDataSource {
     apiKey: openAIKey,
     defaultOptions: const ChatOpenAIOptions(
       model: 'gpt-4o-mini',
-      responseFormat: ChatOpenAIResponseFormat(
-        type: ChatOpenAIResponseFormatType.jsonObject,
-      ),
+      responseFormat: ChatOpenAIResponseFormat.jsonObject,
     ),
   );
   @override

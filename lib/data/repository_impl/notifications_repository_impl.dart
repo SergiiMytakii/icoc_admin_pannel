@@ -1,10 +1,8 @@
-import 'dart:convert';
 
 import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/data_sources/ai_data_source.dart';
 import 'package:icoc_admin_pannel/domain/data_sources/firebase_data_source.dart';
-import 'package:icoc_admin_pannel/domain/helpers/json_parsing.dart';
 import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
 import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/domain/repository/notifications_repository.dart';

@@ -1,5 +1,4 @@
 import 'package:icoc_admin_pannel/domain/model/identifable.dart';
-import 'package:logger/logger.dart';
 
 class BibleStudy implements Identifiable {
   String topic;

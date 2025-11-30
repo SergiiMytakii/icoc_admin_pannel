@@ -22,7 +22,6 @@ class QandARepositoryImpl extends QandARepository {
     this.firebaseDataSource,
     this.aiDataSource,
   ) {
-    print('QandARepositoryImpl constructor called, updating languages');
     firebaseDataSource.updateQandALangsFirebase();
   }
 

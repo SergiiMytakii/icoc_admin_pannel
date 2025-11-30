@@ -139,8 +139,10 @@ class _QandAScreenState extends State<QandAScreen> {
             children: [
               CountryFlag.fromCountryCode(
                 handleLanguage(language.name),
-                width: 20,
-                height: 15,
+                theme: const ImageTheme(
+                  width: 20,
+                  height: 15,
+                ),
               ),
               const SizedBox(width: 8),
               Text(language.name),
