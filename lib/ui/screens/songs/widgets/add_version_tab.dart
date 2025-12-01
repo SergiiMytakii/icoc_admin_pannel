@@ -181,6 +181,9 @@ class _AddVersionTabState extends State<AddVersionTab> {
       )
     ]);
     getIt<NotificationsBloc>().add(NotificationsEvent.add(
-        user: user, notification: notification, aditionalLanguages: []));
+        user: user,
+        notification: notification,
+        aditionalLanguages: [],
+        baseTopic: 'songbook'));
   }
 }

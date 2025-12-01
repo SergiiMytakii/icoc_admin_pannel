@@ -7,6 +7,10 @@ import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/bible_study/bible_study_bloc.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
+import 'package:icoc_admin_pannel/ui/widget/send_notification_checkbox.dart';
+import 'package:icoc_admin_pannel/ui/bloc/notifications/notifications_bloc.dart';
+import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
+import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
 
 class AddNewLessonScreen extends StatefulWidget {
@@ -22,6 +26,7 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController textController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool sendNotifications = false;
 
   @override
   void initState() {
@@ -52,7 +57,7 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
           children: [
             Row(
               children: [
-                Text('Lesson number: ${lastLessonNumber + 1}'),
+                Text('Lesson number: ${lastLessonNumber + 1}') ,
                 const Spacer(),
                 const Text(
                   'Add a new lesson',
@@ -62,6 +67,17 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
                 const Spacer(),
                 _buttonsBlock(currentBibleStudy.value, lastLessonNumber)
               ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Row(
+                children: [
+                  const Spacer(),
+                  SendNotificationCheckBox(
+                    onChanged: (value) => sendNotifications = value,
+                  ),
+                ],
+              ),
             ),
             MyTextField(
               controller: titleController,
@@ -119,6 +135,27 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
                 bibleStudy: updatedBibleStudy,
                 user: context.read<AuthBloc>().icocUser,
               ));
+              if (sendNotifications) {
+                final link =
+                    '$ICOC_WEB_PAGE/biblestudy/lessons/${updatedBibleStudy.id}/${lastLessonNumber + 1}?lang=${updatedBibleStudy.lang.name}';
+                final notification = NotificationsModel(
+                  id: DateTime.now().toString(),
+                  notifications: [
+                    NotificationVersion(
+                      id: '0',
+                      title: 'New Bible Study lesson added',
+                      text: titleController.text,
+                      lang: updatedBibleStudy.lang.name,
+                      link: link,
+                    ),
+                  ],
+                );
+                getIt<NotificationsBloc>().add(NotificationsEvent.add(
+                    user: context.read<AuthBloc>().icocUser,
+                    notification: notification,
+                    aditionalLanguages: [],
+                    baseTopic: 'biblestudy'));
+              }
               Future.delayed(const Duration(seconds: 2)).then((_) {
                 context.read<BibleStudyBloc>().currentBibleStudy.value =
                     updatedBibleStudy;

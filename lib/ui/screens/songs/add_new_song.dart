@@ -227,6 +227,9 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
       }).toList(),
     );
     getIt<NotificationsBloc>().add(NotificationsEvent.add(
-        user: user, notification: notification, aditionalLanguages: []));
+        user: user,
+        notification: notification,
+        aditionalLanguages: [],
+        baseTopic: 'songbook'));
   }
 }

@@ -133,7 +133,8 @@ class _AddNewNotificationScreenState extends State<AddNewNotificationScreen> {
                     NotificationsEvent.add(
                         aditionalLanguages: selectedLangs,
                         user: context.read<AuthBloc>().icocUser,
-                        notification: notification),
+                        notification: notification,
+                        baseTopic: 'general'),
                   );
               context.read<NotificationsBloc>().currentNotification.value =
                   notification;

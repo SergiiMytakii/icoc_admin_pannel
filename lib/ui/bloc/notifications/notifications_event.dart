@@ -7,7 +7,8 @@ class NotificationsEvent with _$NotificationsEvent {
   const factory NotificationsEvent.add(
       {required IcocUser? user,
       required NotificationsModel notification,
-      required List<String> aditionalLanguages}) = NotificationsAdd;
+      required List<String> aditionalLanguages,
+      String? baseTopic}) = NotificationsAdd;
   const factory NotificationsEvent.addVersion(
       {required IcocUser? user,
       required NotificationsModel notification}) = NotificationsAddVersion;

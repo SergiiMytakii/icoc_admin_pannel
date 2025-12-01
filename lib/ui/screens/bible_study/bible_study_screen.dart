@@ -14,6 +14,10 @@ import 'package:icoc_admin_pannel/ui/widget/alert_dialog.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
 import 'package:icoc_admin_pannel/ui/widget/select_lang.dart';
+import 'package:icoc_admin_pannel/ui/widget/send_notification_checkbox.dart';
+import 'package:icoc_admin_pannel/ui/bloc/notifications/notifications_bloc.dart';
+import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
+import 'package:icoc_admin_pannel/constants.dart';
 
 class BibleStudyScreen extends StatefulWidget {
   BibleStudyScreen({super.key});

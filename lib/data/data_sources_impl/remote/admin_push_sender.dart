@@ -46,32 +46,23 @@ class AdminPushSender {
   }
 
   Future<void> sendByLanguages(NotificationsModel n,
-      {List<String>? filterLanguages}) async {
+      {String baseTopic = 'notifications',
+      List<String>? filterLanguages}) async {
     final versions = n.notifications.where(
         (v) => filterLanguages == null || filterLanguages.contains(v.lang));
     for (final v in versions) {
+      final data = {
+        'topic': baseTopic,
+        'lang': v.lang,
+        if (v.link != null && v.link!.isNotEmpty) 'link': v.link!,
+      };
       await sendTopic(
-        topic: 'lang-${v.lang}',
+        topic: '$baseTopic-lang-${v.lang}',
         title: v.title,
         body: v.text,
         id: n.id,
-        data: (v.link != null && v.link!.isNotEmpty) ? {'link': v.link!} : null,
+        data: data,
       );
     }
-  }
-
-  Future<void> sendBroadcast({
-    required String title,
-    required String body,
-    required String id,
-    String? link,
-  }) async {
-    await sendTopic(
-      topic: 'news',
-      title: title,
-      body: body,
-      id: id,
-      data: (link != null && link.isNotEmpty) ? {'link': link} : null,
-    );
   }
 }

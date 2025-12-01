@@ -68,13 +68,11 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       final List<NotificationsModel> notifications =
           await notificationsRepository.addNotifications(event.user, toSend);
       final sender = AdminPushSender();
-      await sender.sendByLanguages(toSend);
-      final enList = toSend.notifications.where((v) => v.lang == 'en');
-      if (enList.isNotEmpty) {
-        final en = enList.first;
-        await sender.sendBroadcast(
-            title: en.title, body: en.text, id: toSend.id, link: en.link);
-      }
+      await sender.sendByLanguages(
+        toSend,
+        baseTopic: event.baseTopic ?? 'general',
+      );
+
       emit(NotificationsState.success(notifications));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
