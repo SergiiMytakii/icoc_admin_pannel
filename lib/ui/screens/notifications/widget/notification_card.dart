@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
 import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
@@ -47,10 +48,10 @@ class NotificationCard extends StatelessWidget {
           trailing: IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
-              getIt<NotificationsBloc>().add(NotificationsEvent.delete(
+              context.read<NotificationsBloc>().add(NotificationsEvent.delete(
                   notification: notificationsModel,
-                  user: getIt<AuthBloc>().icocUser));
-              getIt<NotificationsBloc>().currentNotification.value =
+                  user: context.read<AuthBloc>().icocUser));
+              context.read<NotificationsBloc>().currentNotification.value =
                   NotificationsModel.defaultNotification();
             },
           ),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/constants.dart';
-import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 
 void showContextMenu(
     BuildContext context, Offset tapPosition, VoidCallback callback) {
-  final user = getIt<AuthBloc>().icocUser;
+  final user = context.read<AuthBloc>().icocUser;
   if (user != null && user.isAdmin) {
     print('User is admin');
     final RenderBox overlay =

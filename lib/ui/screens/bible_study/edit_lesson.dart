@@ -120,7 +120,7 @@ class _EditLessonScreenState extends State<EditLessonScreen> {
                   text: textController.text,
                   id: currentLesson.id));
 
-              getIt<BibleStudyBloc>().add(BibleStudyEvent.editLesson(
+              context.read<BibleStudyBloc>().add(BibleStudyEvent.editLesson(
                   user: context.read<AuthBloc>().icocUser,
                   bibleStudy: currentBibleStudy.copyWith(lessons: lessons)));
 

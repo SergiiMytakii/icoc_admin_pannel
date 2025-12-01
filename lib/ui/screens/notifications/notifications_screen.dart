@@ -20,7 +20,9 @@ class NotificationsScreen extends StatelessWidget {
                 .state
                 .maybeWhen(authenticated: (_) => true, orElse: () => false);
             if (isAuthed) {
-              getIt<NotificationsBloc>().add(const NotificationsEvent.get());
+              context
+                  .read<NotificationsBloc>()
+                  .add(const NotificationsEvent.get());
             }
             return const SizedBox.shrink();
           },

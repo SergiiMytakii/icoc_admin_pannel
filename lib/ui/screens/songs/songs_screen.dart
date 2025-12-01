@@ -31,7 +31,7 @@ class _SongsScreenState extends State<SongsScreen> {
 
   @override
   void dispose() {
-    getIt<SongsBloc>().currentSong.removeListener(_scrollToCurrentSong);
+    context.read<SongsBloc>().currentSong.removeListener(_scrollToCurrentSong);
     _scrollController.dispose();
     super.dispose();
   }
@@ -64,7 +64,7 @@ class _SongsScreenState extends State<SongsScreen> {
                 .state
                 .maybeWhen(authenticated: (_) => true, orElse: () => false);
             if (isAuthed) {
-              getIt<SongsBloc>().add(const SongsEvent.get());
+              context.read<SongsBloc>().add(const SongsEvent.get());
             }
             return const SizedBox.shrink();
           },
@@ -93,7 +93,8 @@ class _SongsScreenState extends State<SongsScreen> {
                                 itemBuilder: (context, index) {
                                   final song = songs[index];
                                   return GestureDetector(
-                                    onTap: () => getIt<SongsBloc>()
+                                    onTap: () => context
+                                        .read<SongsBloc>()
                                         .currentSong
                                         .value = song,
                                     onSecondaryTapDown:
@@ -106,7 +107,7 @@ class _SongsScreenState extends State<SongsScreen> {
                                     },
                                     child: ValueListenableBuilder(
                                       valueListenable:
-                                          getIt<SongsBloc>().currentSong,
+                                          context.read<SongsBloc>().currentSong,
                                       builder: (context, currentSong, _) {
                                         return SongCard(
                                           song: song,
@@ -137,7 +138,7 @@ class _SongsScreenState extends State<SongsScreen> {
                 ],
               );
             } else {
-              getIt<SongsBloc>().add(const SongsEvent.get());
+              context.read<SongsBloc>().add(const SongsEvent.get());
               Future.delayed(Durations.long4)
                   .then((_) => showAlertDialog(context, 'Ooooops... no songs'));
               return const SizedBox.shrink();
@@ -154,12 +155,12 @@ class _SongsScreenState extends State<SongsScreen> {
         overlayColor: WidgetStateProperty.all(Theme.of(context).cardColor),
         onChanged: (value) {
           if (value.isEmpty) {
-            getIt<SongsBloc>().add(const SongsEvent.get());
+            context.read<SongsBloc>().add(const SongsEvent.get());
           }
         },
         onSubmitted: (value) {
           _searchController.text = value;
-          getIt<SongsBloc>().add(SongsEvent.get(query: value));
+          context.read<SongsBloc>().add(SongsEvent.get(query: value));
         },
         leading: const Icon(Icons.search),
         shadowColor: WidgetStateColor.transparent,

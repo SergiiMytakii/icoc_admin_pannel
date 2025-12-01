@@ -152,7 +152,7 @@ class _AddNewNotificationScreenState extends State<AddNewNotificationScreen> {
       builder: (context, state) {
         return state.maybeWhen(
             initial: () {
-              getIt<SongsBloc>().add(const SongsEvent.get());
+              context.read<SongsBloc>().add(const SongsEvent.get());
               return const SizedBox.shrink();
             },
             success: (songs) {

@@ -18,9 +18,11 @@ class _RootScreenState extends State<RootScreen> {
   int? _selectedIndex;
   @override
   void initState() {
-    Future.microtask(() => getIt<QandABloc>().add(const QandAEvent.getLangs()));
+    Future.microtask(
+        () => context.read<QandABloc>().add(const QandAEvent.getLangs()));
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,8 +33,7 @@ class _RootScreenState extends State<RootScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                ConstrainedBox(
-                  constraints: BoxConstraints.loose(const Size.fromHeight(300)),
+                Expanded(
                   child: NavigationRail(
                     selectedIndex: _selectedIndex,
                     labelType: NavigationRailLabelType.selected,
@@ -55,8 +56,12 @@ class _RootScreenState extends State<RootScreen> {
                           break;
                         case 4:
                           context.go('/feedbacks');
+                          break;
                         case 5:
                           context.go('/q&a');
+                          break;
+                        case 6:
+                          context.go('/insights');
                           break;
                       }
                     },
@@ -84,6 +89,10 @@ class _RootScreenState extends State<RootScreen> {
                       NavigationRailDestination(
                         icon: Icon(Icons.question_answer),
                         label: Text('Q&A'),
+                      ),
+                      NavigationRailDestination(
+                        icon: Icon(Icons.lightbulb),
+                        label: Text('Insights'),
                       ),
                     ],
                   ),

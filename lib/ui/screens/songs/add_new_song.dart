@@ -41,7 +41,7 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
 
   @override
   void initState() {
-    getIt<SongsBloc>().add(const SongsEvent.get());
+    context.read<SongsBloc>().add(const SongsEvent.get());
     super.initState();
   }
 
@@ -60,8 +60,9 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
                     Builder(builder: (context) {
                       final state = context.watch<SongsBloc>().state;
                       state.whenOrNull(
-                        initial: () =>
-                            getIt<SongsBloc>().add(const SongsEvent.get()),
+                        initial: () => context
+                            .read<SongsBloc>()
+                            .add(const SongsEvent.get()),
                         success: (songs) => song =
                             song.copyWith(id: calculateLastNumber(songs) + 1),
                       );
@@ -165,9 +166,9 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
                   showCancelButton: true);
               if (res) {
                 _addToSong();
-                getIt<SongsBloc>().add(SongsEvent.add(
+                context.read<SongsBloc>().add(SongsEvent.add(
                     user: context.read<AuthBloc>().icocUser, song: song));
-                getIt<SongsBloc>().currentSong.value = song;
+                context.read<SongsBloc>().currentSong.value = song;
                 if (sendNotifications) {
                   _sendNotifications();
                 }
@@ -226,7 +227,7 @@ class _AddNewSongScreenState extends State<AddNewSongScreen> {
         );
       }).toList(),
     );
-    getIt<NotificationsBloc>().add(NotificationsEvent.add(
+    context.read<NotificationsBloc>().add(NotificationsEvent.add(
         user: user,
         notification: notification,
         aditionalLanguages: [],

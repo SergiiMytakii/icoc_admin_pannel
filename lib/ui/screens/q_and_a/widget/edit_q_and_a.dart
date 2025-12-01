@@ -112,16 +112,16 @@ class _EditQandAScreenState extends State<EditQandAScreen> {
                 question: questionController.text,
                 answer: answerController.text,
               );
-              getIt<QandABloc>().add(QandAEvent.edit(
-                user: context.read<AuthBloc>().icocUser,
-                article: updatedArticle,
-              ));
+              context.read<QandABloc>().add(QandAEvent.edit(
+                    user: context.read<AuthBloc>().icocUser,
+                    article: updatedArticle,
+                  ));
               await Future.delayed(Durations.extralong4);
-              getIt<QandABloc>().add(QandAEvent.requested(
-                lang: updatedArticle.lang,
-              ));
+              context.read<QandABloc>().add(QandAEvent.requested(
+                    lang: updatedArticle.lang,
+                  ));
               await Future.delayed(Durations.extralong4);
-              getIt<QandABloc>().currentQandA.value = updatedArticle;
+              context.read<QandABloc>().currentQandA.value = updatedArticle;
 
               context.pop();
             }

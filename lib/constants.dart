@@ -14,6 +14,7 @@ class ScreenColors {
   static const video = Color(0xffffca3a);
   static const bibleStudy = Color(0xff8ac926);
   static const QandA = Color(0xff1982c4);
+  static const insights = Color(0xff4caf50);
 }
 
 const String email = 'serjmitaki@gmail.com';
@@ -101,7 +102,8 @@ enum FirebaseCollections {
   Feedback,
   UsersLogs,
   QandA,
-  QandALangs
+  QandALangs,
+  Insights
 }
 
 enum Languages {

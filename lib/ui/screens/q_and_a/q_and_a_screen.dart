@@ -34,7 +34,9 @@ class _QandAScreenState extends State<QandAScreen> {
                 .state
                 .maybeWhen(authenticated: (_) => true, orElse: () => false);
             if (isAuthed) {
-              getIt<QandABloc>().add(QandAEvent.requested(lang: activeLang));
+              context
+                  .read<QandABloc>()
+                  .add(QandAEvent.requested(lang: activeLang));
             }
             return const SizedBox.shrink();
           },
@@ -57,7 +59,8 @@ class _QandAScreenState extends State<QandAScreen> {
                             itemCount: articles.length,
                             itemBuilder: (context, index) {
                               return GestureDetector(
-                                onTap: () => getIt<QandABloc>()
+                                onTap: () => context
+                                    .read<QandABloc>()
                                     .currentQandA
                                     .value = articles[index],
                                 onSecondaryTapDown: (TapDownDetails details) {
@@ -69,7 +72,7 @@ class _QandAScreenState extends State<QandAScreen> {
                                 },
                                 child: ValueListenableBuilder(
                                   valueListenable:
-                                      getIt<QandABloc>().currentQandA,
+                                      context.read<QandABloc>().currentQandA,
                                   builder: (context, article, _) {
                                     return QandACard(
                                       article: articles[index],
@@ -108,12 +111,15 @@ class _QandAScreenState extends State<QandAScreen> {
           overlayColor: WidgetStateProperty.all(Theme.of(context).cardColor),
           onChanged: (value) {
             if (value.isEmpty) {
-              getIt<QandABloc>().add(QandAEvent.requested(lang: activeLang));
+              context
+                  .read<QandABloc>()
+                  .add(QandAEvent.requested(lang: activeLang));
             }
           },
           onSubmitted: (value) {
             _searchController.text = value;
-            getIt<QandABloc>()
+            context
+                .read<QandABloc>()
                 .add(QandAEvent.requested(query: value, lang: activeLang));
           },
           leading: const Icon(Icons.search),
@@ -127,7 +133,7 @@ class _QandAScreenState extends State<QandAScreen> {
   }
 
   Widget _buildLangsFilter() {
-    final langs = getIt<QandABloc>().langs;
+    final langs = context.read<QandABloc>().langs;
     return DropdownButton<String>(
       elevation: 0,
       underline: const SizedBox.shrink(),
@@ -135,7 +141,7 @@ class _QandAScreenState extends State<QandAScreen> {
       onChanged: (String? newValue) {
         setState(() {
           activeLang = convertLanguagesEnum(newValue ?? '');
-          getIt<QandABloc>().add(QandAEvent.requested(lang: activeLang));
+          context.read<QandABloc>().add(QandAEvent.requested(lang: activeLang));
         });
       },
       items: langs.map<DropdownMenuItem<String>>((Languages language) {
@@ -173,9 +179,10 @@ class _QandAScreenState extends State<QandAScreen> {
         'Do you really want to delete  Q&A ${article.id}? Be carefull! ',
         showCancelButton: true);
     if (result) {
-      getIt<QandABloc>().add(QandAEvent.delete(
-          docReference: article.documentRef, user: getIt<AuthBloc>().icocUser));
-      getIt<QandABloc>().currentQandA.value = QandAModel.defaultQandA;
+      context.read<QandABloc>().add(QandAEvent.delete(
+          docReference: article.documentRef,
+          user: context.read<AuthBloc>().icocUser));
+      context.read<QandABloc>().currentQandA.value = QandAModel.defaultQandA;
     }
   }
 }

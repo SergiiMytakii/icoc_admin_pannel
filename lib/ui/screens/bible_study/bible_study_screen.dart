@@ -65,7 +65,7 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                 .state
                 .maybeWhen(authenticated: (_) => true, orElse: () => false);
             if (isAuthed) {
-              getIt<BibleStudyBloc>().add(const BibleStudyEvent.get());
+              context.read<BibleStudyBloc>().add(const BibleStudyEvent.get());
             }
             return const SizedBox.shrink();
           },
@@ -91,7 +91,7 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                 ],
               );
             } else {
-              getIt<BibleStudyBloc>().add(const BibleStudyEvent.get());
+              context.read<BibleStudyBloc>().add(const BibleStudyEvent.get());
               Future.delayed(Durations.long4)
                   .then((_) => showAlertDialog(context, 'Ooooops... no songs'));
               return const SizedBox.shrink();
@@ -262,6 +262,7 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
         final TextEditingController langController = TextEditingController()
           ..text = 'en';
         final formKey = GlobalKey<FormState>();
+        bool sendNotifications = false;
         return Center(
           child: AlertDialog(
             title: const Text('Add a New Topic'),
@@ -298,6 +299,15 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                       langController: langController,
                       label: 'Languages',
                     ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        const Spacer(),
+                        SendNotificationCheckBox(
+                          onChanged: (v) => sendNotifications = v,
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -316,10 +326,35 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                         id: calculateLastNumber(bibleStudies) + 1,
                         subtopic: subTopicController.text,
                         lang: convertLanguagesEnum(langController.text));
-                    getIt<BibleStudyBloc>().add(BibleStudyEvent.addBibleStudy(
-                      bibleStudy: bibleStudy,
-                      user: context.read<AuthBloc>().icocUser,
-                    ));
+                    context
+                        .read<BibleStudyBloc>()
+                        .add(BibleStudyEvent.addBibleStudy(
+                          bibleStudy: bibleStudy,
+                          user: context.read<AuthBloc>().icocUser,
+                        ));
+                    if (sendNotifications) {
+                      final link =
+                          '$ICOC_WEB_PAGE/biblestudy/topics/${bibleStudy.id}?lang=${langController.text}';
+                      final notification = NotificationsModel(
+                        id: DateTime.now().toString(),
+                        notifications: [
+                          NotificationVersion(
+                            id: '0',
+                            title: 'New Bible Study topic added',
+                            text: subTopicController.text,
+                            lang: langController.text,
+                            link: link,
+                          ),
+                        ],
+                      );
+                      context.read<NotificationsBloc>().add(
+                            NotificationsEvent.add(
+                                aditionalLanguages: const [],
+                                user: context.read<AuthBloc>().icocUser,
+                                notification: notification,
+                                baseTopic: 'biblestudy'),
+                          );
+                    }
                     context.pop();
                   }
                 },
@@ -347,7 +382,7 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
           user: context.read<AuthBloc>().icocUser,
           bibleStudy: updatedBibleStudy));
       currentBibleStudy.value = updatedBibleStudy;
-      getIt<BibleStudyBloc>().currentLesson.value =
+      context.read<BibleStudyBloc>().currentLesson.value =
           updatedBibleStudy.lessons.firstOrNull ?? Lesson.defaultLesson;
     }
   }

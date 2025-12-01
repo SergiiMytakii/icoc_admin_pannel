@@ -110,11 +110,12 @@ class _EditFeedbackScreenState extends State<EditFeedbackScreen> {
                     ? commentController.text
                     : null,
               );
-              getIt<FeedbackBloc>().add(FeedbackEvent.edit(
-                user: context.read<AuthBloc>().icocUser,
-                feedback: updatedFeedback,
-              ));
-              getIt<FeedbackBloc>().currentFeedback.value = updatedFeedback;
+              context.read<FeedbackBloc>().add(FeedbackEvent.edit(
+                    user: context.read<AuthBloc>().icocUser,
+                    feedback: updatedFeedback,
+                  ));
+              context.read<FeedbackBloc>().currentFeedback.value =
+                  updatedFeedback;
 
               context.pop();
             }

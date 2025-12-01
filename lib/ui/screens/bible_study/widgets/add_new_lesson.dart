@@ -112,10 +112,10 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
                   title: titleController.text,
                   text: textController.text,
                   id: lessonNumber));
-              getIt<BibleStudyBloc>().add(BibleStudyEvent.addLesson(
-                bibleStudy: currentBibleStudy,
-                user: context.read<AuthBloc>().icocUser,
-              ));
+              context.read<BibleStudyBloc>().add(BibleStudyEvent.addLesson(
+                    bibleStudy: currentBibleStudy,
+                    user: context.read<AuthBloc>().icocUser,
+                  ));
               Future.delayed(const Duration(seconds: 2)).then((_) {
                 context.read<BibleStudyBloc>().currentLesson.value =
                     currentBibleStudy.lessons[lessonNumber];

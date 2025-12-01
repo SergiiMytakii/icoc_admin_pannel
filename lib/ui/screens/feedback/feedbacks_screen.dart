@@ -20,7 +20,7 @@ class FeedbackScreen extends StatelessWidget {
                 .state
                 .maybeWhen(authenticated: (_) => true, orElse: () => false);
             if (isAuthed) {
-              getIt<FeedbackBloc>().add(const FeedbackEvent.get());
+              context.read<FeedbackBloc>().add(const FeedbackEvent.get());
             }
             return const SizedBox.shrink();
           },
@@ -39,8 +39,9 @@ class FeedbackScreen extends StatelessWidget {
                                 .currentFeedback
                                 .value = feedbacks[index],
                             child: ValueListenableBuilder(
-                                valueListenable:
-                                    getIt<FeedbackBloc>().currentFeedback,
+                                valueListenable: context
+                                    .read<FeedbackBloc>()
+                                    .currentFeedback,
                                 builder: (context, currentFeedback, _) {
                                   return FeedbackCard(
                                     feedback: feedbacks[index],

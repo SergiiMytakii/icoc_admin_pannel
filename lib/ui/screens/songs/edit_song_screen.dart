@@ -198,10 +198,10 @@ class _EditSongScreenState extends State<EditSongScreen> {
           description: descriptionController.text,
           lang: convertLanguagesEnum(langController.text),
           youtubeVideos: getYoutubeVideos());
-      getIt<SongsBloc>().add(SongsEvent.edit(
-        user: context.read<AuthBloc>().icocUser,
-        song: widget.song,
-      ));
+      context.read<SongsBloc>().add(SongsEvent.edit(
+            user: context.read<AuthBloc>().icocUser,
+            song: widget.song,
+          ));
       context.pop();
       context.read<SongsBloc>().currentSong.value = widget.song;
     }

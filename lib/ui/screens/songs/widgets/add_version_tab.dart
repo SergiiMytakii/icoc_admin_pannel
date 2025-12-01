@@ -151,10 +151,10 @@ class _AddVersionTabState extends State<AddVersionTab> {
 
         widget.song.songVersions.add(songVersion);
 
-        getIt<SongsBloc>().add(SongsEvent.edit(
-          user: context.read<AuthBloc>().icocUser,
-          song: widget.song,
-        ));
+        context.read<SongsBloc>().add(SongsEvent.edit(
+              user: context.read<AuthBloc>().icocUser,
+              song: widget.song,
+            ));
 
         if (sendNotifications) {
           _sendNotifications();
@@ -180,7 +180,7 @@ class _AddVersionTabState extends State<AddVersionTab> {
             '$ICOC_WEB_PAGE/songbook/songs/${widget.song.id}?lang=${langController.text}',
       )
     ]);
-    getIt<NotificationsBloc>().add(NotificationsEvent.add(
+    context.read<NotificationsBloc>().add(NotificationsEvent.add(
         user: user,
         notification: notification,
         aditionalLanguages: [],

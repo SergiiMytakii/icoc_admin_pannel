@@ -15,6 +15,7 @@ import 'package:icoc_admin_pannel/ui/bloc/bible_study/bible_study_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/feedback/feedback_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/notifications/notifications_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/q&a_bloc/q&a_bloc.dart';
+import 'package:icoc_admin_pannel/ui/bloc/insights/insights_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/videos/videos_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -72,6 +73,9 @@ class MainApp extends StatelessWidget {
         ),
         BlocProvider<NotificationsBloc>(
           create: (BuildContext context) => getIt<NotificationsBloc>(),
+        ),
+        BlocProvider<InsightsBloc>(
+          create: (BuildContext context) => getIt<InsightsBloc>(),
         ),
       ],
       child: MaterialApp.router(

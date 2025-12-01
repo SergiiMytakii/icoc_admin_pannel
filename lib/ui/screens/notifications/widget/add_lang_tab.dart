@@ -125,8 +125,9 @@ class _AddLangTabState extends State<AddLangTab> {
           url: urlController.text,
           lang: langController.text,
         );
-        getIt<NotificationsBloc>().add(NotificationsEvent.addVersion(
-            user: getIt<AuthBloc>().icocUser, notification: notification));
+        context.read<NotificationsBloc>().add(NotificationsEvent.addVersion(
+            user: context.read<AuthBloc>().icocUser,
+            notification: notification));
         context.read<NotificationsBloc>().currentNotification.value =
             notification;
       }

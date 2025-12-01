@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/helpers/convert_languages_enum.dart';
@@ -136,8 +137,8 @@ class OneQandA extends StatelessWidget {
                 'Do you really want to translate all English Q&As to the ${langController.text}? It will take a long time to process 1660 Q&As. ',
                 showCancelButton: true);
             if (result) {
-              getIt<QandABloc>().add(QandAEvent.translate(
-                  user: getIt<AuthBloc>().icocUser,
+              context.read<QandABloc>().add(QandAEvent.translate(
+                  user: context.read<AuthBloc>().icocUser,
                   lang: convertLanguagesEnum(langController.text)));
             }
           },

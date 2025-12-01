@@ -57,7 +57,7 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
           children: [
             Row(
               children: [
-                Text('Lesson number: ${lastLessonNumber + 1}') ,
+                Text('Lesson number: ${lastLessonNumber + 1}'),
                 const Spacer(),
                 const Text(
                   'Add a new lesson',
@@ -131,10 +131,10 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
                         id: lastLessonNumber + 1));
               final updatedBibleStudy =
                   currentBibleStudy.copyWith(lessons: updatedLessons);
-              getIt<BibleStudyBloc>().add(BibleStudyEvent.addLesson(
-                bibleStudy: updatedBibleStudy,
-                user: context.read<AuthBloc>().icocUser,
-              ));
+              context.read<BibleStudyBloc>().add(BibleStudyEvent.addLesson(
+                    bibleStudy: updatedBibleStudy,
+                    user: context.read<AuthBloc>().icocUser,
+                  ));
               if (sendNotifications) {
                 final link =
                     '$ICOC_WEB_PAGE/biblestudy/lessons/${updatedBibleStudy.id}/${lastLessonNumber + 1}?lang=${updatedBibleStudy.lang.name}';
@@ -150,7 +150,7 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
                     ),
                   ],
                 );
-                getIt<NotificationsBloc>().add(NotificationsEvent.add(
+                context.read<NotificationsBloc>().add(NotificationsEvent.add(
                     user: context.read<AuthBloc>().icocUser,
                     notification: notification,
                     aditionalLanguages: [],

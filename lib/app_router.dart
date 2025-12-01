@@ -14,6 +14,9 @@ import 'package:icoc_admin_pannel/ui/screens/feedback/widget/edit_feedback.dart'
 import 'package:icoc_admin_pannel/ui/screens/notifications/add_new_notification.dart';
 import 'package:icoc_admin_pannel/ui/screens/notifications/notifications_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/q_and_a/q_and_a_screen.dart';
+import 'package:icoc_admin_pannel/ui/screens/insights/insights_screen.dart';
+import 'package:icoc_admin_pannel/ui/screens/insights/add_insight.dart';
+import 'package:icoc_admin_pannel/ui/screens/insights/edit_insight.dart';
 import 'package:icoc_admin_pannel/ui/screens/q_and_a/widget/edit_q_and_a.dart';
 import 'package:icoc_admin_pannel/ui/screens/root/root_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/add_new_song.dart';
@@ -156,6 +159,32 @@ final GoRouter router = GoRouter(
                   return NoTransitionPage<void>(
                     key: state.pageKey,
                     child: const EditFeedbackScreen(),
+                  );
+                },
+              ),
+            ]),
+        GoRoute(
+            path: '/insights',
+            pageBuilder: (BuildContext context, GoRouterState state) {
+              return NoTransitionPage<void>(
+                  key: state.pageKey, child: const InsightsScreen());
+            },
+            routes: [
+              GoRoute(
+                path: 'add',
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  return NoTransitionPage<void>(
+                    key: state.pageKey,
+                    child: const AddInsightScreen(),
+                  );
+                },
+              ),
+              GoRoute(
+                path: 'edit',
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  return NoTransitionPage<void>(
+                    key: state.pageKey,
+                    child: const EditInsightScreen(),
                   );
                 },
               ),
