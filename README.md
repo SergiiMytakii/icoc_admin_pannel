@@ -25,6 +25,6 @@
     ]
   }
 # to deploy to FB: 
-    * flutter build web --web-renderer html
+    * flutter build web --release
     * firebase deploy
 
