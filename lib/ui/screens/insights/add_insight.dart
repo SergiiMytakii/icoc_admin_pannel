@@ -24,7 +24,8 @@ class _AddInsightScreenState extends State<AddInsightScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
-  final TextEditingController langController = TextEditingController()..text = 'en';
+  final TextEditingController langController = TextEditingController()
+    ..text = 'en';
   final TextEditingController mediaUrlController = TextEditingController();
   final TextEditingController thumbUrlController = TextEditingController();
   final TextEditingController articleUrlController = TextEditingController();
@@ -42,7 +43,8 @@ class _AddInsightScreenState extends State<AddInsightScreen> {
             children: [
               Row(
                 children: [
-                  SelectLanguageWidget(langController: langController, label: 'Language'),
+                  SelectLanguageWidget(
+                      langController: langController, label: 'Language'),
                   const Spacer(),
                   const Text('Add Insight', style: TextStyle(fontSize: 20)),
                   const Spacer(),
@@ -59,7 +61,8 @@ class _AddInsightScreenState extends State<AddInsightScreen> {
               MyTextField(
                 controller: titleController,
                 hint: 'Title',
-                validator: (v) => (v == null || v.isEmpty) ? 'Please enter a title' : null,
+                validator: (v) =>
+                    (v == null || v.isEmpty) ? 'Please enter a title' : null,
               ),
               MyTextField(
                 controller: contentController,
@@ -67,9 +70,15 @@ class _AddInsightScreenState extends State<AddInsightScreen> {
                 maxLines: 8,
               ),
               MyTextField(controller: mediaUrlController, hint: 'Media URL'),
-              MyTextField(controller: thumbUrlController, hint: 'Thumbnail URL'),
-              MyTextField(controller: articleUrlController, hint: 'Article URL'),
-              Row(children: [const Spacer(), SendNotificationCheckBox(onChanged: (v) => sendNotifications = v)]),
+              MyTextField(
+                  controller: thumbUrlController, hint: 'Thumbnail URL'),
+              MyTextField(
+                  controller: articleUrlController, hint: 'Article URL'),
+              Row(children: [
+                const Spacer(),
+                SendNotificationCheckBox(
+                    onChanged: (v) => sendNotifications = v)
+              ]),
             ],
           ),
         ),
@@ -106,16 +115,18 @@ class _AddInsightScreenState extends State<AddInsightScreen> {
         author: author,
         createdAt: DateTime.now(),
       );
-      context.read<InsightsBloc>().add(InsightsEvent.add(user: context.read<AuthBloc>().icocUser, post: post));
+      context.read<InsightsBloc>().add(InsightsEvent.add(
+          user: context.read<AuthBloc>().icocUser, post: post));
       if (sendNotifications) {
-        final link = '$ICOC_WEB_PAGE/insights/post/$id?lang=${langController.text}';
+        final link =
+            '$ICOC_WEB_PAGE/insights/post/$id?lang=${langController.text}';
         final notification = NotificationsModel(
           id: DateTime.now().toString(),
           notifications: [
             NotificationVersion(
               id: '0',
               title: titleController.text,
-              text: contentController.text,
+              text: '${contentController.text.substring(0, 80)}...',
               lang: langController.text,
               link: link,
             ),
