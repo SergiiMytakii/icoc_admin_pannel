@@ -143,8 +143,8 @@ class _AddNewLessonScreenState extends State<AddNewLessonScreen> {
                   notifications: [
                     NotificationVersion(
                       id: '0',
-                      title: 'New Bible Study lesson added',
-                      text: titleController.text,
+                      title: titleController.text,
+                      text: '${textController.text.substring(0, 80)}...',
                       lang: updatedBibleStudy.lang.name,
                       link: link,
                     ),
