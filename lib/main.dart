@@ -4,7 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:icoc_admin_pannel/domain/helpers/configure_web_stub.dart'
+    if (dart.library.html) 'package:icoc_admin_pannel/domain/helpers/configure_web_web.dart';
 import 'package:icoc_admin_pannel/app_router.dart';
 import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
 import 'package:icoc_admin_pannel/domain/helpers/prevent_system_context_menu.dart';
@@ -32,7 +33,7 @@ void main() async {
       );
 
       preventSystemContextMenu();
-      setUrlStrategy(PathUrlStrategy());
+      configureApp();
       configureDependencies(Environment.dev);
       runApp(const MainApp());
     },

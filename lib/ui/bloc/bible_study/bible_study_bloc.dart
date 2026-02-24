@@ -36,12 +36,13 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
   ) async {
     emit(const BibleStudyState.loading());
     try {
-      final List<BibleStudy> bibleStudies =
-          await bibleStudyRepository.getBibleStudyList();
+      final List<BibleStudy> bibleStudies = _sortBibleStudiesAndLessons(
+        await bibleStudyRepository.getBibleStudyList(),
+      );
       if (bibleStudies.isNotEmpty) {
-        bibleStudies.sort((a, b) => a.id.compareTo(b.id));
         currentBibleStudy.value = bibleStudies.first;
-        currentLesson.value = bibleStudies.first.lessons.first;
+        currentLesson.value =
+            bibleStudies.first.lessons.firstOrNull ?? Lesson.defaultLesson;
       }
       emit(BibleStudyState.success(bibleStudies));
     } catch (error, stackTrace) {
@@ -56,12 +57,9 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
   ) async {
     emit(const BibleStudyState.loading());
     try {
-      final List<BibleStudy> bibleStudies =
-          await bibleStudyRepository.editLesson(event.user, event.bibleStudy);
-
-      if (bibleStudies.isNotEmpty) {
-        bibleStudies.sort((a, b) => a.id.compareTo(b.id));
-      }
+      final List<BibleStudy> bibleStudies = _sortBibleStudiesAndLessons(
+        await bibleStudyRepository.editLesson(event.user, event.bibleStudy),
+      );
       emit(BibleStudyState.success(bibleStudies));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
@@ -75,12 +73,9 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
   ) async {
     emit(const BibleStudyState.loading());
     try {
-      final List<BibleStudy> bibleStudies =
-          await bibleStudyRepository.deleteBibleStudy(event.user, event.id);
-
-      if (bibleStudies.isNotEmpty) {
-        bibleStudies.sort((a, b) => a.id.compareTo(b.id));
-      }
+      final List<BibleStudy> bibleStudies = _sortBibleStudiesAndLessons(
+        await bibleStudyRepository.deleteBibleStudy(event.user, event.id),
+      );
       emit(BibleStudyState.success(bibleStudies));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
@@ -94,11 +89,9 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
   ) async {
     emit(const BibleStudyState.loading());
     try {
-      final List<BibleStudy> bibleStudies = await bibleStudyRepository
-          .addBibleStudy(event.user, event.bibleStudy);
-      if (bibleStudies.isNotEmpty) {
-        bibleStudies.sort((a, b) => a.id.compareTo(b.id));
-      }
+      final List<BibleStudy> bibleStudies = _sortBibleStudiesAndLessons(
+        await bibleStudyRepository.addBibleStudy(event.user, event.bibleStudy),
+      );
 
       emit(BibleStudyState.success(bibleStudies));
     } catch (error, stackTrace) {
@@ -113,16 +106,24 @@ class BibleStudyBloc extends Bloc<BibleStudyEvent, BibleStudyState> {
   ) async {
     emit(const BibleStudyState.loading());
     try {
-      final List<BibleStudy> bibleStudies = await bibleStudyRepository
-          .addBibleStudy(event.user, event.bibleStudy);
-
-      if (bibleStudies.isNotEmpty) {
-        bibleStudies.sort((a, b) => a.id.compareTo(b.id));
-      }
+      final List<BibleStudy> bibleStudies = _sortBibleStudiesAndLessons(
+        await bibleStudyRepository.addBibleStudy(event.user, event.bibleStudy),
+      );
       emit(BibleStudyState.success(bibleStudies));
     } catch (error, stackTrace) {
       logError(error, stackTrace);
       emit(BibleStudyState.error(error.toString()));
     }
+  }
+
+  List<BibleStudy> _sortBibleStudiesAndLessons(List<BibleStudy> bibleStudies) {
+    return bibleStudies
+        .map(
+          (study) => study.copyWith(
+            lessons: [...study.lessons]..sort((a, b) => a.id.compareTo(b.id)),
+          ),
+        )
+        .toList()
+      ..sort((a, b) => a.id.compareTo(b.id));
   }
 }

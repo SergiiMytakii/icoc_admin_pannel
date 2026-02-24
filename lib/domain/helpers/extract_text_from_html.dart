@@ -9,9 +9,9 @@ class FormatTextHelper {
     RegExp exp = RegExp(
         r'&nbsp;|&rdquo;|&shy;|&quot;|&amp;|&lt;|&gt;|&apos;|&copy;|&reg;|&laquo;|&raquo|&oacute;',
         multiLine: true);
-    result = result = result.replaceAll(exp, ' ');
+    result = result.replaceAll(exp, ' ');
     exp = RegExp(r'&rsquo;', multiLine: true);
-    result = result = result.replaceAll(exp, '\'');
+    result = result.replaceAll(exp, '\'');
     return result;
   }
 }

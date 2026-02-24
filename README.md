@@ -25,6 +25,6 @@
     ]
   }
 # to deploy to FB: 
-    * flutter build web --release
-    * firebase deploy
+    * flutter build web --release --dart-define=openAIKey=YOUR_API_KEY
+    * firebase deploy --only hosting
 

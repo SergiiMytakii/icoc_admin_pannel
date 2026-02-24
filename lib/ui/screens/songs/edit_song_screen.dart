@@ -11,7 +11,8 @@ import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_button.dart';
 import 'package:icoc_admin_pannel/ui/widget/my_text_field.dart';
 import 'package:icoc_admin_pannel/ui/widget/select_lang.dart';
-import 'dart:html' as html;
+import 'package:universal_html/html.dart' as html;
+import 'package:flutter/foundation.dart';
 
 class EditSongScreen extends StatefulWidget {
   final SongModel song;
@@ -61,12 +62,14 @@ class _EditSongScreenState extends State<EditSongScreen> {
 //add empty controller for video
     youtubeControllers.add(TextEditingController()..text = '');
 
-    html.window.onKeyDown.listen((html.KeyboardEvent event) {
-      if (event.metaKey && event.key == 's') {
-        event.preventDefault(); // Prevent the default browser action (save)
-        _save(); // Call your save function
-      }
-    });
+    if (kIsWeb) {
+      html.window.onKeyDown.listen((html.KeyboardEvent event) {
+        if (event.metaKey && event.key == 's') {
+          event.preventDefault(); // Prevent the default browser action (save)
+          _save(); // Call your save function
+        }
+      });
+    }
 
     super.initState();
   }

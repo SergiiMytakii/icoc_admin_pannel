@@ -5,7 +5,6 @@ import 'package:icoc_admin_pannel/domain/helpers/calculate_song_number.dart';
 import 'package:icoc_admin_pannel/domain/helpers/convert_languages_enum.dart';
 import 'package:icoc_admin_pannel/domain/helpers/show_menu.dart';
 import 'package:icoc_admin_pannel/domain/model/bible_study/bible_study.dart';
-import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/bible_study/bible_study_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/bible_study/widgets/bible_study_card.dart';
@@ -151,12 +150,13 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
           ValueListenableBuilder(
             valueListenable: currentBibleStudy,
             builder: (context, lesson, _) {
+              final lessons = [...currentBibleStudy.value.lessons]
+                ..sort((a, b) => a.id.compareTo(b.id));
               return Expanded(
                 child: ListView(
                   children: [
-                    ...currentBibleStudy.value.lessons.map((lesson) =>
-                        _buildLessonCard(
-                            currentBibleStudy, currentLesson, lesson))
+                    ...lessons.map((lesson) => _buildLessonCard(
+                        currentBibleStudy, currentLesson, lesson))
                   ],
                 ),
               );
@@ -193,8 +193,10 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
                     .map((bibleStudy) => GestureDetector(
                         onTap: () {
                           currentBibleStudy.value = bibleStudy;
-                          if (bibleStudy.lessons.isNotEmpty) {
-                            currentLesson.value = bibleStudy.lessons[0];
+                          final sortedLessons = [...bibleStudy.lessons]
+                            ..sort((a, b) => a.id.compareTo(b.id));
+                          if (sortedLessons.isNotEmpty) {
+                            currentLesson.value = sortedLessons.first;
                           } else {
                             currentLesson.value = Lesson.defaultLesson;
                           }
@@ -373,10 +375,13 @@ class _BibleStudyScreenState extends State<BibleStudyScreen> {
         context, 'Do you really want to delete ${lesson.title}? Be carefull! ',
         showCancelButton: true);
     if (result) {
+      final sortedLessons = currentBibleStudy.value.lessons
+          .where((element) => element.id != lesson.id)
+          .toList()
+        ..sort((a, b) => a.id.compareTo(b.id));
       final updatedBibleStudy = currentBibleStudy.value.copyWith(
-          lessons: currentBibleStudy.value.lessons
-              .where((element) => element.id != lesson.id)
-              .toList());
+        lessons: sortedLessons,
+      );
 
       context.read<BibleStudyBloc>().add(BibleStudyEvent.editLesson(
           user: context.read<AuthBloc>().icocUser,

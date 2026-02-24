@@ -8,29 +8,33 @@ class OneLesson extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
-      Text(
-        lesson.title,
-        textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.titleMedium,
-      ),
-      const SizedBox(
-        width: 20,
-      ),
-      html.Html(
-        data: lesson.text,
-        style: {
-          'body': html.Style(
-            fontSize: html.FontSize(14),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Text(
+            lesson.title,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
-          'h5': html.Style(
-            fontSize: html.FontSize(14),
+          const SizedBox(
+            height: 20,
           ),
-          'p': html.Style(
-            fontSize: html.FontSize(14),
+          html.Html(
+            data: lesson.text,
+            style: {
+              'body': html.Style(
+                fontSize: html.FontSize(14),
+              ),
+              'h5': html.Style(
+                fontSize: html.FontSize(14),
+              ),
+              'p': html.Style(
+                fontSize: html.FontSize(14),
+              ),
+            },
           ),
-        },
+        ],
       ),
-    ]);
+    );
   }
 }
