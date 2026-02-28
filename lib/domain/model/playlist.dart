@@ -1,3 +1,5 @@
+import 'package:icoc_admin_pannel/constants.dart';
+
 enum VideoContentType { playlist, video }
 
 class Playlist {
@@ -25,6 +27,7 @@ class Playlist {
   String get sourceId => isPlaylist ? (playlistId ?? '') : (videoId ?? '');
   String get sourceLabel => isPlaylist ? 'Playlist ID' : 'Video ID';
   String get typeLabel => isPlaylist ? 'Playlist' : 'Video';
+  String get appDeepLink => '$ICOC_WEB_PAGE/video/listvideos/$id?lang=$lang';
   String get externalUrl => isPlaylist
       ? 'https://www.youtube.com/playlist?list=$sourceId'
       : 'https://www.youtube.com/watch?v=$sourceId';

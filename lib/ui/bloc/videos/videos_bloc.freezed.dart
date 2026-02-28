@@ -116,12 +116,18 @@ class __$$VideosGetImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$VideosGetImpl implements VideosGet {
+class _$VideosGetImpl with DiagnosticableTreeMixin implements VideosGet {
   const _$VideosGetImpl();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'VideosEvent.get()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'VideosEvent.get'));
   }
 
   @override
@@ -262,7 +268,9 @@ class __$$VideosAddPlaylistImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$VideosAddPlaylistImpl implements VideosAddPlaylist {
+class _$VideosAddPlaylistImpl
+    with DiagnosticableTreeMixin
+    implements VideosAddPlaylist {
   const _$VideosAddPlaylistImpl({required this.user, required this.playlist});
 
   @override
@@ -271,8 +279,17 @@ class _$VideosAddPlaylistImpl implements VideosAddPlaylist {
   final Playlist playlist;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'VideosEvent.addPlaylist(user: $user, playlist: $playlist)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'VideosEvent.addPlaylist'))
+      ..add(DiagnosticsProperty('user', user))
+      ..add(DiagnosticsProperty('playlist', playlist));
   }
 
   @override
@@ -432,7 +449,9 @@ class __$$VideosEditPlaylistImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$VideosEditPlaylistImpl implements VideosEditPlaylist {
+class _$VideosEditPlaylistImpl
+    with DiagnosticableTreeMixin
+    implements VideosEditPlaylist {
   const _$VideosEditPlaylistImpl({required this.user, required this.playlist});
 
   @override
@@ -441,8 +460,17 @@ class _$VideosEditPlaylistImpl implements VideosEditPlaylist {
   final Playlist playlist;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'VideosEvent.editPlaylist(user: $user, playlist: $playlist)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'VideosEvent.editPlaylist'))
+      ..add(DiagnosticsProperty('user', user))
+      ..add(DiagnosticsProperty('playlist', playlist));
   }
 
   @override
@@ -602,7 +630,9 @@ class __$$VideosDeletePlaylistImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$VideosDeletePlaylistImpl implements VideosDeletePlaylist {
+class _$VideosDeletePlaylistImpl
+    with DiagnosticableTreeMixin
+    implements VideosDeletePlaylist {
   const _$VideosDeletePlaylistImpl(
       {required this.user, required this.playlistId});
 
@@ -612,8 +642,17 @@ class _$VideosDeletePlaylistImpl implements VideosDeletePlaylist {
   final int playlistId;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'VideosEvent.deletePlaylist(user: $user, playlistId: $playlistId)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'VideosEvent.deletePlaylist'))
+      ..add(DiagnosticsProperty('user', user))
+      ..add(DiagnosticsProperty('playlistId', playlistId));
   }
 
   @override
@@ -771,15 +810,25 @@ class __$$VideosFetchFromPlaylistImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$VideosFetchFromPlaylistImpl implements VideosFetchFromPlaylist {
+class _$VideosFetchFromPlaylistImpl
+    with DiagnosticableTreeMixin
+    implements VideosFetchFromPlaylist {
   const _$VideosFetchFromPlaylistImpl(this.playlistId);
 
   @override
   final String playlistId;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'VideosEvent.fetchFromPlaylist(playlistId: $playlistId)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'VideosEvent.fetchFromPlaylist'))
+      ..add(DiagnosticsProperty('playlistId', playlistId));
   }
 
   @override
@@ -931,15 +980,25 @@ class __$$VideosFetchDetailsImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$VideosFetchDetailsImpl implements VideosFetchDetails {
+class _$VideosFetchDetailsImpl
+    with DiagnosticableTreeMixin
+    implements VideosFetchDetails {
   const _$VideosFetchDetailsImpl(this.videoId);
 
   @override
   final String videoId;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'VideosEvent.fetchDetails(videoId: $videoId)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'VideosEvent.fetchDetails'))
+      ..add(DiagnosticsProperty('videoId', videoId));
   }
 
   @override
@@ -1159,12 +1218,20 @@ class __$$VideosInitialStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$VideosInitialStateImpl implements _VideosInitialState {
+class _$VideosInitialStateImpl
+    with DiagnosticableTreeMixin
+    implements _VideosInitialState {
   const _$VideosInitialStateImpl();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'VideosState.initial()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'VideosState.initial'));
   }
 
   @override
@@ -1285,12 +1352,20 @@ class __$$VideosLoadingStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$VideosLoadingStateImpl implements _VideosLoadingState {
+class _$VideosLoadingStateImpl
+    with DiagnosticableTreeMixin
+    implements _VideosLoadingState {
   const _$VideosLoadingStateImpl();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'VideosState.loading()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'VideosState.loading'));
   }
 
   @override
@@ -1426,15 +1501,25 @@ class __$$VideosErrorStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$VideosErrorStateImpl implements _VideosErrorState {
+class _$VideosErrorStateImpl
+    with DiagnosticableTreeMixin
+    implements _VideosErrorState {
   const _$VideosErrorStateImpl(this.errorMessage);
 
   @override
   final String errorMessage;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'VideosState.error(errorMessage: $errorMessage)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'VideosState.error'))
+      ..add(DiagnosticsProperty('errorMessage', errorMessage));
   }
 
   @override
@@ -1586,7 +1671,9 @@ class __$$VideosSuccessStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$VideosSuccessStateImpl implements _VideosSuccessState {
+class _$VideosSuccessStateImpl
+    with DiagnosticableTreeMixin
+    implements _VideosSuccessState {
   const _$VideosSuccessStateImpl(final List<Playlist> playlists)
       : _playlists = playlists;
 
@@ -1599,8 +1686,16 @@ class _$VideosSuccessStateImpl implements _VideosSuccessState {
   }
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'VideosState.success(playlists: $playlists)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'VideosState.success'))
+      ..add(DiagnosticsProperty('playlists', playlists));
   }
 
   @override
@@ -1755,7 +1850,9 @@ class __$$VideosPlaylistVideosStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$VideosPlaylistVideosStateImpl implements _VideosPlaylistVideosState {
+class _$VideosPlaylistVideosStateImpl
+    with DiagnosticableTreeMixin
+    implements _VideosPlaylistVideosState {
   const _$VideosPlaylistVideosStateImpl(final List<YoutubeVideo>? resources)
       : _resources = resources;
 
@@ -1770,8 +1867,16 @@ class _$VideosPlaylistVideosStateImpl implements _VideosPlaylistVideosState {
   }
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'VideosState.playlistVideos(resources: $resources)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'VideosState.playlistVideos'))
+      ..add(DiagnosticsProperty('resources', resources));
   }
 
   @override
@@ -1938,15 +2043,25 @@ class __$$VideosDetailsStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$VideosDetailsStateImpl implements _VideosDetailsState {
+class _$VideosDetailsStateImpl
+    with DiagnosticableTreeMixin
+    implements _VideosDetailsState {
   const _$VideosDetailsStateImpl(this.videoDetails);
 
   @override
   final YoutubeVideo? videoDetails;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'VideosState.videoDetails(videoDetails: $videoDetails)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'VideosState.videoDetails'))
+      ..add(DiagnosticsProperty('videoDetails', videoDetails));
   }
 
   @override

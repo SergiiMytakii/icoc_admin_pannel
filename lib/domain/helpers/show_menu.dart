@@ -7,9 +7,13 @@ void showContextMenu(
     BuildContext context, Offset tapPosition, VoidCallback callback) {
   final user = context.read<AuthBloc>().icocUser;
   if (user != null && user.isAdmin) {
-    print('User is admin');
+    final OverlayState? overlayState = Overlay.of(context);
+    if (overlayState == null) {
+      return;
+    }
+
     final RenderBox overlay =
-        Overlay.of(context).context.findRenderObject() as RenderBox;
+        overlayState.context.findRenderObject() as RenderBox;
 
     final RelativeRect position = RelativeRect.fromRect(
       Rect.fromPoints(

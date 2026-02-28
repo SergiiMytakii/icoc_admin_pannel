@@ -181,7 +181,7 @@ class _AddVideoPlaylistScreenState extends State<AddVideoPlaylistScreen> {
             title: playlist.title,
             text: _notificationText(playlist.description),
             lang: playlist.lang,
-            link: playlist.externalUrl,
+            link: playlist.appDeepLink,
           ),
         ],
       );

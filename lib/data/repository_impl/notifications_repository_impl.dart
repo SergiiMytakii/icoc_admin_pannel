@@ -1,4 +1,3 @@
-
 import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/data_sources/ai_data_source.dart';
@@ -100,6 +99,9 @@ class NotificationsRepositoryImpl extends NotificationsRepository {
               'lang': entry.value,
               'title': 'Translated title',
               'text': 'Translated text',
+              'link': (notification.link ?? '').trim().isEmpty
+                  ? ''
+                  : notification.link!.trim(),
               'isRead': false
             },
           )
@@ -113,11 +115,13 @@ class NotificationsRepositoryImpl extends NotificationsRepository {
           Message to translate:
           Title: {title}
           Text: {text}
+          Link: {link}
 
           Translation guidelines:
           1. Maintain the original structure and style of the text.
           2. Ensure the translation is culturally appropriate for each target language.
           3. Preserve any formatting or special characters present in the original text.
+          4. Preserve the original link exactly as-is for every translation.
 
           Provide the translated messages as valid JSON using this structure:
           {outputTemplate}
@@ -125,9 +129,11 @@ class NotificationsRepositoryImpl extends NotificationsRepository {
           Remember to translate both the title and text for each language.
     ''');
 
+    final String linkValue = (notification.link ?? '').trim();
     final query = {
       'title': notification.title,
       'text': notification.text,
+      'link': linkValue.isEmpty ? 'none' : linkValue,
       'languages': languages,
       'outputTemplate': outputTemplate
     };

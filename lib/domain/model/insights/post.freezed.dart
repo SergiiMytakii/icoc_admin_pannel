@@ -25,13 +25,20 @@ mixin _$Post {
   String get language => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get content => throw _privateConstructorUsedError;
-  String? get mediaUrl => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _stringListFromJson)
+  List<String> get mediaUrls => throw _privateConstructorUsedError;
   String? get thumbnailUrl => throw _privateConstructorUsedError;
+  String? get youtubeId => throw _privateConstructorUsedError;
   String? get articleUrl => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _doubleListFromJson)
+  List<double> get mediaAspectRatios => throw _privateConstructorUsedError;
   PostAuthor get author => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp)
   DateTime get createdAt => throw _privateConstructorUsedError;
+  String get status => throw _privateConstructorUsedError;
+  bool get allowComments => throw _privateConstructorUsedError;
   int get likes => throw _privateConstructorUsedError;
+  int get commentsCount => throw _privateConstructorUsedError;
   int get shares => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -50,13 +57,18 @@ abstract class $PostCopyWith<$Res> {
       String language,
       String? title,
       String? content,
-      String? mediaUrl,
+      @JsonKey(fromJson: _stringListFromJson) List<String> mediaUrls,
       String? thumbnailUrl,
+      String? youtubeId,
       String? articleUrl,
+      @JsonKey(fromJson: _doubleListFromJson) List<double> mediaAspectRatios,
       PostAuthor author,
       @JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp)
       DateTime createdAt,
+      String status,
+      bool allowComments,
       int likes,
+      int commentsCount,
       int shares});
 
   $PostAuthorCopyWith<$Res> get author;
@@ -80,12 +92,17 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
     Object? language = null,
     Object? title = freezed,
     Object? content = freezed,
-    Object? mediaUrl = freezed,
+    Object? mediaUrls = null,
     Object? thumbnailUrl = freezed,
+    Object? youtubeId = freezed,
     Object? articleUrl = freezed,
+    Object? mediaAspectRatios = null,
     Object? author = null,
     Object? createdAt = null,
+    Object? status = null,
+    Object? allowComments = null,
     Object? likes = null,
+    Object? commentsCount = null,
     Object? shares = null,
   }) {
     return _then(_value.copyWith(
@@ -109,18 +126,26 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String?,
-      mediaUrl: freezed == mediaUrl
-          ? _value.mediaUrl
-          : mediaUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
+      mediaUrls: null == mediaUrls
+          ? _value.mediaUrls
+          : mediaUrls // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       thumbnailUrl: freezed == thumbnailUrl
           ? _value.thumbnailUrl
           : thumbnailUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      youtubeId: freezed == youtubeId
+          ? _value.youtubeId
+          : youtubeId // ignore: cast_nullable_to_non_nullable
               as String?,
       articleUrl: freezed == articleUrl
           ? _value.articleUrl
           : articleUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      mediaAspectRatios: null == mediaAspectRatios
+          ? _value.mediaAspectRatios
+          : mediaAspectRatios // ignore: cast_nullable_to_non_nullable
+              as List<double>,
       author: null == author
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
@@ -129,9 +154,21 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
+      allowComments: null == allowComments
+          ? _value.allowComments
+          : allowComments // ignore: cast_nullable_to_non_nullable
+              as bool,
       likes: null == likes
           ? _value.likes
           : likes // ignore: cast_nullable_to_non_nullable
+              as int,
+      commentsCount: null == commentsCount
+          ? _value.commentsCount
+          : commentsCount // ignore: cast_nullable_to_non_nullable
               as int,
       shares: null == shares
           ? _value.shares
@@ -162,13 +199,18 @@ abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
       String language,
       String? title,
       String? content,
-      String? mediaUrl,
+      @JsonKey(fromJson: _stringListFromJson) List<String> mediaUrls,
       String? thumbnailUrl,
+      String? youtubeId,
       String? articleUrl,
+      @JsonKey(fromJson: _doubleListFromJson) List<double> mediaAspectRatios,
       PostAuthor author,
       @JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp)
       DateTime createdAt,
+      String status,
+      bool allowComments,
       int likes,
+      int commentsCount,
       int shares});
 
   @override
@@ -190,12 +232,17 @@ class __$$PostImplCopyWithImpl<$Res>
     Object? language = null,
     Object? title = freezed,
     Object? content = freezed,
-    Object? mediaUrl = freezed,
+    Object? mediaUrls = null,
     Object? thumbnailUrl = freezed,
+    Object? youtubeId = freezed,
     Object? articleUrl = freezed,
+    Object? mediaAspectRatios = null,
     Object? author = null,
     Object? createdAt = null,
+    Object? status = null,
+    Object? allowComments = null,
     Object? likes = null,
+    Object? commentsCount = null,
     Object? shares = null,
   }) {
     return _then(_$PostImpl(
@@ -219,18 +266,26 @@ class __$$PostImplCopyWithImpl<$Res>
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String?,
-      mediaUrl: freezed == mediaUrl
-          ? _value.mediaUrl
-          : mediaUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
+      mediaUrls: null == mediaUrls
+          ? _value._mediaUrls
+          : mediaUrls // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       thumbnailUrl: freezed == thumbnailUrl
           ? _value.thumbnailUrl
           : thumbnailUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      youtubeId: freezed == youtubeId
+          ? _value.youtubeId
+          : youtubeId // ignore: cast_nullable_to_non_nullable
               as String?,
       articleUrl: freezed == articleUrl
           ? _value.articleUrl
           : articleUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      mediaAspectRatios: null == mediaAspectRatios
+          ? _value._mediaAspectRatios
+          : mediaAspectRatios // ignore: cast_nullable_to_non_nullable
+              as List<double>,
       author: null == author
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
@@ -239,9 +294,21 @@ class __$$PostImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
+      allowComments: null == allowComments
+          ? _value.allowComments
+          : allowComments // ignore: cast_nullable_to_non_nullable
+              as bool,
       likes: null == likes
           ? _value.likes
           : likes // ignore: cast_nullable_to_non_nullable
+              as int,
+      commentsCount: null == commentsCount
+          ? _value.commentsCount
+          : commentsCount // ignore: cast_nullable_to_non_nullable
               as int,
       shares: null == shares
           ? _value.shares
@@ -254,21 +321,31 @@ class __$$PostImplCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true)
-class _$PostImpl implements _Post {
+class _$PostImpl extends _Post {
   const _$PostImpl(
       {required this.id,
       required this.type,
       required this.language,
       this.title,
       this.content,
-      this.mediaUrl,
+      @JsonKey(fromJson: _stringListFromJson)
+      final List<String> mediaUrls = const <String>[],
       this.thumbnailUrl,
+      this.youtubeId,
       this.articleUrl,
+      @JsonKey(fromJson: _doubleListFromJson)
+      final List<double> mediaAspectRatios = const <double>[],
       required this.author,
       @JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp)
       required this.createdAt,
+      this.status = 'published',
+      this.allowComments = true,
       this.likes = 0,
-      this.shares = 0});
+      this.commentsCount = 0,
+      this.shares = 0})
+      : _mediaUrls = mediaUrls,
+        _mediaAspectRatios = mediaAspectRatios,
+        super._();
 
   factory _$PostImpl.fromJson(Map<String, dynamic> json) =>
       _$$PostImplFromJson(json);
@@ -283,12 +360,31 @@ class _$PostImpl implements _Post {
   final String? title;
   @override
   final String? content;
+  final List<String> _mediaUrls;
   @override
-  final String? mediaUrl;
+  @JsonKey(fromJson: _stringListFromJson)
+  List<String> get mediaUrls {
+    if (_mediaUrls is EqualUnmodifiableListView) return _mediaUrls;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_mediaUrls);
+  }
+
   @override
   final String? thumbnailUrl;
   @override
+  final String? youtubeId;
+  @override
   final String? articleUrl;
+  final List<double> _mediaAspectRatios;
+  @override
+  @JsonKey(fromJson: _doubleListFromJson)
+  List<double> get mediaAspectRatios {
+    if (_mediaAspectRatios is EqualUnmodifiableListView)
+      return _mediaAspectRatios;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_mediaAspectRatios);
+  }
+
   @override
   final PostAuthor author;
   @override
@@ -296,14 +392,23 @@ class _$PostImpl implements _Post {
   final DateTime createdAt;
   @override
   @JsonKey()
+  final String status;
+  @override
+  @JsonKey()
+  final bool allowComments;
+  @override
+  @JsonKey()
   final int likes;
+  @override
+  @JsonKey()
+  final int commentsCount;
   @override
   @JsonKey()
   final int shares;
 
   @override
   String toString() {
-    return 'Post(id: $id, type: $type, language: $language, title: $title, content: $content, mediaUrl: $mediaUrl, thumbnailUrl: $thumbnailUrl, articleUrl: $articleUrl, author: $author, createdAt: $createdAt, likes: $likes, shares: $shares)';
+    return 'Post(id: $id, type: $type, language: $language, title: $title, content: $content, mediaUrls: $mediaUrls, thumbnailUrl: $thumbnailUrl, youtubeId: $youtubeId, articleUrl: $articleUrl, mediaAspectRatios: $mediaAspectRatios, author: $author, createdAt: $createdAt, status: $status, allowComments: $allowComments, likes: $likes, commentsCount: $commentsCount, shares: $shares)';
   }
 
   @override
@@ -317,16 +422,25 @@ class _$PostImpl implements _Post {
                 other.language == language) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.content, content) || other.content == content) &&
-            (identical(other.mediaUrl, mediaUrl) ||
-                other.mediaUrl == mediaUrl) &&
+            const DeepCollectionEquality()
+                .equals(other._mediaUrls, _mediaUrls) &&
             (identical(other.thumbnailUrl, thumbnailUrl) ||
                 other.thumbnailUrl == thumbnailUrl) &&
+            (identical(other.youtubeId, youtubeId) ||
+                other.youtubeId == youtubeId) &&
             (identical(other.articleUrl, articleUrl) ||
                 other.articleUrl == articleUrl) &&
+            const DeepCollectionEquality()
+                .equals(other._mediaAspectRatios, _mediaAspectRatios) &&
             (identical(other.author, author) || other.author == author) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.allowComments, allowComments) ||
+                other.allowComments == allowComments) &&
             (identical(other.likes, likes) || other.likes == likes) &&
+            (identical(other.commentsCount, commentsCount) ||
+                other.commentsCount == commentsCount) &&
             (identical(other.shares, shares) || other.shares == shares));
   }
 
@@ -339,12 +453,17 @@ class _$PostImpl implements _Post {
       language,
       title,
       content,
-      mediaUrl,
+      const DeepCollectionEquality().hash(_mediaUrls),
       thumbnailUrl,
+      youtubeId,
       articleUrl,
+      const DeepCollectionEquality().hash(_mediaAspectRatios),
       author,
       createdAt,
+      status,
+      allowComments,
       likes,
+      commentsCount,
       shares);
 
   @JsonKey(ignore: true)
@@ -361,21 +480,28 @@ class _$PostImpl implements _Post {
   }
 }
 
-abstract class _Post implements Post {
+abstract class _Post extends Post {
   const factory _Post(
       {required final String id,
       required final PostType type,
       required final String language,
       final String? title,
       final String? content,
-      final String? mediaUrl,
+      @JsonKey(fromJson: _stringListFromJson) final List<String> mediaUrls,
       final String? thumbnailUrl,
+      final String? youtubeId,
       final String? articleUrl,
+      @JsonKey(fromJson: _doubleListFromJson)
+      final List<double> mediaAspectRatios,
       required final PostAuthor author,
       @JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp)
       required final DateTime createdAt,
+      final String status,
+      final bool allowComments,
       final int likes,
+      final int commentsCount,
       final int shares}) = _$PostImpl;
+  const _Post._() : super._();
 
   factory _Post.fromJson(Map<String, dynamic> json) = _$PostImpl.fromJson;
 
@@ -390,18 +516,30 @@ abstract class _Post implements Post {
   @override
   String? get content;
   @override
-  String? get mediaUrl;
+  @JsonKey(fromJson: _stringListFromJson)
+  List<String> get mediaUrls;
   @override
   String? get thumbnailUrl;
   @override
+  String? get youtubeId;
+  @override
   String? get articleUrl;
+  @override
+  @JsonKey(fromJson: _doubleListFromJson)
+  List<double> get mediaAspectRatios;
   @override
   PostAuthor get author;
   @override
   @JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeToTimestamp)
   DateTime get createdAt;
   @override
+  String get status;
+  @override
+  bool get allowComments;
+  @override
   int get likes;
+  @override
+  int get commentsCount;
   @override
   int get shares;
   @override

@@ -18,17 +18,20 @@ class InsightsRepositoryImpl implements InsightsRepository {
   Future<List<Post>> getPosts({String? query, String? language}) async {
     final QuerySnapshot snapshot = await firebaseDataSource.getFromFirebase(
       FirebaseCollections.Insights.name,
-      search: query != null && query.isNotEmpty ? {'title': query} : null,
-      filters: language != null && language.isNotEmpty
-          ? {'language': language}
-          : null,
       orderBy: {'createdAt': true},
     );
-    final List<Post> posts = snapshot.docs.map((doc) {
-      final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-      return Post.fromJson(data);
-    }).toList();
-    return posts;
+    final String normalizedQuery = (query ?? '').trim().toLowerCase();
+    final String normalizedLanguage = (language ?? '').trim().toLowerCase();
+
+    return snapshot.docs.map(_postFromDoc).where((Post post) {
+      final bool matchesLanguage = normalizedLanguage.isEmpty ||
+          post.language.toLowerCase() == normalizedLanguage;
+      final bool matchesQuery = normalizedQuery.isEmpty ||
+          (post.title ?? '').toLowerCase().contains(normalizedQuery) ||
+          (post.content ?? '').toLowerCase().contains(normalizedQuery) ||
+          post.author.name.toLowerCase().contains(normalizedQuery);
+      return matchesLanguage && matchesQuery;
+    }).toList(growable: false);
   }
 
   @override
@@ -53,11 +56,13 @@ class InsightsRepositoryImpl implements InsightsRepository {
   }
 
   List<Post> _listFromSnapshot(QuerySnapshot snapshot) {
-    final List<Post> posts = snapshot.docs.map((doc) {
-      final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-      return Post.fromJson(data);
-    }).toList();
-    return posts;
+    return snapshot.docs.map(_postFromDoc).toList(growable: false);
+  }
+
+  Post _postFromDoc(QueryDocumentSnapshot doc) {
+    final Map<String, dynamic> data =
+        Map<String, dynamic>.from(doc.data() as Map<String, dynamic>);
+    data['id'] = (data['id'] ?? doc.id).toString();
+    return Post.fromJson(data);
   }
 }
-

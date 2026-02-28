@@ -1,0 +1,93 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null &&
+        request.auth.token.email == "serjmitaki@gmail.com";
+    }
+
+    function isPublishedInsight(data) {
+      return !(("status" in data)) || data.status == "published";
+    }
+
+    match /SongsV2/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /BibleStudy/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /BibleStudyV2/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /Notifications/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /QandA/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /QandALangs/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /Video/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /Feedback/{docId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /UsersLogs/{docId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /device_tokens/{tokenId} {
+      allow write: if true;
+      allow read: if false;
+    }
+
+    match /Insights/{postId} {
+      allow read: if isPublishedInsight(resource.data) || isAdmin();
+      allow write: if isAdmin();
+
+      match /comments/{commentId} {
+        allow read: if isPublishedInsight(
+            get(/databases/$(database)/documents/Insights/$(postId)).data
+          ) &&
+          (!(("status" in resource.data)) || resource.data.status == "published");
+        allow write: if isAdmin();
+      }
+
+      match /likes/{likeId} {
+        allow read, write: if false;
+      }
+    }
+
+    match /InsightsMeta/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /InsightsDevices/{deviceId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

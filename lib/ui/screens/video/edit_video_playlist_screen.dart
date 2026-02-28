@@ -179,7 +179,7 @@ class _EditVideoPlaylistScreenState extends State<EditVideoPlaylistScreen> {
             title: updatedPlaylist.title,
             text: _notificationText(updatedPlaylist.description),
             lang: updatedPlaylist.lang,
-            link: updatedPlaylist.externalUrl,
+            link: updatedPlaylist.appDeepLink,
           ),
         ],
       );
