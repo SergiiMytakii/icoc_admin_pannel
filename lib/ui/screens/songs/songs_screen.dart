@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icoc_admin_pannel/domain/helpers/show_menu.dart';
 import 'package:icoc_admin_pannel/domain/model/songs/song_model.dart';
-import 'package:icoc_admin_pannel/injection.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
 import 'package:icoc_admin_pannel/ui/bloc/songs/songs_bloc.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/widgets/one_song.dart';
@@ -23,15 +22,17 @@ class SongsScreen extends StatefulWidget {
 class _SongsScreenState extends State<SongsScreen> {
   final TextEditingController _searchController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  late final SongsBloc _songsBloc;
   @override
   void initState() {
-    context.read<SongsBloc>().currentSong.addListener(_scrollToCurrentSong);
+    _songsBloc = context.read<SongsBloc>();
+    _songsBloc.currentSong.addListener(_scrollToCurrentSong);
     super.initState();
   }
 
   @override
   void dispose() {
-    context.read<SongsBloc>().currentSong.removeListener(_scrollToCurrentSong);
+    _songsBloc.currentSong.removeListener(_scrollToCurrentSong);
     _scrollController.dispose();
     super.dispose();
   }

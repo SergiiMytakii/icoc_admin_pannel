@@ -5,6 +5,7 @@ import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/data_sources/firebase_data_source.dart';
 import 'package:icoc_admin_pannel/domain/helpers/error_logger.dart';
 import 'package:icoc_admin_pannel/domain/model/playlist.dart';
+import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/domain/model/youtube_video/youtube_video.dart';
 import 'package:icoc_admin_pannel/domain/repository/video_repository.dart';
 import 'package:injectable/injectable.dart';
@@ -17,46 +18,42 @@ class VideoRepositoryImpl extends VideoRepository {
   final FirebaseDataSource firebaseDataSource;
   final HttpClient httpClient;
   VideoRepositoryImpl(this.firebaseDataSource, this.httpClient);
+
+  static const String _videoCollectionName = 'Video';
+  static const String _rssToJsonBase =
+      'https://api.rss2json.com/v1/api.json?rss_url=';
+
   @override
   Future<List<Playlist>> getVideoList() async {
-    final QuerySnapshot snapshot = await firebaseDataSource
-        .getFromFirebase(FirebaseCollections.Video.name);
-    final List<Playlist> playlists = _listFromSnapshot(snapshot);
-    return playlists;
+    final snapshot = await firebaseDataSource.getFromFirebase(
+      _videoCollectionName,
+    );
+    return _listFromSnapshot(snapshot);
   }
 
   @override
   Future<List<YoutubeVideo>?> fetchVideosFromPlaylist(String playlistId) async {
-    final Map<String, String> headers = {
-      'Content-Type': 'application/json',
-    };
-    final url = Uri.parse(
-        'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=$playlistId&key=$YOUTUBE_API_KEY&maxResults=40');
-    // Get Playlist Videos
     try {
-      final response = await httpClient.get(
-        url,
-        headers: headers,
-      );
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final List<dynamic> videosJson = data['items'];
+      final feedUrl =
+          'https://www.youtube.com/feeds/videos.xml?playlist_id=$playlistId';
+      final url = Uri.parse('$_rssToJsonBase${Uri.encodeComponent(feedUrl)}');
+      final response = await httpClient.get(url);
 
-        // Fetch first eight playlists from uploads playlist
-        final List<YoutubeVideo> playlists = [];
-        videosJson.forEach(
-          (json) => playlists.add(
-            YoutubeVideo.fromJsonYoutubePlaylists(json['snippet']),
-          ),
+      if (response.statusCode == 200) {
+        final videos = _parsePlaylistFeed(
+          jsonDecode(response.body) as Map<String, dynamic>,
+          playlistId,
         );
-        return playlists;
-      } else {
-        logError(
-            json.decode(response.body)['error']['message'] ??
-                'youtube api error',
-            null);
-        return [];
+        if (videos.isNotEmpty) {
+          return videos;
+        }
       }
+
+      logError(
+        'YouTube playlist scraping failed: ${response.statusCode}',
+        null,
+      );
+      return [];
     } on Exception catch (e, stackTrace) {
       logError(e, stackTrace);
     }
@@ -65,25 +62,25 @@ class VideoRepositoryImpl extends VideoRepository {
 
   @override
   Future<YoutubeVideo?> fetchVideoDetails(String videoId) async {
-    final Map<String, String> headers = {
-      'Content-Type': 'application/json',
-    };
-    final url = Uri.parse(
-        'https://www.googleapis.com/youtube/v3/videos?id=$videoId&key=$YOUTUBE_API_KEY&part=snippet');
-
     try {
-      final response = await httpClient.get(
-        url,
-        headers: headers,
+      final videoUrl = Uri.encodeComponent(
+        'https://www.youtube.com/watch?v=$videoId',
       );
+      final url = Uri.parse(
+        'https://noembed.com/embed?url=$videoUrl',
+      );
+      final response = await httpClient.get(url);
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        return YoutubeVideo.fromJsonYoutubeLink(data);
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        return YoutubeVideo(
+          title: data['title'] as String?,
+          lang: Languages.defaultLang.name,
+          link: videoId,
+          thumbnail: data['thumbnail_url'] as String?,
+          artist: data['author_name'] as String?,
+        );
       } else {
-        logError(
-            json.decode(response.body)['error']['message'] ??
-                'youtube api error',
-            null);
+        logError('Video details request failed: ${response.statusCode}', null);
         return null;
       }
     } on Exception catch (e, stackTrace) {
@@ -93,9 +90,95 @@ class VideoRepositoryImpl extends VideoRepository {
   }
 
   @override
-  Future<List<Playlist>> addPlayList(Playlist playlist) {
-    // TODO: implement addPlayList
-    throw UnimplementedError();
+  Future<List<Playlist>> addPlayList(IcocUser? user, Playlist playlist) async {
+    final snapshot = await firebaseDataSource.postToFirebase(
+      user,
+      _videoCollectionName,
+      playlist.toJson(),
+    );
+    return _listFromSnapshot(snapshot);
+  }
+
+  @override
+  Future<List<Playlist>> editPlayList(
+    IcocUser? user,
+    Playlist playlist,
+  ) async {
+    final docReference = await _resolveDocumentReference(playlist.id);
+    final snapshot = await firebaseDataSource.updateToFirebase(
+      user,
+      _videoCollectionName,
+      docReference,
+      playlist.toJson(),
+    );
+    return _listFromSnapshot(snapshot);
+  }
+
+  @override
+  Future<List<Playlist>> deletePlayList(IcocUser? user, int playlistId) async {
+    final docReference = await _resolveDocumentReference(playlistId);
+    final snapshot = await firebaseDataSource.deleteToFirebase(
+      user,
+      _videoCollectionName,
+      docReference,
+    );
+    return _listFromSnapshot(snapshot);
+  }
+
+  Future<String> _resolveDocumentReference(int playlistId) async {
+    final collection =
+        FirebaseFirestore.instance.collection(_videoCollectionName);
+    final targetId = playlistId.toString();
+
+    final byField =
+        await collection.where('id', isEqualTo: playlistId).limit(1).get();
+    if (byField.docs.isNotEmpty) {
+      return byField.docs.first.id;
+    }
+
+    final directDoc = await collection.doc(targetId).get();
+    if (directDoc.exists) {
+      return directDoc.id;
+    }
+
+    throw FirebaseException(
+      plugin: 'cloud_firestore',
+      code: 'not-found',
+      message:
+          'No document found in $_videoCollectionName for playlist id $playlistId',
+    );
+  }
+
+  List<YoutubeVideo> _parsePlaylistFeed(
+    Map<String, dynamic> json,
+    String playlistId,
+  ) {
+    final videos = <YoutubeVideo>[];
+    final items = json['items'] as List<dynamic>? ?? const [];
+
+    for (final item in items) {
+      final data = item as Map<String, dynamic>;
+      final videoUrl = data['link'] as String? ?? '';
+      final videoId = Uri.tryParse(videoUrl)?.queryParameters['v'];
+      if (videoId == null || videoId.isEmpty) {
+        continue;
+      }
+
+      videos.add(
+        YoutubeVideo(
+          lang: Languages.defaultLang.name,
+          title: data['title'] as String?,
+          link: videoId,
+          thumbnail: data['thumbnail'] as String? ??
+              'https://i.ytimg.com/vi/$videoId/hqdefault.jpg',
+          artist: data['author'] as String?,
+          publishedAt: data['pubDate'] as String?,
+          playlistId: playlistId,
+        ),
+      );
+    }
+
+    return videos;
   }
 }
 
@@ -103,5 +186,6 @@ List<Playlist> _listFromSnapshot(QuerySnapshot snapshot) {
   final List<Playlist> playlists = snapshot.docs.map((doc) {
     return Playlist.fromJson(doc.data() as Map<String, dynamic>);
   }).toList();
+  playlists.sort((a, b) => a.id.compareTo(b.id));
   return playlists;
 }

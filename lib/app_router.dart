@@ -22,6 +22,8 @@ import 'package:icoc_admin_pannel/ui/screens/root/root_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/add_new_song.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/edit_song_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/songs/songs_screen.dart';
+import 'package:icoc_admin_pannel/ui/screens/video/add_video_playlist_screen.dart';
+import 'package:icoc_admin_pannel/ui/screens/video/edit_video_playlist_screen.dart';
 import 'package:icoc_admin_pannel/ui/screens/video/video_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
@@ -145,6 +147,26 @@ final GoRouter router = GoRouter(
             return NoTransitionPage<void>(
                 key: state.pageKey, child: const VideoScreen());
           },
+          routes: [
+            GoRoute(
+              path: 'add',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return NoTransitionPage<void>(
+                  key: state.pageKey,
+                  child: const AddVideoPlaylistScreen(),
+                );
+              },
+            ),
+            GoRoute(
+              path: 'edit',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return NoTransitionPage<void>(
+                  key: state.pageKey,
+                  child: const EditVideoPlaylistScreen(),
+                );
+              },
+            ),
+          ],
         ),
         GoRoute(
             path: '/feedbacks',

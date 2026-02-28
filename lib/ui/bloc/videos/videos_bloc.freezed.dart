@@ -19,7 +19,9 @@ mixin _$VideosEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(Playlist playlist) addPlaylist,
+    required TResult Function(IcocUser? user, Playlist playlist) addPlaylist,
+    required TResult Function(IcocUser? user, Playlist playlist) editPlaylist,
+    required TResult Function(IcocUser? user, int playlistId) deletePlaylist,
     required TResult Function(String playlistId) fetchFromPlaylist,
     required TResult Function(String videoId) fetchDetails,
   }) =>
@@ -27,7 +29,9 @@ mixin _$VideosEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(Playlist playlist)? addPlaylist,
+    TResult? Function(IcocUser? user, Playlist playlist)? addPlaylist,
+    TResult? Function(IcocUser? user, Playlist playlist)? editPlaylist,
+    TResult? Function(IcocUser? user, int playlistId)? deletePlaylist,
     TResult? Function(String playlistId)? fetchFromPlaylist,
     TResult? Function(String videoId)? fetchDetails,
   }) =>
@@ -35,7 +39,9 @@ mixin _$VideosEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(Playlist playlist)? addPlaylist,
+    TResult Function(IcocUser? user, Playlist playlist)? addPlaylist,
+    TResult Function(IcocUser? user, Playlist playlist)? editPlaylist,
+    TResult Function(IcocUser? user, int playlistId)? deletePlaylist,
     TResult Function(String playlistId)? fetchFromPlaylist,
     TResult Function(String videoId)? fetchDetails,
     required TResult orElse(),
@@ -45,6 +51,8 @@ mixin _$VideosEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(VideosGet value) get,
     required TResult Function(VideosAddPlaylist value) addPlaylist,
+    required TResult Function(VideosEditPlaylist value) editPlaylist,
+    required TResult Function(VideosDeletePlaylist value) deletePlaylist,
     required TResult Function(VideosFetchFromPlaylist value) fetchFromPlaylist,
     required TResult Function(VideosFetchDetails value) fetchDetails,
   }) =>
@@ -53,6 +61,8 @@ mixin _$VideosEvent {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(VideosGet value)? get,
     TResult? Function(VideosAddPlaylist value)? addPlaylist,
+    TResult? Function(VideosEditPlaylist value)? editPlaylist,
+    TResult? Function(VideosDeletePlaylist value)? deletePlaylist,
     TResult? Function(VideosFetchFromPlaylist value)? fetchFromPlaylist,
     TResult? Function(VideosFetchDetails value)? fetchDetails,
   }) =>
@@ -61,6 +71,8 @@ mixin _$VideosEvent {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(VideosGet value)? get,
     TResult Function(VideosAddPlaylist value)? addPlaylist,
+    TResult Function(VideosEditPlaylist value)? editPlaylist,
+    TResult Function(VideosDeletePlaylist value)? deletePlaylist,
     TResult Function(VideosFetchFromPlaylist value)? fetchFromPlaylist,
     TResult Function(VideosFetchDetails value)? fetchDetails,
     required TResult orElse(),
@@ -125,7 +137,9 @@ class _$VideosGetImpl implements VideosGet {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(Playlist playlist) addPlaylist,
+    required TResult Function(IcocUser? user, Playlist playlist) addPlaylist,
+    required TResult Function(IcocUser? user, Playlist playlist) editPlaylist,
+    required TResult Function(IcocUser? user, int playlistId) deletePlaylist,
     required TResult Function(String playlistId) fetchFromPlaylist,
     required TResult Function(String videoId) fetchDetails,
   }) {
@@ -136,7 +150,9 @@ class _$VideosGetImpl implements VideosGet {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(Playlist playlist)? addPlaylist,
+    TResult? Function(IcocUser? user, Playlist playlist)? addPlaylist,
+    TResult? Function(IcocUser? user, Playlist playlist)? editPlaylist,
+    TResult? Function(IcocUser? user, int playlistId)? deletePlaylist,
     TResult? Function(String playlistId)? fetchFromPlaylist,
     TResult? Function(String videoId)? fetchDetails,
   }) {
@@ -147,7 +163,9 @@ class _$VideosGetImpl implements VideosGet {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(Playlist playlist)? addPlaylist,
+    TResult Function(IcocUser? user, Playlist playlist)? addPlaylist,
+    TResult Function(IcocUser? user, Playlist playlist)? editPlaylist,
+    TResult Function(IcocUser? user, int playlistId)? deletePlaylist,
     TResult Function(String playlistId)? fetchFromPlaylist,
     TResult Function(String videoId)? fetchDetails,
     required TResult orElse(),
@@ -163,6 +181,8 @@ class _$VideosGetImpl implements VideosGet {
   TResult map<TResult extends Object?>({
     required TResult Function(VideosGet value) get,
     required TResult Function(VideosAddPlaylist value) addPlaylist,
+    required TResult Function(VideosEditPlaylist value) editPlaylist,
+    required TResult Function(VideosDeletePlaylist value) deletePlaylist,
     required TResult Function(VideosFetchFromPlaylist value) fetchFromPlaylist,
     required TResult Function(VideosFetchDetails value) fetchDetails,
   }) {
@@ -174,6 +194,8 @@ class _$VideosGetImpl implements VideosGet {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(VideosGet value)? get,
     TResult? Function(VideosAddPlaylist value)? addPlaylist,
+    TResult? Function(VideosEditPlaylist value)? editPlaylist,
+    TResult? Function(VideosDeletePlaylist value)? deletePlaylist,
     TResult? Function(VideosFetchFromPlaylist value)? fetchFromPlaylist,
     TResult? Function(VideosFetchDetails value)? fetchDetails,
   }) {
@@ -185,6 +207,8 @@ class _$VideosGetImpl implements VideosGet {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(VideosGet value)? get,
     TResult Function(VideosAddPlaylist value)? addPlaylist,
+    TResult Function(VideosEditPlaylist value)? editPlaylist,
+    TResult Function(VideosDeletePlaylist value)? deletePlaylist,
     TResult Function(VideosFetchFromPlaylist value)? fetchFromPlaylist,
     TResult Function(VideosFetchDetails value)? fetchDetails,
     required TResult orElse(),
@@ -206,7 +230,7 @@ abstract class _$$VideosAddPlaylistImplCopyWith<$Res> {
           $Res Function(_$VideosAddPlaylistImpl) then) =
       __$$VideosAddPlaylistImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Playlist playlist});
+  $Res call({IcocUser? user, Playlist playlist});
 }
 
 /// @nodoc
@@ -220,10 +244,15 @@ class __$$VideosAddPlaylistImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? user = freezed,
     Object? playlist = null,
   }) {
     return _then(_$VideosAddPlaylistImpl(
-      null == playlist
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as IcocUser?,
+      playlist: null == playlist
           ? _value.playlist
           : playlist // ignore: cast_nullable_to_non_nullable
               as Playlist,
@@ -234,14 +263,16 @@ class __$$VideosAddPlaylistImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$VideosAddPlaylistImpl implements VideosAddPlaylist {
-  const _$VideosAddPlaylistImpl(this.playlist);
+  const _$VideosAddPlaylistImpl({required this.user, required this.playlist});
 
+  @override
+  final IcocUser? user;
   @override
   final Playlist playlist;
 
   @override
   String toString() {
-    return 'VideosEvent.addPlaylist(playlist: $playlist)';
+    return 'VideosEvent.addPlaylist(user: $user, playlist: $playlist)';
   }
 
   @override
@@ -249,12 +280,13 @@ class _$VideosAddPlaylistImpl implements VideosAddPlaylist {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$VideosAddPlaylistImpl &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.playlist, playlist) ||
                 other.playlist == playlist));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, playlist);
+  int get hashCode => Object.hash(runtimeType, user, playlist);
 
   @JsonKey(ignore: true)
   @override
@@ -267,35 +299,41 @@ class _$VideosAddPlaylistImpl implements VideosAddPlaylist {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(Playlist playlist) addPlaylist,
+    required TResult Function(IcocUser? user, Playlist playlist) addPlaylist,
+    required TResult Function(IcocUser? user, Playlist playlist) editPlaylist,
+    required TResult Function(IcocUser? user, int playlistId) deletePlaylist,
     required TResult Function(String playlistId) fetchFromPlaylist,
     required TResult Function(String videoId) fetchDetails,
   }) {
-    return addPlaylist(playlist);
+    return addPlaylist(user, playlist);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(Playlist playlist)? addPlaylist,
+    TResult? Function(IcocUser? user, Playlist playlist)? addPlaylist,
+    TResult? Function(IcocUser? user, Playlist playlist)? editPlaylist,
+    TResult? Function(IcocUser? user, int playlistId)? deletePlaylist,
     TResult? Function(String playlistId)? fetchFromPlaylist,
     TResult? Function(String videoId)? fetchDetails,
   }) {
-    return addPlaylist?.call(playlist);
+    return addPlaylist?.call(user, playlist);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(Playlist playlist)? addPlaylist,
+    TResult Function(IcocUser? user, Playlist playlist)? addPlaylist,
+    TResult Function(IcocUser? user, Playlist playlist)? editPlaylist,
+    TResult Function(IcocUser? user, int playlistId)? deletePlaylist,
     TResult Function(String playlistId)? fetchFromPlaylist,
     TResult Function(String videoId)? fetchDetails,
     required TResult orElse(),
   }) {
     if (addPlaylist != null) {
-      return addPlaylist(playlist);
+      return addPlaylist(user, playlist);
     }
     return orElse();
   }
@@ -305,6 +343,8 @@ class _$VideosAddPlaylistImpl implements VideosAddPlaylist {
   TResult map<TResult extends Object?>({
     required TResult Function(VideosGet value) get,
     required TResult Function(VideosAddPlaylist value) addPlaylist,
+    required TResult Function(VideosEditPlaylist value) editPlaylist,
+    required TResult Function(VideosDeletePlaylist value) deletePlaylist,
     required TResult Function(VideosFetchFromPlaylist value) fetchFromPlaylist,
     required TResult Function(VideosFetchDetails value) fetchDetails,
   }) {
@@ -316,6 +356,8 @@ class _$VideosAddPlaylistImpl implements VideosAddPlaylist {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(VideosGet value)? get,
     TResult? Function(VideosAddPlaylist value)? addPlaylist,
+    TResult? Function(VideosEditPlaylist value)? editPlaylist,
+    TResult? Function(VideosDeletePlaylist value)? deletePlaylist,
     TResult? Function(VideosFetchFromPlaylist value)? fetchFromPlaylist,
     TResult? Function(VideosFetchDetails value)? fetchDetails,
   }) {
@@ -327,6 +369,8 @@ class _$VideosAddPlaylistImpl implements VideosAddPlaylist {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(VideosGet value)? get,
     TResult Function(VideosAddPlaylist value)? addPlaylist,
+    TResult Function(VideosEditPlaylist value)? editPlaylist,
+    TResult Function(VideosDeletePlaylist value)? deletePlaylist,
     TResult Function(VideosFetchFromPlaylist value)? fetchFromPlaylist,
     TResult Function(VideosFetchDetails value)? fetchDetails,
     required TResult orElse(),
@@ -339,13 +383,357 @@ class _$VideosAddPlaylistImpl implements VideosAddPlaylist {
 }
 
 abstract class VideosAddPlaylist implements VideosEvent {
-  const factory VideosAddPlaylist(final Playlist playlist) =
-      _$VideosAddPlaylistImpl;
+  const factory VideosAddPlaylist(
+      {required final IcocUser? user,
+      required final Playlist playlist}) = _$VideosAddPlaylistImpl;
 
+  IcocUser? get user;
   Playlist get playlist;
   @JsonKey(ignore: true)
   _$$VideosAddPlaylistImplCopyWith<_$VideosAddPlaylistImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$VideosEditPlaylistImplCopyWith<$Res> {
+  factory _$$VideosEditPlaylistImplCopyWith(_$VideosEditPlaylistImpl value,
+          $Res Function(_$VideosEditPlaylistImpl) then) =
+      __$$VideosEditPlaylistImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({IcocUser? user, Playlist playlist});
+}
+
+/// @nodoc
+class __$$VideosEditPlaylistImplCopyWithImpl<$Res>
+    extends _$VideosEventCopyWithImpl<$Res, _$VideosEditPlaylistImpl>
+    implements _$$VideosEditPlaylistImplCopyWith<$Res> {
+  __$$VideosEditPlaylistImplCopyWithImpl(_$VideosEditPlaylistImpl _value,
+      $Res Function(_$VideosEditPlaylistImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? user = freezed,
+    Object? playlist = null,
+  }) {
+    return _then(_$VideosEditPlaylistImpl(
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as IcocUser?,
+      playlist: null == playlist
+          ? _value.playlist
+          : playlist // ignore: cast_nullable_to_non_nullable
+              as Playlist,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$VideosEditPlaylistImpl implements VideosEditPlaylist {
+  const _$VideosEditPlaylistImpl({required this.user, required this.playlist});
+
+  @override
+  final IcocUser? user;
+  @override
+  final Playlist playlist;
+
+  @override
+  String toString() {
+    return 'VideosEvent.editPlaylist(user: $user, playlist: $playlist)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$VideosEditPlaylistImpl &&
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.playlist, playlist) ||
+                other.playlist == playlist));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, user, playlist);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$VideosEditPlaylistImplCopyWith<_$VideosEditPlaylistImpl> get copyWith =>
+      __$$VideosEditPlaylistImplCopyWithImpl<_$VideosEditPlaylistImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() get,
+    required TResult Function(IcocUser? user, Playlist playlist) addPlaylist,
+    required TResult Function(IcocUser? user, Playlist playlist) editPlaylist,
+    required TResult Function(IcocUser? user, int playlistId) deletePlaylist,
+    required TResult Function(String playlistId) fetchFromPlaylist,
+    required TResult Function(String videoId) fetchDetails,
+  }) {
+    return editPlaylist(user, playlist);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? get,
+    TResult? Function(IcocUser? user, Playlist playlist)? addPlaylist,
+    TResult? Function(IcocUser? user, Playlist playlist)? editPlaylist,
+    TResult? Function(IcocUser? user, int playlistId)? deletePlaylist,
+    TResult? Function(String playlistId)? fetchFromPlaylist,
+    TResult? Function(String videoId)? fetchDetails,
+  }) {
+    return editPlaylist?.call(user, playlist);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? get,
+    TResult Function(IcocUser? user, Playlist playlist)? addPlaylist,
+    TResult Function(IcocUser? user, Playlist playlist)? editPlaylist,
+    TResult Function(IcocUser? user, int playlistId)? deletePlaylist,
+    TResult Function(String playlistId)? fetchFromPlaylist,
+    TResult Function(String videoId)? fetchDetails,
+    required TResult orElse(),
+  }) {
+    if (editPlaylist != null) {
+      return editPlaylist(user, playlist);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(VideosGet value) get,
+    required TResult Function(VideosAddPlaylist value) addPlaylist,
+    required TResult Function(VideosEditPlaylist value) editPlaylist,
+    required TResult Function(VideosDeletePlaylist value) deletePlaylist,
+    required TResult Function(VideosFetchFromPlaylist value) fetchFromPlaylist,
+    required TResult Function(VideosFetchDetails value) fetchDetails,
+  }) {
+    return editPlaylist(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(VideosGet value)? get,
+    TResult? Function(VideosAddPlaylist value)? addPlaylist,
+    TResult? Function(VideosEditPlaylist value)? editPlaylist,
+    TResult? Function(VideosDeletePlaylist value)? deletePlaylist,
+    TResult? Function(VideosFetchFromPlaylist value)? fetchFromPlaylist,
+    TResult? Function(VideosFetchDetails value)? fetchDetails,
+  }) {
+    return editPlaylist?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(VideosGet value)? get,
+    TResult Function(VideosAddPlaylist value)? addPlaylist,
+    TResult Function(VideosEditPlaylist value)? editPlaylist,
+    TResult Function(VideosDeletePlaylist value)? deletePlaylist,
+    TResult Function(VideosFetchFromPlaylist value)? fetchFromPlaylist,
+    TResult Function(VideosFetchDetails value)? fetchDetails,
+    required TResult orElse(),
+  }) {
+    if (editPlaylist != null) {
+      return editPlaylist(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class VideosEditPlaylist implements VideosEvent {
+  const factory VideosEditPlaylist(
+      {required final IcocUser? user,
+      required final Playlist playlist}) = _$VideosEditPlaylistImpl;
+
+  IcocUser? get user;
+  Playlist get playlist;
+  @JsonKey(ignore: true)
+  _$$VideosEditPlaylistImplCopyWith<_$VideosEditPlaylistImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$VideosDeletePlaylistImplCopyWith<$Res> {
+  factory _$$VideosDeletePlaylistImplCopyWith(_$VideosDeletePlaylistImpl value,
+          $Res Function(_$VideosDeletePlaylistImpl) then) =
+      __$$VideosDeletePlaylistImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({IcocUser? user, int playlistId});
+}
+
+/// @nodoc
+class __$$VideosDeletePlaylistImplCopyWithImpl<$Res>
+    extends _$VideosEventCopyWithImpl<$Res, _$VideosDeletePlaylistImpl>
+    implements _$$VideosDeletePlaylistImplCopyWith<$Res> {
+  __$$VideosDeletePlaylistImplCopyWithImpl(_$VideosDeletePlaylistImpl _value,
+      $Res Function(_$VideosDeletePlaylistImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? user = freezed,
+    Object? playlistId = null,
+  }) {
+    return _then(_$VideosDeletePlaylistImpl(
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as IcocUser?,
+      playlistId: null == playlistId
+          ? _value.playlistId
+          : playlistId // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$VideosDeletePlaylistImpl implements VideosDeletePlaylist {
+  const _$VideosDeletePlaylistImpl(
+      {required this.user, required this.playlistId});
+
+  @override
+  final IcocUser? user;
+  @override
+  final int playlistId;
+
+  @override
+  String toString() {
+    return 'VideosEvent.deletePlaylist(user: $user, playlistId: $playlistId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$VideosDeletePlaylistImpl &&
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.playlistId, playlistId) ||
+                other.playlistId == playlistId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, user, playlistId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$VideosDeletePlaylistImplCopyWith<_$VideosDeletePlaylistImpl>
+      get copyWith =>
+          __$$VideosDeletePlaylistImplCopyWithImpl<_$VideosDeletePlaylistImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() get,
+    required TResult Function(IcocUser? user, Playlist playlist) addPlaylist,
+    required TResult Function(IcocUser? user, Playlist playlist) editPlaylist,
+    required TResult Function(IcocUser? user, int playlistId) deletePlaylist,
+    required TResult Function(String playlistId) fetchFromPlaylist,
+    required TResult Function(String videoId) fetchDetails,
+  }) {
+    return deletePlaylist(user, playlistId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? get,
+    TResult? Function(IcocUser? user, Playlist playlist)? addPlaylist,
+    TResult? Function(IcocUser? user, Playlist playlist)? editPlaylist,
+    TResult? Function(IcocUser? user, int playlistId)? deletePlaylist,
+    TResult? Function(String playlistId)? fetchFromPlaylist,
+    TResult? Function(String videoId)? fetchDetails,
+  }) {
+    return deletePlaylist?.call(user, playlistId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? get,
+    TResult Function(IcocUser? user, Playlist playlist)? addPlaylist,
+    TResult Function(IcocUser? user, Playlist playlist)? editPlaylist,
+    TResult Function(IcocUser? user, int playlistId)? deletePlaylist,
+    TResult Function(String playlistId)? fetchFromPlaylist,
+    TResult Function(String videoId)? fetchDetails,
+    required TResult orElse(),
+  }) {
+    if (deletePlaylist != null) {
+      return deletePlaylist(user, playlistId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(VideosGet value) get,
+    required TResult Function(VideosAddPlaylist value) addPlaylist,
+    required TResult Function(VideosEditPlaylist value) editPlaylist,
+    required TResult Function(VideosDeletePlaylist value) deletePlaylist,
+    required TResult Function(VideosFetchFromPlaylist value) fetchFromPlaylist,
+    required TResult Function(VideosFetchDetails value) fetchDetails,
+  }) {
+    return deletePlaylist(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(VideosGet value)? get,
+    TResult? Function(VideosAddPlaylist value)? addPlaylist,
+    TResult? Function(VideosEditPlaylist value)? editPlaylist,
+    TResult? Function(VideosDeletePlaylist value)? deletePlaylist,
+    TResult? Function(VideosFetchFromPlaylist value)? fetchFromPlaylist,
+    TResult? Function(VideosFetchDetails value)? fetchDetails,
+  }) {
+    return deletePlaylist?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(VideosGet value)? get,
+    TResult Function(VideosAddPlaylist value)? addPlaylist,
+    TResult Function(VideosEditPlaylist value)? editPlaylist,
+    TResult Function(VideosDeletePlaylist value)? deletePlaylist,
+    TResult Function(VideosFetchFromPlaylist value)? fetchFromPlaylist,
+    TResult Function(VideosFetchDetails value)? fetchDetails,
+    required TResult orElse(),
+  }) {
+    if (deletePlaylist != null) {
+      return deletePlaylist(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class VideosDeletePlaylist implements VideosEvent {
+  const factory VideosDeletePlaylist(
+      {required final IcocUser? user,
+      required final int playlistId}) = _$VideosDeletePlaylistImpl;
+
+  IcocUser? get user;
+  int get playlistId;
+  @JsonKey(ignore: true)
+  _$$VideosDeletePlaylistImplCopyWith<_$VideosDeletePlaylistImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -417,7 +805,9 @@ class _$VideosFetchFromPlaylistImpl implements VideosFetchFromPlaylist {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(Playlist playlist) addPlaylist,
+    required TResult Function(IcocUser? user, Playlist playlist) addPlaylist,
+    required TResult Function(IcocUser? user, Playlist playlist) editPlaylist,
+    required TResult Function(IcocUser? user, int playlistId) deletePlaylist,
     required TResult Function(String playlistId) fetchFromPlaylist,
     required TResult Function(String videoId) fetchDetails,
   }) {
@@ -428,7 +818,9 @@ class _$VideosFetchFromPlaylistImpl implements VideosFetchFromPlaylist {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(Playlist playlist)? addPlaylist,
+    TResult? Function(IcocUser? user, Playlist playlist)? addPlaylist,
+    TResult? Function(IcocUser? user, Playlist playlist)? editPlaylist,
+    TResult? Function(IcocUser? user, int playlistId)? deletePlaylist,
     TResult? Function(String playlistId)? fetchFromPlaylist,
     TResult? Function(String videoId)? fetchDetails,
   }) {
@@ -439,7 +831,9 @@ class _$VideosFetchFromPlaylistImpl implements VideosFetchFromPlaylist {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(Playlist playlist)? addPlaylist,
+    TResult Function(IcocUser? user, Playlist playlist)? addPlaylist,
+    TResult Function(IcocUser? user, Playlist playlist)? editPlaylist,
+    TResult Function(IcocUser? user, int playlistId)? deletePlaylist,
     TResult Function(String playlistId)? fetchFromPlaylist,
     TResult Function(String videoId)? fetchDetails,
     required TResult orElse(),
@@ -455,6 +849,8 @@ class _$VideosFetchFromPlaylistImpl implements VideosFetchFromPlaylist {
   TResult map<TResult extends Object?>({
     required TResult Function(VideosGet value) get,
     required TResult Function(VideosAddPlaylist value) addPlaylist,
+    required TResult Function(VideosEditPlaylist value) editPlaylist,
+    required TResult Function(VideosDeletePlaylist value) deletePlaylist,
     required TResult Function(VideosFetchFromPlaylist value) fetchFromPlaylist,
     required TResult Function(VideosFetchDetails value) fetchDetails,
   }) {
@@ -466,6 +862,8 @@ class _$VideosFetchFromPlaylistImpl implements VideosFetchFromPlaylist {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(VideosGet value)? get,
     TResult? Function(VideosAddPlaylist value)? addPlaylist,
+    TResult? Function(VideosEditPlaylist value)? editPlaylist,
+    TResult? Function(VideosDeletePlaylist value)? deletePlaylist,
     TResult? Function(VideosFetchFromPlaylist value)? fetchFromPlaylist,
     TResult? Function(VideosFetchDetails value)? fetchDetails,
   }) {
@@ -477,6 +875,8 @@ class _$VideosFetchFromPlaylistImpl implements VideosFetchFromPlaylist {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(VideosGet value)? get,
     TResult Function(VideosAddPlaylist value)? addPlaylist,
+    TResult Function(VideosEditPlaylist value)? editPlaylist,
+    TResult Function(VideosDeletePlaylist value)? deletePlaylist,
     TResult Function(VideosFetchFromPlaylist value)? fetchFromPlaylist,
     TResult Function(VideosFetchDetails value)? fetchDetails,
     required TResult orElse(),
@@ -564,7 +964,9 @@ class _$VideosFetchDetailsImpl implements VideosFetchDetails {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() get,
-    required TResult Function(Playlist playlist) addPlaylist,
+    required TResult Function(IcocUser? user, Playlist playlist) addPlaylist,
+    required TResult Function(IcocUser? user, Playlist playlist) editPlaylist,
+    required TResult Function(IcocUser? user, int playlistId) deletePlaylist,
     required TResult Function(String playlistId) fetchFromPlaylist,
     required TResult Function(String videoId) fetchDetails,
   }) {
@@ -575,7 +977,9 @@ class _$VideosFetchDetailsImpl implements VideosFetchDetails {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? get,
-    TResult? Function(Playlist playlist)? addPlaylist,
+    TResult? Function(IcocUser? user, Playlist playlist)? addPlaylist,
+    TResult? Function(IcocUser? user, Playlist playlist)? editPlaylist,
+    TResult? Function(IcocUser? user, int playlistId)? deletePlaylist,
     TResult? Function(String playlistId)? fetchFromPlaylist,
     TResult? Function(String videoId)? fetchDetails,
   }) {
@@ -586,7 +990,9 @@ class _$VideosFetchDetailsImpl implements VideosFetchDetails {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? get,
-    TResult Function(Playlist playlist)? addPlaylist,
+    TResult Function(IcocUser? user, Playlist playlist)? addPlaylist,
+    TResult Function(IcocUser? user, Playlist playlist)? editPlaylist,
+    TResult Function(IcocUser? user, int playlistId)? deletePlaylist,
     TResult Function(String playlistId)? fetchFromPlaylist,
     TResult Function(String videoId)? fetchDetails,
     required TResult orElse(),
@@ -602,6 +1008,8 @@ class _$VideosFetchDetailsImpl implements VideosFetchDetails {
   TResult map<TResult extends Object?>({
     required TResult Function(VideosGet value) get,
     required TResult Function(VideosAddPlaylist value) addPlaylist,
+    required TResult Function(VideosEditPlaylist value) editPlaylist,
+    required TResult Function(VideosDeletePlaylist value) deletePlaylist,
     required TResult Function(VideosFetchFromPlaylist value) fetchFromPlaylist,
     required TResult Function(VideosFetchDetails value) fetchDetails,
   }) {
@@ -613,6 +1021,8 @@ class _$VideosFetchDetailsImpl implements VideosFetchDetails {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(VideosGet value)? get,
     TResult? Function(VideosAddPlaylist value)? addPlaylist,
+    TResult? Function(VideosEditPlaylist value)? editPlaylist,
+    TResult? Function(VideosDeletePlaylist value)? deletePlaylist,
     TResult? Function(VideosFetchFromPlaylist value)? fetchFromPlaylist,
     TResult? Function(VideosFetchDetails value)? fetchDetails,
   }) {
@@ -624,6 +1034,8 @@ class _$VideosFetchDetailsImpl implements VideosFetchDetails {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(VideosGet value)? get,
     TResult Function(VideosAddPlaylist value)? addPlaylist,
+    TResult Function(VideosEditPlaylist value)? editPlaylist,
+    TResult Function(VideosDeletePlaylist value)? deletePlaylist,
     TResult Function(VideosFetchFromPlaylist value)? fetchFromPlaylist,
     TResult Function(VideosFetchDetails value)? fetchDetails,
     required TResult orElse(),
