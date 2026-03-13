@@ -337,6 +337,27 @@ class _InsightsScreenState extends State<InsightsScreen> {
       );
     }
 
+    if (post.type == PostType.text) {
+      return DecoratedBox(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: const Padding(
+          padding: EdgeInsets.all(24),
+          child: Row(
+            children: <Widget>[
+              Icon(Icons.article_outlined),
+              SizedBox(width: 12),
+              Expanded(
+                child: Text('Text-only insight. No media preview is attached.'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

@@ -54,6 +54,7 @@ Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
 const _$PostTypeEnumMap = {
   PostType.image: 'image',
   PostType.video: 'video',
+  PostType.text: 'text',
 };
 
 _$PostAuthorImpl _$$PostAuthorImplFromJson(Map<String, dynamic> json) =>

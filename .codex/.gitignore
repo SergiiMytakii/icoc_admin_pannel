@@ -1,0 +1,23 @@
+# Keep this repo-scoped Codex folder git-safe by default.
+
+*
+!README.md
+!.gitignore
+!skills/
+!skills/**
+
+# Never commit runtime or secret state if someone copies files here later.
+auth/
+browser_profile/
+storage_state.json
+sqlite/
+archived_sessions/
+automations/
+logs/
+*.db
+*.sqlite
+*.sqlite3
+*.jsonl
+*.log
+.env
+.env.*

@@ -16,8 +16,11 @@ class InsightCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isSelected = currentPostId == post.id;
     final ThemeData theme = Theme.of(context);
-    final String? previewImage =
-        post.type == PostType.video ? post.thumbnailUrl : post.primaryMediaUrl;
+    final String? previewImage = post.type == PostType.video
+        ? post.thumbnailUrl
+        : post.type == PostType.image
+            ? post.primaryMediaUrl
+            : null;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
@@ -53,11 +56,7 @@ class InsightCard extends StatelessWidget {
             child: previewImage == null || previewImage.trim().isEmpty
                 ? ColoredBox(
                     color: theme.colorScheme.surfaceContainerHighest,
-                    child: Icon(
-                      post.type == PostType.video
-                          ? Icons.play_circle_outline
-                          : Icons.photo_outlined,
-                    ),
+                    child: Icon(_iconForType(post.type)),
                   )
                 : Image.network(
                     previewImage,
@@ -65,11 +64,7 @@ class InsightCard extends StatelessWidget {
                     webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
                     errorBuilder: (_, __, ___) => ColoredBox(
                       color: theme.colorScheme.surfaceContainerHighest,
-                      child: Icon(
-                        post.type == PostType.video
-                            ? Icons.play_circle_outline
-                            : Icons.photo_outlined,
-                      ),
+                      child: Icon(_iconForType(post.type)),
                     ),
                   ),
           ),
@@ -119,5 +114,16 @@ class InsightCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  IconData _iconForType(PostType type) {
+    switch (type) {
+      case PostType.video:
+        return Icons.play_circle_outline;
+      case PostType.image:
+        return Icons.photo_outlined;
+      case PostType.text:
+        return Icons.article_outlined;
+    }
   }
 }

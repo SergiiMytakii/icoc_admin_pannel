@@ -1,6 +1,7 @@
 import 'package:firebase_cloud_firestore/firebase_cloud_firestore.dart';
 import 'package:icoc_admin_pannel/constants.dart';
 import 'package:icoc_admin_pannel/domain/data_sources/firebase_data_source.dart';
+import 'package:icoc_admin_pannel/domain/helpers/insights_language.dart';
 import 'package:icoc_admin_pannel/domain/model/insights/post.dart';
 import 'package:icoc_admin_pannel/domain/model/user.dart';
 import 'package:icoc_admin_pannel/domain/repository/insights_repository.dart';
@@ -21,7 +22,8 @@ class InsightsRepositoryImpl implements InsightsRepository {
       orderBy: {'createdAt': true},
     );
     final String normalizedQuery = (query ?? '').trim().toLowerCase();
-    final String normalizedLanguage = (language ?? '').trim().toLowerCase();
+    final String normalizedLanguage =
+        tryCanonicalizeInsightLanguage(language ?? '') ?? '';
 
     return snapshot.docs.map(_postFromDoc).where((Post post) {
       final bool matchesLanguage = normalizedLanguage.isEmpty ||
@@ -36,15 +38,20 @@ class InsightsRepositoryImpl implements InsightsRepository {
 
   @override
   Future<List<Post>> addPost(IcocUser? user, Post post) async {
+    final Post sanitizedPost = _sanitizePost(post);
     final QuerySnapshot snapshot = await firebaseDataSource.postToFirebase(
-        user, FirebaseCollections.Insights.name, post.toJson());
+        user, FirebaseCollections.Insights.name, sanitizedPost.toJson());
     return _listFromSnapshot(snapshot);
   }
 
   @override
   Future<List<Post>> editPost(IcocUser? user, Post post) async {
+    final Post sanitizedPost = _sanitizePost(post);
     final QuerySnapshot snapshot = await firebaseDataSource.updateToFirebase(
-        user, FirebaseCollections.Insights.name, post.id, post.toJson());
+        user,
+        FirebaseCollections.Insights.name,
+        sanitizedPost.id,
+        sanitizedPost.toJson());
     return _listFromSnapshot(snapshot);
   }
 
@@ -63,6 +70,15 @@ class InsightsRepositoryImpl implements InsightsRepository {
     final Map<String, dynamic> data =
         Map<String, dynamic>.from(doc.data() as Map<String, dynamic>);
     data['id'] = (data['id'] ?? doc.id).toString();
+    data['language'] =
+        tryCanonicalizeInsightLanguage((data['language'] ?? 'en').toString()) ??
+            'en';
     return Post.fromJson(data);
+  }
+
+  Post _sanitizePost(Post post) {
+    return post.copyWith(
+      language: requireSupportedInsightLanguage(post.language),
+    );
   }
 }

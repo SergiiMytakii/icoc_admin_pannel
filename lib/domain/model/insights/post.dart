@@ -100,4 +100,5 @@ abstract class PostAuthor with _$PostAuthor {
 enum PostType {
   image,
   video,
+  text,
 }

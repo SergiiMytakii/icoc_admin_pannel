@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icoc_admin_pannel/domain/helpers/get_video_id.dart';
+import 'package:icoc_admin_pannel/domain/helpers/insights_language.dart';
 import 'package:icoc_admin_pannel/domain/model/insights/post.dart';
 import 'package:icoc_admin_pannel/domain/model/notifications/notifications_model.dart';
 import 'package:icoc_admin_pannel/ui/bloc/auth/auth_bloc.dart';
@@ -59,7 +60,9 @@ class _InsightEditorScreenState extends State<InsightEditorScreen> {
         _defaultAuthorName(context.read<AuthBloc>().icocUser?.email);
     _titleController = TextEditingController(text: post?.title ?? '');
     _contentController = TextEditingController(text: post?.content ?? '');
-    _langController = TextEditingController(text: post?.language ?? 'en');
+    _langController = TextEditingController(
+      text: tryCanonicalizeInsightLanguage(post?.language ?? 'en') ?? 'en',
+    );
     _authorNameController = TextEditingController(
       text: post?.author.name ?? defaultAuthorName,
     );
@@ -270,6 +273,11 @@ class _InsightEditorScreenState extends State<InsightEditorScreen> {
                   ),
                   const SizedBox(height: 8),
                   _buildVideoPreview(),
+                ] else if (_type == PostType.text) ...<Widget>[
+                  MyTextField(
+                    controller: _youtubeUrlController,
+                    hint: 'Source URL (optional)',
+                  ),
                 ] else ...<Widget>[
                   Row(
                     children: <Widget>[
@@ -524,7 +532,17 @@ class _InsightEditorScreenState extends State<InsightEditorScreen> {
     final String? authorAvatarUrl =
         _normalizedOrNull(_authorAvatarUrlController.text);
     final String authorName = _authorNameController.text.trim();
-    final String language = _langController.text.trim();
+    final String rawLanguage = _langController.text.trim();
+    final String language;
+    try {
+      language = requireSupportedInsightLanguage(rawLanguage);
+    } on FormatException catch (error) {
+      setState(() {
+        _localValidationError = error.message;
+      });
+      return;
+    }
+    _langController.text = language;
 
     if (_type == PostType.image &&
         _existingImages.isEmpty &&
@@ -565,10 +583,14 @@ class _InsightEditorScreenState extends State<InsightEditorScreen> {
         );
       }
 
-      final String videoId = _resolveVideoId(_youtubeUrlController.text);
+      final String videoId = _type == PostType.video
+          ? _resolveVideoId(_youtubeUrlController.text)
+          : '';
       final String? articleUrl = _type == PostType.video
           ? _normalizedYoutubeUrl(_youtubeUrlController.text)
-          : null;
+          : _type == PostType.text
+              ? _normalizedOrNull(_youtubeUrlController.text)
+              : null;
       final bool isShorts = _type == PostType.video && _isShortsUrl(articleUrl);
 
       final Post post = Post(
@@ -589,7 +611,9 @@ class _InsightEditorScreenState extends State<InsightEditorScreen> {
             ? storedImages
                 .map((image) => image.aspectRatio)
                 .toList(growable: false)
-            : <double>[isShorts ? 9 / 16 : 16 / 9],
+            : _type == PostType.video
+                ? <double>[isShorts ? 9 / 16 : 16 / 9]
+                : const <double>[],
         author: PostAuthor(
           name: authorName,
           avatarUrl: authorAvatarUrl ?? '',
@@ -730,7 +754,13 @@ class _InsightEditorScreenState extends State<InsightEditorScreen> {
   }
 
   String _initialYoutubeValue(Post? post) {
-    if (post == null || post.type != PostType.video) {
+    if (post == null) {
+      return '';
+    }
+    if (post.type == PostType.text) {
+      return (post.articleUrl ?? '').trim();
+    }
+    if (post.type != PostType.video) {
       return '';
     }
     if ((post.articleUrl ?? '').trim().isNotEmpty) {
