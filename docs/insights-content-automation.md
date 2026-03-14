@@ -2,6 +2,10 @@
 
 This document is the working playbook for the `insights` content pipeline in the ICOC admin panel.
 
+Companion end-to-end runbook:
+
+- [insights-posting-automation-runbook.md](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/docs/insights-posting-automation-runbook.md)
+
 It explains:
 
 - what content sources we use
@@ -117,6 +121,10 @@ Inventory export already exists via:
 - [export_verse_of_day_inventory.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/scripts/export_verse_of_day_inventory.py)
 - [build_verse_of_day_notebook_source.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/scripts/build_verse_of_day_notebook_source.py)
 
+The VerseOfTheDay export now uses Firebase Storage REST listing as the primary path, not browser scraping, so automation does not depend on Playwright for the default inventory build.
+It also keeps an OCR cache in `build/insights/verse_of_day_ocr_cache.json`, detects the language of cached verse images through macOS Vision OCR, and reuses the same-day inventory instead of re-running Verse export on every retry.
+If a new Verse export fails while an older inventory already exists, refresh keeps the last good inventory instead of clobbering it with an empty fallback.
+
 Generated artifacts:
 
 - [verse_of_day_inventory.json](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/build/insights/verse_of_day_inventory.json)
@@ -169,7 +177,7 @@ The insights workflow should use multiple NotebookLM notebooks when source limit
   - overflow / specialized English notebook
   - use when the main insights notebook is near source limits
   - use for English-heavy shorts sources that would otherwise crowd the planning notebook
-- `BibleProject Shorts Ukrainian` — pending creation after NotebookLM auth refresh
+- `31fdfc03-78da-41c5-8a54-64b701512a8e` — `BibleProject Shorts Ukrainian`
   - specialized Ukrainian shorts notebook
   - use for Ukrainian BibleProject shorts so they stay isolated from the English overflow notebook
 
@@ -258,6 +266,41 @@ Typical command pattern:
   --channel-url "https://www.youtube.com/@OdesaChurch/videos" \
   --dry-run \
   --limit 10
+```
+
+## Publishing API (Cloud Function)
+
+- Endpoint: `https://europe-central2-icoc-8f075.cloudfunctions.net/upsertInsightsBatch`
+- Auth: Firebase ID token (`Authorization: Bearer <ID_TOKEN>`)
+- Batch: up to 50 items
+- Types: `image`, `video`, `text`
+- Languages: `uk|ru|en|es` (aliases accepted; stored canonical)
+- Validation:
+  - `video` requires `youtubeId` or `articleUrl` (shorts allowed)
+  - `image` requires `mediaUrls`
+  - `status` defaults to `published`
+  - `thumbnail`/`aspectRatio` auto for video
+- Skill: [.codex/skills/insights-publisher/SKILL.md](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/.codex/skills/insights-publisher/SKILL.md)
+
+Example call:
+
+```bash
+ID_TOKEN="$(firebase auth:print-access-token)"
+curl -X POST \
+  -H "Authorization: Bearer $ID_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "items": [{
+      "id": "codex_uk_video_t6ldczgdd8s",
+      "type": "video",
+      "language": "uk",
+      "title": "Очікування від Бога",
+      "content": "Ми часто приходимо до Бога зі своїм таймінгом...",
+      "articleUrl": "https://youtube.com/shorts/T6LdCZgDD8s?feature=share",
+      "status": "published"
+    }]
+  }' \
+  https://europe-central2-icoc-8f075.cloudfunctions.net/upsertInsightsBatch
 ```
 
 ### Q&A source catalog
@@ -477,6 +520,8 @@ State file:
 - text-post support in `insights`
 - source mixing across shorts, images, and videos
 - language-aware planning
+- content-language verification step: before publishing, confirm that the media audio/title/channel language matches the target locale (do **not** reuse one clip across multiple locales unless it has true multilingual audio or separate dubbed versions).
+- duplicate guard: the Cloud Function now rejects publishing a youtubeId that already exists for the same language; keep ids stable (`codex_<lang>_<type>_<ytid>`) to avoid collisions and make updates explicit.
 
 ### Partially automated
 
@@ -525,6 +570,12 @@ Rebuild the multilingual daily plan:
 python3 scripts/build_insights_daily_plan.py
 ```
 
+Rebuild the full daily-plan input chain in one command:
+
+```bash
+python3 scripts/refresh_insights_daily_plan.py --days 1 --start-date "$(date +%F)"
+```
+
 Validate language-related Dart code:
 
 ```bash
@@ -547,6 +598,8 @@ The automation should follow these rules:
 - use NotebookLM for content synthesis, not for scheduling
 - store the final post language, not only the source language
 - prefer trilingual `Q&A` groups for text post clusters
+- regenerate `build/insights/*.json` inside automations before publishing; clean Codex worktrees do not contain these generated files
+- prefer the one-shot bootstrap script `scripts/refresh_insights_daily_plan.py` for automation runs
 
 ## Best Next Steps
 

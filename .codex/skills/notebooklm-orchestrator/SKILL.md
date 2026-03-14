@@ -36,7 +36,7 @@ For this project, use multiple notebooks when source limits or source sprawl mak
   - use when the main notebook is near source limits
   - use for English-heavy shorts and other sources that would otherwise crowd the main planning notebook
 
-- `BibleProject Shorts Ukrainian` — pending creation on next NotebookLM login refresh
+- `31fdfc03-78da-41c5-8a54-64b701512a8e` — `BibleProject Shorts Ukrainian`
   - specialized Ukrainian shorts notebook
   - use for Ukrainian BibleProject shorts so they do not mix into the English-only overflow notebook
 

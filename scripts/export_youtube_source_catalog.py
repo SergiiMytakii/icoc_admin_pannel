@@ -4,7 +4,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import subprocess
+import urllib.request
+import xml.etree.ElementTree as ET
 from collections import Counter
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -139,6 +142,238 @@ def run_yt_dlp(yt_dlp: Path, url: str) -> list[dict[str, Any]]:
     return payload.get("entries", [])
 
 
+def fetch_text(url: str) -> str:
+    request = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": (
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+            ),
+        },
+    )
+    with urllib.request.urlopen(request, timeout=30) as response:
+        return response.read().decode("utf-8", errors="ignore")
+
+
+def extract_balanced_json(text: str, marker: str) -> dict[str, Any] | None:
+    start = text.find(marker)
+    if start < 0:
+        return None
+    brace_start = text.find("{", start)
+    if brace_start < 0:
+        return None
+
+    depth = 0
+    in_string = False
+    escape = False
+    for index in range(brace_start, len(text)):
+        char = text[index]
+        if in_string:
+            if escape:
+                escape = False
+            elif char == "\\":
+                escape = True
+            elif char == '"':
+                in_string = False
+            continue
+
+        if char == '"':
+            in_string = True
+        elif char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                try:
+                    return json.loads(text[brace_start : index + 1])
+                except json.JSONDecodeError:
+                    return None
+    return None
+
+
+def extract_text_value(value: Any) -> str:
+    if isinstance(value, str):
+        return value.strip()
+    if not isinstance(value, dict):
+        return ""
+    if isinstance(value.get("simpleText"), str):
+        return value["simpleText"].strip()
+    runs = value.get("runs")
+    if isinstance(runs, list):
+        return "".join(
+            str(item.get("text", ""))
+            for item in runs
+            if isinstance(item, dict)
+        ).strip()
+    if isinstance(value.get("content"), str):
+        return value["content"].strip()
+    return ""
+
+
+def extract_renderer_entry(
+    renderer: dict[str, Any],
+    renderer_type: str,
+    source_type: str,
+) -> dict[str, Any] | None:
+    if renderer_type in {"videoRenderer", "gridVideoRenderer"}:
+        video_id = str(renderer.get("videoId") or "").strip()
+        title = extract_text_value(renderer.get("title"))
+        url = (
+            renderer.get("navigationEndpoint", {})
+            .get("commandMetadata", {})
+            .get("webCommandMetadata", {})
+            .get("url")
+        )
+    elif renderer_type == "reelItemRenderer":
+        video_id = str(renderer.get("videoId") or "").strip()
+        title = (
+            extract_text_value(renderer.get("headline"))
+            or extract_text_value(renderer.get("accessibility"))
+            or extract_text_value(renderer.get("title"))
+        )
+        url = (
+            renderer.get("navigationEndpoint", {})
+            .get("commandMetadata", {})
+            .get("webCommandMetadata", {})
+            .get("url")
+        )
+    elif renderer_type == "shortsLockupViewModel":
+        video_id = str(renderer.get("entityId") or "").split("|")[-1].strip()
+        title = (
+            extract_text_value(
+                renderer.get("overlayMetadata", {})
+                .get("primaryText", {})
+            )
+            or extract_text_value(renderer.get("title"))
+        )
+        url = (
+            renderer.get("onTap", {})
+            .get("innertubeCommand", {})
+            .get("commandMetadata", {})
+            .get("webCommandMetadata", {})
+            .get("url")
+        )
+    else:
+        return None
+
+    if not video_id or not title:
+        return None
+    if isinstance(url, str) and url.startswith("/"):
+        url = f"https://www.youtube.com{url}"
+    if not url:
+        url = (
+            f"https://www.youtube.com/shorts/{video_id}"
+            if source_type == "short"
+            else f"https://www.youtube.com/watch?v={video_id}"
+        )
+    return {"id": video_id, "title": title, "url": url}
+
+
+def walk_renderers(node: Any) -> list[tuple[str, dict[str, Any]]]:
+    results: list[tuple[str, dict[str, Any]]] = []
+    if isinstance(node, dict):
+        for key in (
+            "videoRenderer",
+            "gridVideoRenderer",
+            "reelItemRenderer",
+            "shortsLockupViewModel",
+        ):
+            value = node.get(key)
+            if isinstance(value, dict):
+                results.append((key, value))
+        for value in node.values():
+            results.extend(walk_renderers(value))
+    elif isinstance(node, list):
+        for item in node:
+            results.extend(walk_renderers(item))
+    return results
+
+
+def run_page_fallback(url: str, source_type: str) -> list[dict[str, Any]]:
+    html = fetch_text(url)
+    initial_data = (
+        extract_balanced_json(html, "var ytInitialData = ")
+        or extract_balanced_json(html, "ytInitialData = ")
+    )
+    if initial_data is None:
+        raise RuntimeError(f"Could not extract ytInitialData from {url}")
+
+    entries: list[dict[str, Any]] = []
+    seen_ids: set[str] = set()
+    for renderer_type, renderer in walk_renderers(initial_data):
+        entry = extract_renderer_entry(renderer, renderer_type, source_type)
+        if entry is None:
+            continue
+        entry_id = str(entry["id"])
+        if entry_id in seen_ids:
+            continue
+        seen_ids.add(entry_id)
+        entries.append(entry)
+    if entries:
+        return entries
+    raise RuntimeError(f"No entries found in page fallback for {url}")
+
+
+def resolve_channel_id(url: str) -> str | None:
+    html = fetch_text(url)
+    patterns = (
+        r'"channelId":"([^"]+)"',
+        r'<meta itemprop="channelId" content="([^"]+)">',
+    )
+    for pattern in patterns:
+        match = re.search(pattern, html)
+        if match:
+            return match.group(1)
+    return None
+
+
+def run_feed_fallback(url: str, source_type: str) -> list[dict[str, Any]]:
+    channel_id = resolve_channel_id(url)
+    if not channel_id:
+        raise RuntimeError(f"Could not resolve channel id for {url}")
+    feed = fetch_text(f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}")
+    root = ET.fromstring(feed)
+    ns = {
+        "atom": "http://www.w3.org/2005/Atom",
+        "yt": "http://www.youtube.com/xml/schemas/2015",
+    }
+    entries: list[dict[str, Any]] = []
+    for entry in root.findall("atom:entry", ns):
+        video_id = (entry.findtext("yt:videoId", default="", namespaces=ns) or "").strip()
+        title = (entry.findtext("atom:title", default="", namespaces=ns) or "").strip()
+        link = ""
+        for link_node in entry.findall("atom:link", ns):
+            href = link_node.attrib.get("href", "").strip()
+            if href:
+                link = href
+                break
+        if not video_id or not title:
+            continue
+        if source_type == "short" and "/shorts/" not in link:
+            link = f"https://www.youtube.com/shorts/{video_id}"
+        elif source_type == "video" and "/watch" not in link:
+            link = f"https://www.youtube.com/watch?v={video_id}"
+        entries.append({"id": video_id, "title": title, "url": link})
+    if entries:
+        return entries
+    raise RuntimeError(f"No entries found in feed fallback for {url}")
+
+
+def load_channel_entries(yt_dlp: Path, url: str, source_type: str) -> list[dict[str, Any]]:
+    if yt_dlp.exists():
+        try:
+            return run_yt_dlp(yt_dlp, url)
+        except (subprocess.CalledProcessError, OSError):
+            pass
+    try:
+        return run_page_fallback(url, source_type)
+    except Exception:
+        if source_type == "short":
+            raise
+        return run_feed_fallback(url, source_type)
+
+
 def hash_source_ref(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()[:16]
 
@@ -248,7 +483,7 @@ def build_catalog(
     per_channel: dict[str, dict[str, Any]] = {}
 
     for spec in specs:
-        entries = run_yt_dlp(yt_dlp, spec.url)
+        entries = load_channel_entries(yt_dlp, spec.url, spec.source_type)
         channel_items: list[dict[str, Any]] = []
         for entry in entries:
             title = str(entry.get("title") or "").strip()
@@ -294,8 +529,6 @@ def build_catalog(
 def main() -> int:
     args = parse_args()
     yt_dlp = Path(args.yt_dlp).expanduser()
-    if not yt_dlp.exists():
-        raise SystemExit(f"Missing yt-dlp binary: {yt_dlp}")
 
     specs = parse_channel_specs(args.channel)
     payload = build_catalog(specs, yt_dlp)

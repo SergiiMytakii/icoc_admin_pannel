@@ -86,10 +86,10 @@ def build_sources(
                 source_ref=str(item.get("gs_uri") or item.get("relative_path") or name),
                 source_title=name,
                 freshness_rank=int(item.get("numeric_id") or 9999),
-                source_language="und",
-                language_confidence=0.0,
-                eligible_for_auto_post=False,
-                review_reason="requires_ocr_or_manual_language_review",
+                source_language=str(item.get("source_language") or "und"),
+                language_confidence=float(item.get("language_confidence") or 0.0),
+                eligible_for_auto_post=bool(item.get("eligible_for_auto_post", False)),
+                review_reason=str(item.get("review_reason") or "") or None,
             ),
         )
 

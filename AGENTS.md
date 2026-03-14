@@ -35,6 +35,7 @@ Treat that document as the repo playbook for:
 - Build daily plans so each day includes `uk`, `ru`, `en`, and `es`.
 - Prefer Q&A groups that have all of `ru`, `en`, and `es`, and avoid repeating the same question until the pool is exhausted.
 - VerseOfTheDay images require OCR or manual review before language-safe auto-publishing.
+- Use the publish API instead of ad-hoc Firestore writes: `upsertInsightsBatch` (Cloud Function).
 
 ## Relevant Files
 
@@ -47,6 +48,8 @@ Treat that document as the repo playbook for:
 - [build_insights_content_queue.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/scripts/build_insights_content_queue.py)
 - [build_insights_daily_plan.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/scripts/build_insights_daily_plan.py)
 - [.codex/skills/notebooklm-orchestrator/scripts/bulk_add_youtube_channel.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/.codex/skills/notebooklm-orchestrator/scripts/bulk_add_youtube_channel.py)
+- [.codex/skills/insights-publisher/SKILL.md](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/.codex/skills/insights-publisher/SKILL.md)
+- Cloud Function publish entrypoint: `functions/src/index.ts` → `upsertInsightsBatch`
 
 ## Known NotebookLM Notebooks For Insights
 
@@ -56,7 +59,7 @@ Treat that document as the repo playbook for:
 - `b019a235-3477-4ca5-8213-555654a247e5` — `BibleProject Shorts English`
   - overflow / specialized English notebook
   - use when the main notebook is near source limits or when English shorts sources should stay isolated
-- `BibleProject Shorts Ukrainian` — pending creation after NotebookLM re-login
+- `31fdfc03-78da-41c5-8a54-64b701512a8e` — `BibleProject Shorts Ukrainian`
   - specialized Ukrainian shorts notebook
   - use for Ukrainian BibleProject shorts so they do not get mixed into the English shorts notebook
 

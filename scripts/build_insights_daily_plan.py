@@ -31,6 +31,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--days", type=int, default=DEFAULT_DAYS)
     parser.add_argument("--qanda-frequency-days", type=int, default=3)
     parser.add_argument("--start-date", default=str(date.today()))
+    parser.add_argument("--force", action="store_true")
     return parser.parse_args()
 
 
@@ -51,20 +52,51 @@ def sort_qanda_candidates(items: list[dict[str, Any]], seed: str) -> list[dict[s
     return sorted(items, key=lambda item: stable_hash(f"{seed}:{item['qa_id']}"))
 
 
+def qanda_publishable_languages(item: dict[str, Any]) -> list[str]:
+    representative_language = str(item.get("representative_language") or "en")
+    representative = item.get("versions", {}).get(representative_language, {})
+    representative_link = str(representative.get("link") or "").strip()
+    publishable: list[str] = []
+
+    for language in ("ru", "en", "es"):
+        version = item.get("versions", {}).get(language)
+        if not isinstance(version, dict):
+            continue
+        question = str(version.get("question") or "").strip()
+        answer = str(version.get("answer") or "").strip()
+        version_link = str(version.get("link") or "").strip()
+        if not question or not answer:
+            continue
+        if representative_link and version_link and version_link != representative_link:
+            continue
+        publishable.append(language)
+
+    return publishable
+
+
 def select_qanda_group(
     qanda_items: list[dict[str, Any]],
     used_ids: set[int],
     seed: str,
 ) -> dict[str, Any] | None:
-    candidates = [item for item in qanda_items if item["qa_id"] not in used_ids]
+    candidates = [
+        item for item in qanda_items
+        if item["qa_id"] not in used_ids and qanda_publishable_languages(item)
+    ]
     if not candidates:
         used_ids.clear()
-        candidates = list(qanda_items)
+        candidates = [item for item in qanda_items if qanda_publishable_languages(item)]
     if not candidates:
         return None
-    trilingual = [item for item in candidates if item.get("is_complete_trilingual")]
-    preferred_pool = trilingual or candidates
-    return sort_qanda_candidates(preferred_pool, seed)[0]
+    ranked = sort_qanda_candidates(candidates, seed)
+    ranked.sort(
+        key=lambda item: (
+            len(qanda_publishable_languages(item)),
+            item.get("is_complete_trilingual", False),
+        ),
+        reverse=True,
+    )
+    return ranked[0]
 
 
 def build_daily_tasks_for_source(item: dict[str, Any]) -> list[dict[str, Any]]:
@@ -87,9 +119,7 @@ def build_daily_tasks_for_source(item: dict[str, Any]) -> list[dict[str, Any]]:
 
 def build_qanda_tasks(item: dict[str, Any]) -> list[dict[str, Any]]:
     tasks = []
-    for language in item.get("available_languages", []):
-        if language not in {"ru", "en", "es"}:
-            continue
+    for language in qanda_publishable_languages(item):
         version = item["versions"][language]
         tasks.append(
             {
@@ -151,7 +181,7 @@ def build_plan(
                 else {
                     "qa_id": qanda_item["qa_id"],
                     "source_title": qanda_item["source_title"],
-                    "available_languages": qanda_item["available_languages"],
+                    "available_languages": qanda_publishable_languages(qanda_item),
                 },
                 "language_coverage": {
                     language: language_counts.get(language, 0)
@@ -228,12 +258,35 @@ def write_outputs(
     output_md.write_text("\n".join(lines), encoding="utf-8")
 
 
+def can_reuse_existing_plan(
+    state_payload: dict[str, Any],
+    output_json: Path,
+    start_date: date,
+    days: int,
+    force: bool,
+) -> bool:
+    if force or not output_json.exists():
+        return False
+    return (
+        str(state_payload.get("last_plan_start_date") or "") == start_date.isoformat()
+        and int(state_payload.get("last_plan_days") or 0) == days
+    )
+
+
 def main() -> int:
     args = parse_args()
+    start_date = date.fromisoformat(args.start_date)
+    output_json = Path(args.output_json)
+    output_md = Path(args.output_md)
+    state_path = Path(args.state)
+    state_payload = load_json(args.state, fallback={})
+
+    if can_reuse_existing_plan(state_payload, output_json, start_date, args.days, args.force):
+        print(f"Reused existing daily plan for {start_date.isoformat()} from {output_json}")
+        return 0
+
     queue_payload = load_json(args.queue)
     qanda_payload = load_json(args.qanda)
-    state_payload = load_json(args.state, fallback={})
-    start_date = date.fromisoformat(args.start_date)
     days_payload, new_state = build_plan(
         queue_payload,
         qanda_payload,
@@ -242,12 +295,14 @@ def main() -> int:
         args.days,
         args.qanda_frequency_days,
     )
+    new_state["last_plan_start_date"] = start_date.isoformat()
+    new_state["last_plan_days"] = args.days
     write_outputs(
         days_payload,
         new_state,
-        Path(args.output_json),
-        Path(args.output_md),
-        Path(args.state),
+        output_json,
+        output_md,
+        state_path,
     )
     print(f"Wrote daily plan with {len(days_payload)} days to {args.output_json}")
     return 0
