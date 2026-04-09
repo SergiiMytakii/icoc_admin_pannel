@@ -16,7 +16,8 @@ DEFAULT_STATE = "build/insights/insights_schedule_state.json"
 DEFAULT_OUTPUT_JSON = "build/insights/insights_daily_plan.json"
 DEFAULT_OUTPUT_MD = "build/insights/insights_daily_plan.md"
 DEFAULT_DAYS = 7
-REQUIRED_DAILY_LANGUAGES = ("uk", "ru", "en", "es")
+SUPPORTED_INSIGHT_LANGUAGES = ("uk", "ru", "en", "es")
+MEDIA_LANE_LANGUAGES = ("uk", "ru", "en")
 
 
 def parse_args() -> argparse.Namespace:
@@ -99,26 +100,23 @@ def select_qanda_group(
     return ranked[0]
 
 
-def build_daily_tasks_for_source(item: dict[str, Any]) -> list[dict[str, Any]]:
+def build_task_for_queue_item(item: dict[str, Any]) -> dict[str, Any]:
     source_type = item["source_type"]
     insight_type = "video" if source_type in {"short", "video"} else "image"
-    return [
-        {
-            "language": language,
-            "insight_type": insight_type,
-            "source_origin": item["source_origin"],
-            "source_ref": item["source_ref"],
-            "source_title": item["source_title"],
-            "source_type": source_type,
-            "review_required": bool(item.get("review_required", False)),
-            "content_mode": "localized_from_source",
-        }
-        for language in REQUIRED_DAILY_LANGUAGES
-    ]
+    return {
+        "language": str(item["post_language"]),
+        "insight_type": insight_type,
+        "source_origin": item["source_origin"],
+        "source_ref": item["source_ref"],
+        "source_title": item["source_title"],
+        "source_type": source_type,
+        "review_required": bool(item.get("review_required", False)),
+        "content_mode": "localized_from_source",
+    }
 
 
 def build_qanda_tasks(item: dict[str, Any]) -> list[dict[str, Any]]:
-    tasks = []
+    tasks: list[dict[str, Any]] = []
     for language in qanda_publishable_languages(item):
         version = item["versions"][language]
         tasks.append(
@@ -137,6 +135,92 @@ def build_qanda_tasks(item: dict[str, Any]) -> list[dict[str, Any]]:
     return tasks
 
 
+def select_language_source(
+    queue: list[dict[str, Any]],
+    language: str,
+    start_index: int,
+    used_source_refs: set[str],
+) -> tuple[dict[str, Any], int]:
+    if not queue:
+        raise SystemExit("Queue is empty. Rebuild insights_content_queue first.")
+    for step in range(len(queue)):
+        index = (start_index + step) % len(queue)
+        item = queue[index]
+        if str(item.get("post_language") or "") != language:
+            continue
+        if not bool(item.get("language_ready_for_publish", False)):
+            continue
+        if str(item.get("source_ref") or "") in used_source_refs:
+            continue
+        return item, index + 1
+    raise SystemExit(f"Could not find a queue item for language {language}.")
+
+
+def load_media_lane_indices(state_payload: dict[str, Any]) -> dict[str, int]:
+    raw = state_payload.get("last_media_queue_index_by_language")
+    if not isinstance(raw, dict):
+        raw = state_payload.get("last_queue_index_by_language")
+
+    if isinstance(raw, dict):
+        return {
+            language: int(raw.get(language, 0))
+            for language in MEDIA_LANE_LANGUAGES
+        }
+
+    fallback_index = int(state_payload.get("last_queue_index", 0))
+    return {
+        language: fallback_index
+        for language in MEDIA_LANE_LANGUAGES
+    }
+
+
+def build_media_lane_for_day(
+    queue: list[dict[str, Any]],
+    language_indices: dict[str, int],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, int]]:
+    used_source_refs: set[str] = set()
+    selected_sources: list[dict[str, Any]] = []
+    tasks: list[dict[str, Any]] = []
+    next_indices = dict(language_indices)
+
+    for language in MEDIA_LANE_LANGUAGES:
+        source, next_index = select_language_source(
+            queue,
+            language,
+            language_indices[language],
+            used_source_refs,
+        )
+        next_indices[language] = next_index % len(queue)
+        used_source_refs.add(str(source["source_ref"]))
+        selected_sources.append(source)
+        tasks.append(build_task_for_queue_item(source))
+
+    return selected_sources, tasks, next_indices
+
+
+def load_last_qanda_date(state_payload: dict[str, Any]) -> date | None:
+    raw = str(state_payload.get("last_qanda_date") or "").strip()
+    if not raw:
+        return None
+    try:
+        return date.fromisoformat(raw)
+    except ValueError:
+        return None
+
+
+def should_add_qanda_lane(
+    current_date: date,
+    qanda_items: list[dict[str, Any]],
+    qanda_frequency_days: int,
+    last_qanda_date: date | None,
+) -> bool:
+    if not qanda_items:
+        return False
+    if last_qanda_date is None:
+        return True
+    return (current_date - last_qanda_date).days >= max(qanda_frequency_days, 1)
+
+
 def build_plan(
     queue_payload: dict[str, Any],
     qanda_payload: dict[str, Any],
@@ -151,31 +235,45 @@ def build_plan(
 
     qanda_items = qanda_payload.get("items", [])
     used_qanda_ids = {int(value) for value in state_payload.get("used_qanda_ids", [])}
-    queue_index = int(state_payload.get("last_queue_index", 0))
+    language_indices = load_media_lane_indices(state_payload)
+    last_qanda_date = load_last_qanda_date(state_payload)
     days_payload: list[dict[str, Any]] = []
 
     for offset in range(days):
         current_date = start_date + timedelta(days=offset)
-        core_source = queue[(queue_index + offset) % len(queue)]
-        tasks = build_daily_tasks_for_source(core_source)
+        selected_sources, tasks, language_indices = build_media_lane_for_day(
+            queue,
+            language_indices,
+        )
+
         qanda_item: dict[str, Any] | None = None
-        if qanda_items and offset % max(qanda_frequency_days, 1) == 0:
+        if should_add_qanda_lane(
+            current_date,
+            qanda_items,
+            qanda_frequency_days,
+            last_qanda_date,
+        ):
             seed = current_date.isoformat()
             qanda_item = select_qanda_group(qanda_items, used_qanda_ids, seed)
             if qanda_item is not None:
                 used_qanda_ids.add(int(qanda_item["qa_id"]))
                 tasks.extend(build_qanda_tasks(qanda_item))
+                last_qanda_date = current_date
 
         language_counts = Counter(task["language"] for task in tasks)
         days_payload.append(
             {
                 "date": current_date.isoformat(),
-                "core_source": {
-                    "source_id": core_source["source_id"],
-                    "source_title": core_source["source_title"],
-                    "source_origin": core_source["source_origin"],
-                    "source_type": core_source["source_type"],
-                },
+                "core_sources": [
+                    {
+                        "language": str(source["post_language"]),
+                        "source_id": source["source_id"],
+                        "source_title": source["source_title"],
+                        "source_origin": source["source_origin"],
+                        "source_type": source["source_type"],
+                    }
+                    for source in selected_sources
+                ],
                 "qanda_source": None
                 if qanda_item is None
                 else {
@@ -185,7 +283,7 @@ def build_plan(
                 },
                 "language_coverage": {
                     language: language_counts.get(language, 0)
-                    for language in REQUIRED_DAILY_LANGUAGES
+                    for language in SUPPORTED_INSIGHT_LANGUAGES
                 },
                 "tasks": tasks,
             }
@@ -193,7 +291,8 @@ def build_plan(
 
     new_state = {
         "last_generated_at": datetime.now(timezone.utc).isoformat(),
-        "last_queue_index": (queue_index + days) % len(queue),
+        "last_media_queue_index_by_language": language_indices,
+        "last_qanda_date": None if last_qanda_date is None else last_qanda_date.isoformat(),
         "used_qanda_ids": sorted(used_qanda_ids),
     }
     return days_payload, new_state
@@ -212,7 +311,7 @@ def write_outputs(
 
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "required_daily_languages": list(REQUIRED_DAILY_LANGUAGES),
+        "required_daily_languages": list(SUPPORTED_INSIGHT_LANGUAGES),
         "days": days_payload,
     }
     output_json.write_text(
@@ -229,16 +328,18 @@ def write_outputs(
         "",
         f"- Generated at: {payload['generated_at']}",
         f"- Days: {len(days_payload)}",
-        f"- Required languages: {', '.join(REQUIRED_DAILY_LANGUAGES).upper()}",
+        f"- Required languages: {', '.join(SUPPORTED_INSIGHT_LANGUAGES).upper()}",
         "",
     ]
     for day in days_payload:
         lines.append(f"## {day['date']}")
         lines.append("")
-        lines.append(
-            f"- Core source: {day['core_source']['source_title']} "
-            f"({day['core_source']['source_origin']} / {day['core_source']['source_type']})",
-        )
+        lines.append("- Core sources:")
+        for source in day["core_sources"]:
+            lines.append(
+                f"  - [{source['language']}] {source['source_title']} "
+                f"({source['source_origin']} / {source['source_type']})",
+            )
         if day["qanda_source"] is not None:
             lines.append(
                 f"- Q&A source: {day['qanda_source']['source_title']} "
