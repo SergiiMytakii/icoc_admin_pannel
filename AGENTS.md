@@ -2,12 +2,13 @@
 
 ## Insights Automation
 
-When the task touches `insights` content generation, NotebookLM ingestion, source mixing, or draft planning, use:
+When the task touches `insights` content generation, Google Sheets source ingestion, NotebookLM research, source mixing, or draft planning, use:
 
 - [insights-content-automation.md](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/docs/insights-content-automation.md)
 
 Treat that document as the repo playbook for:
 
+- Google Sheets source workflow
 - NotebookLM workflow
 - multi-notebook routing
 - YouTube and Firebase source ingestion
@@ -25,6 +26,7 @@ Treat that document as the repo playbook for:
 - Never save `ua` to Firestore; normalize it to `uk`.
 - `insights.language` must represent the final post language, not only the source language.
 - Prefer a deterministic local queue for scheduling and ordering.
+- Use Google Sheets as the operational source-of-truth for YouTube sources.
 - Use NotebookLM for synthesis, summarization, and draft creation, not for final scheduling decisions.
 - For `insights`, assume multiple NotebookLM notebooks may be required because of source limits.
 - Do not overload one notebook when a source-domain notebook already exists.
@@ -42,7 +44,11 @@ Treat that document as the repo playbook for:
 - [insights_language.dart](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/lib/domain/helpers/insights_language.dart)
 - [insights_repository_impl.dart](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/lib/data/repository_impl/insights_repository_impl.dart)
 - [insight_editor_screen.dart](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/lib/ui/screens/insights/widgets/insight_editor_screen.dart)
-- [export_youtube_source_catalog.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/scripts/export_youtube_source_catalog.py)
+- [export_google_sheets_youtube_catalog.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/scripts/export_google_sheets_youtube_catalog.py)
+- [build_google_sheets_youtube_seed.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/scripts/build_google_sheets_youtube_seed.py)
+- [google_sheets_registry.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/scripts/google_sheets_registry.py)
+- [sync_google_sheets_publish_state.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/scripts/sync_google_sheets_publish_state.py)
+- [import_youtube_channel_to_google_sheet.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/scripts/import_youtube_channel_to_google_sheet.py)
 - [export_qanda_source_catalog.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/scripts/export_qanda_source_catalog.py)
 - [export_verse_of_day_inventory.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/scripts/export_verse_of_day_inventory.py)
 - [build_insights_content_queue.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/scripts/build_insights_content_queue.py)
@@ -66,7 +72,10 @@ Treat that document as the repo playbook for:
 ## Typical Commands
 
 ```bash
-python3 scripts/export_youtube_source_catalog.py
+python3 scripts/export_google_sheets_youtube_catalog.py
+python3 scripts/build_google_sheets_youtube_seed.py
+python3 scripts/import_youtube_channel_to_google_sheet.py
+python3 scripts/sync_google_sheets_publish_state.py
 python3 scripts/export_qanda_source_catalog.py
 python3 scripts/export_verse_of_day_inventory.py
 python3 scripts/build_verse_of_day_notebook_source.py

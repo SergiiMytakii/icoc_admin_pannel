@@ -25,6 +25,24 @@ def run_step(name: str, command: Sequence[str], cwd: Path) -> None:
     subprocess.run(command, cwd=cwd, check=True)
 
 
+def run_step_with_existing_fallback(
+    name: str,
+    command: Sequence[str],
+    cwd: Path,
+    fallback_path: Path,
+) -> None:
+    try:
+        run_step(name, command, cwd)
+    except subprocess.CalledProcessError as error:
+        if fallback_path.exists():
+            print(
+                f"[refresh] {name} warning: export failed with exit {error.returncode}; "
+                f"keeping existing {fallback_path}"
+            )
+            return
+        raise
+
+
 def write_empty_verse_inventory(output_path: Path, reason: str) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
@@ -63,17 +81,21 @@ def main() -> int:
     args = parse_args()
     repo_root = Path(__file__).resolve().parent.parent
     build_dir = repo_root / "build" / "insights"
+    youtube_catalog = build_dir / "youtube_source_catalog.json"
+    qanda_catalog = build_dir / "qanda_source_catalog.json"
     verse_inventory = build_dir / "verse_of_day_inventory.json"
 
-    run_step(
-        "youtube catalog",
-        [sys.executable, "scripts/export_youtube_source_catalog.py"],
+    run_step_with_existing_fallback(
+        "google sheets youtube catalog",
+        [sys.executable, "scripts/export_google_sheets_youtube_catalog.py"],
         repo_root,
+        youtube_catalog,
     )
-    run_step(
+    run_step_with_existing_fallback(
         "qanda catalog",
         [sys.executable, "scripts/export_qanda_source_catalog.py"],
         repo_root,
+        qanda_catalog,
     )
 
     if inventory_generated_today(verse_inventory):

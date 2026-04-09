@@ -73,6 +73,7 @@ interface SanitizedInsightPost {
   id: string;
   type: InsightType;
   language: string;
+  dedupeKey: string | null;
   title: string | null;
   content: string | null;
   mediaUrls: string[];
@@ -245,11 +246,117 @@ function buildDefaultId(language: string, type: InsightType, index: number): str
   return `insight_${language}_${type}_${Date.now()}_${index}`;
 }
 
+function normalizeUrlForDedupe(value: string | null): string | null {
+  if (!value) {
+    return null;
+  }
+
+  try {
+    const url = new URL(value);
+    const normalizedPath = url.pathname.replace(/\/+$/, "") || "/";
+    return `${url.protocol}//${url.host}${normalizedPath}`;
+  } catch {
+    return value.trim() || null;
+  }
+}
+
+function buildDedupeKey(
+  type: InsightType,
+  language: string,
+  youtubeId: string | null,
+  articleUrl: string | null,
+  mediaUrls: string[],
+): string | null {
+  if (youtubeId) {
+    return `video:${language}:youtube:${youtubeId}`;
+  }
+
+  if (type === "text") {
+    const normalizedArticleUrl = normalizeUrlForDedupe(articleUrl);
+    if (normalizedArticleUrl) {
+      return `text:${language}:article:${normalizedArticleUrl}`;
+    }
+  }
+
+  if (type === "image") {
+    const normalizedMediaUrl = normalizeUrlForDedupe(mediaUrls[0] ?? null);
+    if (normalizedMediaUrl) {
+      return `image:${language}:media:${normalizedMediaUrl}`;
+    }
+  }
+
+  return null;
+}
+
+async function findExistingInsightByDedupeKey(
+  firestore: Firestore,
+  id: string,
+  dedupeKey: string | null,
+): Promise<string | null> {
+  if (!dedupeKey) {
+    return null;
+  }
+
+  const duplicateSnapshot = await firestore
+    .collection("Insights")
+    .where("dedupeKey", "==", dedupeKey)
+    .limit(2)
+    .get();
+  const duplicate = duplicateSnapshot.docs.find((doc) => doc.id !== id);
+  return duplicate?.id ?? null;
+}
+
+async function findLegacyDuplicateInsight(
+  firestore: Firestore,
+  input: {
+    id: string;
+    type: InsightType;
+    language: string;
+    articleUrl: string | null;
+    mediaUrls: string[];
+  },
+): Promise<string | null> {
+  if (input.type === "text" && input.articleUrl) {
+    const duplicateSnapshot = await firestore
+      .collection("Insights")
+      .where("articleUrl", "==", input.articleUrl)
+      .limit(10)
+      .get();
+    const duplicate = duplicateSnapshot.docs.find((doc) => (
+      doc.id !== input.id &&
+      doc.get("type") === input.type &&
+      doc.get("language") === input.language
+    ));
+    if (duplicate) {
+      return duplicate.id;
+    }
+  }
+
+  if (input.type === "image" && input.mediaUrls.length > 0) {
+    const duplicateSnapshot = await firestore
+      .collection("Insights")
+      .where("mediaUrls", "array-contains", input.mediaUrls[0])
+      .limit(10)
+      .get();
+    const duplicate = duplicateSnapshot.docs.find((doc) => (
+      doc.id !== input.id &&
+      doc.get("type") === input.type &&
+      doc.get("language") === input.language
+    ));
+    if (duplicate) {
+      return duplicate.id;
+    }
+  }
+
+  return null;
+}
+
 function sanitizedPayloadForFirestore(post: SanitizedInsightPost, now: Timestamp) {
   return {
     id: post.id,
     type: post.type,
     language: post.language,
+    dedupeKey: post.dedupeKey,
     title: post.title,
     content: post.content,
     mediaUrls: post.mediaUrls,
@@ -301,6 +408,13 @@ async function sanitizeInsightPost(
   }
 
   const id = normalizeText(raw.id) ?? buildDefaultId(language, type, index);
+  const dedupeKey = buildDedupeKey(
+    type,
+    language,
+    youtubeId,
+    articleUrl,
+    mediaUrls,
+  );
   const requestedCreatedAt = parseCreatedAt(raw.createdAt);
   const existingDoc = await firestore.collection("Insights").doc(id).get();
   // Block duplicates: if another post with same youtubeId and language already exists, reject.
@@ -319,6 +433,26 @@ async function sanitizeInsightPost(
       );
     }
   }
+  const duplicateId = await findExistingInsightByDedupeKey(firestore, id, dedupeKey);
+  if (duplicateId) {
+    throw new HttpsError(
+      "already-exists",
+      `Insight source is already published for language ${language} (id=${duplicateId}).`,
+    );
+  }
+  const legacyDuplicateId = await findLegacyDuplicateInsight(firestore, {
+    id,
+    type,
+    language,
+    articleUrl,
+    mediaUrls,
+  });
+  if (legacyDuplicateId) {
+    throw new HttpsError(
+      "already-exists",
+      `Insight source is already published for language ${language} (id=${legacyDuplicateId}).`,
+    );
+  }
   const existingCreatedAt = existingDoc.exists
     ? (existingDoc.get("createdAt") as Timestamp | undefined)
     : undefined;
@@ -327,6 +461,7 @@ async function sanitizeInsightPost(
     id,
     type,
     language,
+    dedupeKey,
     title: normalizeText(raw.title),
     content: normalizeText(raw.content),
     mediaUrls,

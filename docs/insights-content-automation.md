@@ -100,13 +100,37 @@ Channel:
 
 This feed is used as the main long-form video stream.
 
-### 2. KCOC shorts
+### 2. Google Sheets YouTube registry
 
-Channel:
+The operational source-of-truth for YouTube shorts and long videos is now a Google Sheet tab.
 
-- [KCOC shorts](https://www.youtube.com/@KCOC/shorts)
+The sheet stores one source per row and is used for:
 
-This feed is used as the main shorts stream.
+- KCOC shorts
+- Odesa long videos
+- BibleProject English shorts
+- BibleProject Ukrainian shorts
+- any additional curated YouTube source family
+
+Recommended columns:
+
+- `enabled`
+- `priority_rank`
+- `source_origin`
+- `source_type`
+- `source_ref`
+- `source_title`
+- `source_language`
+- `author_name`
+- `channel_url`
+- `description`
+- `keywords`
+- `published`
+- `published_at`
+- `published_post_ids`
+
+The automation reads the sheet through CSV export, not through NotebookLM.
+If a row is marked published, it is excluded from future YouTube queue builds.
 
 ### 3. Verse of the Day images
 
@@ -150,7 +174,7 @@ The catalog groups documents by Q&A article id and tracks available language ver
 
 ## NotebookLM Role
 
-NotebookLM is used as the research and synthesis layer, not as the scheduler.
+NotebookLM is now optional and should be treated only as the research and synthesis layer, not as the source registry or scheduler.
 
 NotebookLM should help with:
 
@@ -214,14 +238,10 @@ For `insights`, prefer this strategy:
 
 The YouTube source catalog is built with:
 
-- [export_youtube_source_catalog.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/scripts/export_youtube_source_catalog.py)
+- [export_google_sheets_youtube_catalog.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/scripts/export_google_sheets_youtube_catalog.py)
+- [build_google_sheets_youtube_seed.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/scripts/build_google_sheets_youtube_seed.py)
 
-It currently reads:
-
-- `@OdesaChurch/videos`
-- `@KCOC/shorts`
-
-It uses `yt-dlp` and writes a structured JSON catalog:
+It reads a Google Sheets CSV export and writes a structured JSON catalog:
 
 - [youtube_source_catalog.json](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/build/insights/youtube_source_catalog.json)
 
@@ -238,7 +258,29 @@ For each source it stores:
 - `language_reason`
 - `eligible_for_auto_post`
 
-### Batch import into NotebookLM notebooks
+### Google Sheets bootstrap
+
+To bootstrap the sheet from the current local catalog:
+
+```bash
+python3 scripts/build_google_sheets_youtube_seed.py
+```
+
+Import the resulting CSV into the Google Sheet tab used by the exporter.
+
+To append `odesa_shorts` rows into the registry and also generate an import CSV:
+
+```bash
+python3 scripts/import_youtube_channel_to_google_sheet.py
+```
+
+If the live Google Sheets API is unavailable, the script still writes:
+
+- [google_sheets_channel_import.csv](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/output/spreadsheet/google_sheets_channel_import.csv)
+
+so the rows can be imported manually later.
+
+### NotebookLM batch import
 
 When a user sends a YouTube channel tab URL and wants everything from that tab added into NotebookLM, the preferred path is the batch helper:
 

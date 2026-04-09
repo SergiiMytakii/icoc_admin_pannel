@@ -75,7 +75,19 @@ python3 scripts/run_daily_insights_publish.py --date "$(date +%F)"
 Rebuild only YouTube catalog:
 
 ```bash
-python3 scripts/export_youtube_source_catalog.py
+python3 scripts/export_google_sheets_youtube_catalog.py
+```
+
+Backfill published rows into the live Google Sheet:
+
+```bash
+python3 scripts/sync_google_sheets_publish_state.py
+```
+
+Prepare and append `odesa_shorts` rows:
+
+```bash
+python3 scripts/import_youtube_channel_to_google_sheet.py
 ```
 
 Rebuild only Q&A catalog:

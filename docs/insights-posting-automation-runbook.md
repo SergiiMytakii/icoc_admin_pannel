@@ -155,6 +155,22 @@ The publish API rejects a duplicate video for the same locale when:
 
 This prevents accidental repeated publishing of the same YouTube asset inside one locale.
 
+### Google Sheets publish sync
+
+After a successful YouTube publish, automation now:
+
+1. records the source in the local anti-repost state file
+2. tries to mark the matching Google Sheet row as published
+
+The live sheet update requires:
+
+- `sheets.googleapis.com` enabled for the `icoc-8f075` service account project
+- the sheet shared with `firebase-adminsdk-5gm67@icoc-8f075.iam.gserviceaccount.com`
+
+If the live update fails, automation still avoids reposting through the local state file:
+
+- [google_sheets_publish_state.json](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/build/insights/google_sheets_publish_state.json)
+
 ### Author rule
 
 Author assignment priority is:
@@ -173,11 +189,11 @@ For Q&A text posts, automation should explicitly send the source author instead 
 
 ## End-to-End Pipeline
 
-### Step 1. Export YouTube source catalog
+### Step 1. Export YouTube source catalog from Google Sheets
 
 Script:
 
-- [export_youtube_source_catalog.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/scripts/export_youtube_source_catalog.py)
+- [export_google_sheets_youtube_catalog.py](/Users/serhiimytakii/Projects/icoc/icoc_admin_pannel/scripts/export_google_sheets_youtube_catalog.py)
 
 Output:
 
@@ -185,17 +201,21 @@ Output:
 
 What it does:
 
-- reads configured YouTube channel tabs
-- extracts candidate entries
-- detects likely source language from title heuristics
+- reads the operational Google Sheet through CSV export
+- normalizes shorts vs long videos from the row data
+- preserves explicit source language from the sheet when present
+- falls back to metadata-based detection only when the sheet row is incomplete
+- excludes rows already marked as published in the sheet
+- excludes rows already recorded in the local anti-repost state file
 - marks whether the source is eligible for auto-post
 - stores source origin, type, title, ref, language, and freshness position
 
 Important implementation detail:
 
-- it first tries `yt-dlp`
-- if `yt-dlp` fails, it can fall back to lightweight page parsing for reliability
-- this was added because automation runs in isolated Codex worktrees where heavier tools can fail
+- the project default sheet is:
+  - [Insights content plan](https://docs.google.com/spreadsheets/d/1M9Pxs34R8R_OfZaXQTWF1Gup1kLO_nbW0ewVutKTSI4/edit?usp=sharing)
+- the exporter can also be overridden with `INSIGHTS_GOOGLE_SHEET_INPUT_CSV`, `INSIGHTS_GOOGLE_SHEET_CSV_URL`, or `INSIGHTS_GOOGLE_SHEET_ID` + `INSIGHTS_GOOGLE_SHEET_GID`
+- metadata fetch is lazy, so a well-filled sheet refreshes quickly without re-scraping every video page
 
 ### Step 2. Export Q&A catalog
 

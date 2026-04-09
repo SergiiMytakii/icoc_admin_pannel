@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import html
 import json
 import re
 import subprocess
@@ -11,11 +12,13 @@ import xml.etree.ElementTree as ET
 from collections import Counter
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
 
 DEFAULT_OUTPUT = "build/insights/youtube_source_catalog.json"
+DEFAULT_NOTEBOOK_SOURCES = "build/insights/notebooklm_youtube_sources.json"
 DEFAULT_YT_DLP = Path.home() / ".codex-tools" / "notebooklm-py" / "bin" / "yt-dlp"
 DEFAULT_CHANNELS = (
     "odesa_videos|video|https://www.youtube.com/@OdesaChurch/videos",
@@ -25,6 +28,14 @@ UK_WORDS = {
     "бог",
     "бога",
     "боже",
+    "це",
+    "що",
+    "всі",
+    "для",
+    "про",
+    "пошуку",
+    "помилка",
+    "роблять",
     "україни",
     "україна",
     "церкви",
@@ -42,6 +53,16 @@ UK_WORDS = {
 RU_WORDS = {
     "бог",
     "бога",
+    "это",
+    "что",
+    "как",
+    "когда",
+    "все",
+    "при",
+    "поиске",
+    "ошибка",
+    "которую",
+    "совершают",
     "божье",
     "церковь",
     "церкви",
@@ -103,6 +124,11 @@ def parse_args() -> argparse.Namespace:
         "--output",
         default=DEFAULT_OUTPUT,
         help="Output JSON path",
+    )
+    parser.add_argument(
+        "--notebook-sources",
+        default=DEFAULT_NOTEBOOK_SOURCES,
+        help="Optional NotebookLM YouTube sources JSON path",
     )
     return parser.parse_args()
 
@@ -209,6 +235,50 @@ def extract_text_value(value: Any) -> str:
     if isinstance(value.get("content"), str):
         return value["content"].strip()
     return ""
+
+
+def extract_meta_content(html_text: str, key: str) -> str:
+    patterns = (
+        rf'<meta\s+property="{re.escape(key)}"\s+content="([^"]+)"',
+        rf'<meta\s+content="([^"]+)"\s+property="{re.escape(key)}"',
+        rf'<meta\s+name="{re.escape(key)}"\s+content="([^"]+)"',
+        rf'<meta\s+content="([^"]+)"\s+name="{re.escape(key)}"',
+    )
+    for pattern in patterns:
+        match = re.search(pattern, html_text, flags=re.IGNORECASE)
+        if match:
+            return html.unescape(match.group(1)).strip()
+    return ""
+
+
+@lru_cache(maxsize=512)
+def fetch_video_metadata(url: str) -> dict[str, str]:
+    try:
+        html_text = fetch_text(url)
+    except Exception:
+        return {}
+
+    title = (
+        extract_meta_content(html_text, "og:title")
+        or extract_meta_content(html_text, "title")
+    )
+    if title.endswith(" - YouTube"):
+        title = title[: -len(" - YouTube")].strip()
+
+    description = (
+        extract_meta_content(html_text, "og:description")
+        or extract_meta_content(html_text, "description")
+    )
+    keywords = extract_meta_content(html_text, "keywords")
+
+    metadata: dict[str, str] = {}
+    if title:
+        metadata["title"] = title
+    if description:
+        metadata["description"] = description
+    if keywords:
+        metadata["keywords"] = keywords
+    return metadata
 
 
 def extract_renderer_entry(
@@ -474,24 +544,115 @@ def normalize_video_url(entry: dict[str, Any], source_type: str) -> str:
     return url
 
 
+def load_notebook_sources(path_str: str) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    path = Path(path_str)
+    if not path.exists():
+        return [], {}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    items = payload.get("items", [])
+    return items if isinstance(items, list) else [], payload.get("notebooks", {})
+
+
 def build_catalog(
     specs: list[ChannelSpec],
     yt_dlp: Path,
+    notebook_sources: list[dict[str, Any]],
+    notebook_meta: dict[str, Any],
 ) -> dict[str, Any]:
     items: list[dict[str, Any]] = []
     seen_refs: set[str] = set()
     per_channel: dict[str, dict[str, Any]] = {}
 
+    for raw_item in notebook_sources:
+        if not isinstance(raw_item, dict):
+            continue
+        source_ref = str(raw_item.get("source_ref") or "").strip()
+        source_type = str(raw_item.get("source_type") or "video").strip()
+        source_origin = str(raw_item.get("source_origin") or "").strip()
+        if not source_ref or not source_origin or source_ref in seen_refs:
+            continue
+        title = str(raw_item.get("source_title") or "").strip()
+        video_metadata = fetch_video_metadata(source_ref)
+        title = video_metadata.get("title") or title
+        expanded_language_sample = "\n".join(
+            part
+            for part in (
+                title,
+                video_metadata.get("description", ""),
+                video_metadata.get("keywords", ""),
+            )
+            if part
+        )
+        if not title:
+            continue
+        seen_refs.add(source_ref)
+        language_info = detect_language(title)
+        if (
+            language_info["source_language"] == "und"
+            or float(language_info["language_confidence"]) < 0.78
+        ):
+            language_info = detect_language(expanded_language_sample or title)
+        item = {
+            "source_id": hash_source_ref(source_ref),
+            "source_origin": source_origin,
+            "source_type": source_type,
+            "source_ref": source_ref,
+            "source_title": title,
+            "channel_url": f"notebooklm:{raw_item.get('notebook_id') or source_origin}",
+            "channel_position": int(raw_item.get("notebook_position") or 9999),
+            "source_language": language_info["source_language"],
+            "language_confidence": language_info["language_confidence"],
+            "language_reason": language_info["language_reason"],
+            "eligible_for_auto_post": language_info["source_language"] in {"uk", "ru", "en"},
+        }
+        items.append(item)
+
+    for source_origin, info in notebook_meta.items():
+        if not isinstance(info, dict):
+            continue
+        per_channel[source_origin] = {
+            "source_type": str(info.get("default_source_type") or "video"),
+            "url": f"notebooklm:{info.get('notebook_id') or source_origin}",
+            "count": sum(1 for item in items if item["source_origin"] == source_origin),
+            "languages": dict(
+                sorted(
+                    Counter(
+                        item["source_language"]
+                        for item in items
+                        if item["source_origin"] == source_origin
+                    ).items()
+                ),
+            ),
+        }
+
     for spec in specs:
         entries = load_channel_entries(yt_dlp, spec.url, spec.source_type)
         channel_items: list[dict[str, Any]] = []
         for entry in entries:
-            title = str(entry.get("title") or "").strip()
             source_ref = normalize_video_url(entry, spec.source_type)
-            if not title or not source_ref or source_ref in seen_refs:
+            if not source_ref or source_ref in seen_refs:
+                continue
+            listing_title = str(entry.get("title") or "").strip()
+            video_metadata = fetch_video_metadata(source_ref)
+            title = video_metadata.get("title") or listing_title
+            expanded_language_sample = "\n".join(
+                part
+                for part in (
+                    title,
+                    video_metadata.get("description", ""),
+                    video_metadata.get("keywords", ""),
+                )
+                if part
+            )
+            if not title:
                 continue
             seen_refs.add(source_ref)
             language_info = detect_language(title)
+            if (
+                language_info["source_language"] == "und"
+                or float(language_info["language_confidence"]) < 0.78
+            ):
+                language_info = detect_language(expanded_language_sample or title)
             item = {
                 "source_id": hash_source_ref(source_ref),
                 "source_origin": spec.source_origin,
@@ -531,7 +692,8 @@ def main() -> int:
     yt_dlp = Path(args.yt_dlp).expanduser()
 
     specs = parse_channel_specs(args.channel)
-    payload = build_catalog(specs, yt_dlp)
+    notebook_sources, notebook_meta = load_notebook_sources(args.notebook_sources)
+    payload = build_catalog(specs, yt_dlp, notebook_sources, notebook_meta)
 
     output_path = Path(args.output)
     output_path.parent.mkdir(parents=True, exist_ok=True)

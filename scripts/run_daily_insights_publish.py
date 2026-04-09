@@ -14,6 +14,13 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
+from google_sheets_registry import (
+    DEFAULT_SHEET_GID,
+    DEFAULT_SHEET_ID,
+    GoogleSheetsRegistryError,
+    mark_published_entries,
+)
+
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PLAN_PATH = REPO_ROOT / "build" / "insights" / "insights_daily_plan.json"
@@ -21,13 +28,18 @@ QANDA_PATH = REPO_ROOT / "build" / "insights" / "qanda_source_catalog.json"
 YOUTUBE_CATALOG_PATH = REPO_ROOT / "build" / "insights" / "youtube_source_catalog.json"
 VERSE_INVENTORY_PATH = REPO_ROOT / "build" / "insights" / "verse_of_day_inventory.json"
 RUN_REPORT_PATH = REPO_ROOT / "build" / "insights" / "daily_publish_report.json"
+GOOGLE_SHEETS_PUBLISH_STATE_PATH = REPO_ROOT / "build" / "insights" / "google_sheets_publish_state.json"
 FUNCTION_ENDPOINTS = (
     "https://europe-central2-icoc-8f075.cloudfunctions.net/upsertInsightsBatch",
     "https://upsertinsightsbatch-5lehxrftgq-lm.a.run.app",
 )
 SOURCE_AUTHORS = {
     "odesa_videos": "Odesa Church",
+    "odesa_shorts": "Odesa Church",
     "kcoc_shorts": "KCOC",
+    "insights_content_engine": "ICOC Insights",
+    "bibleproject_shorts_en": "BibleProject",
+    "bibleproject_shorts_uk": "BibleProject",
     "qanda_firestore": "Douglas Jacoby",
     "verse_of_day": "ICOC Insights",
 }
@@ -47,6 +59,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--skip-refresh", action="store_true")
     parser.add_argument("--refresh-retries", type=int, default=3)
     parser.add_argument("--http-retries", type=int, default=3)
+    parser.add_argument("--sheet-id", default=DEFAULT_SHEET_ID)
+    parser.add_argument("--sheet-gid", default=DEFAULT_SHEET_GID)
     return parser.parse_args()
 
 
@@ -57,6 +71,66 @@ def load_json(path: Path) -> dict[str, Any]:
 def save_json(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def load_local_publish_state() -> dict[str, Any]:
+    if not GOOGLE_SHEETS_PUBLISH_STATE_PATH.exists():
+        return {"published_sources": {}}
+    return load_json(GOOGLE_SHEETS_PUBLISH_STATE_PATH)
+
+
+def build_sheet_publication_map(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    publications_by_ref: dict[str, dict[str, Any]] = {}
+    for item in items:
+        if item.get("type") != "video":
+            continue
+        source_ref = str(item.get("_source_ref") or "").strip()
+        if not source_ref:
+            continue
+        entry = publications_by_ref.setdefault(
+            source_ref,
+            {
+                "source_ref": source_ref,
+                "published_at": "",
+                "published_post_ids": [],
+            },
+        )
+        entry["published_at"] = str(item.get("_published_at") or entry["published_at"]).strip()
+        entry["published_post_ids"].append(str(item["id"]))
+    result: list[dict[str, Any]] = []
+    for value in publications_by_ref.values():
+        result.append(
+            {
+                "source_ref": value["source_ref"],
+                "published_at": value["published_at"],
+                "published_post_ids": ",".join(sorted(set(value["published_post_ids"]))),
+            }
+        )
+    return result
+
+
+def persist_local_publish_state(publications: list[dict[str, Any]]) -> dict[str, Any]:
+    state = load_local_publish_state()
+    published_sources = state.get("published_sources", {})
+    if not isinstance(published_sources, dict):
+        published_sources = {}
+    updated_refs: list[str] = []
+    for publication in publications:
+        source_ref = str(publication.get("source_ref") or "").strip()
+        if not source_ref:
+            continue
+        published_sources[source_ref] = {
+            "published_at": str(publication.get("published_at") or "").strip(),
+            "published_post_ids": str(publication.get("published_post_ids") or "").strip(),
+        }
+        updated_refs.append(source_ref)
+    state["published_sources"] = dict(sorted(published_sources.items()))
+    save_json(GOOGLE_SHEETS_PUBLISH_STATE_PATH, state)
+    return {
+        "path": str(GOOGLE_SHEETS_PUBLISH_STATE_PATH),
+        "updated_refs": sorted(set(updated_refs)),
+        "total_published_sources": len(published_sources),
+    }
 
 
 def run_refresh(target_date: str, retries: int) -> tuple[bool, str]:
@@ -234,6 +308,9 @@ def build_publish_batch(target_date: str) -> tuple[list[dict[str, Any]], list[st
     qanda_payload = load_json(QANDA_PATH)
     youtube_payload = load_json(YOUTUBE_CATALOG_PATH)
     verse_payload = load_json(VERSE_INVENTORY_PATH)
+    local_publish_state = load_local_publish_state().get("published_sources", {})
+    if not isinstance(local_publish_state, dict):
+        local_publish_state = {}
 
     day = next((item for item in plan_payload.get("days", []) if item.get("date") == target_date), None)
     if day is None:
@@ -277,6 +354,12 @@ def build_publish_batch(target_date: str) -> tuple[list[dict[str, Any]], list[st
             if source is None:
                 skips.append(f"{language}:{source_ref}:missing_source_catalog_entry")
                 continue
+            if source_ref in local_publish_state:
+                skips.append(f"{language}:{source_ref}:already_published_local_state")
+                continue
+            if bool(source.get("published")):
+                skips.append(f"{language}:{source_ref}:already_marked_published")
+                continue
             source_language = str(source.get("source_language") or "und")
             if source_language != language:
                 skips.append(
@@ -297,8 +380,11 @@ def build_publish_batch(target_date: str) -> tuple[list[dict[str, Any]], list[st
                     "articleUrl": source_ref,
                     "status": "published",
                     "author": {
-                        "name": SOURCE_AUTHORS.get(source_origin, "ICOC Insights"),
+                        "name": str(source.get("author_name") or "").strip()
+                        or SOURCE_AUTHORS.get(source_origin, "ICOC Insights"),
                     },
+                    "_source_ref": source_ref,
+                    "_published_at": target_date,
                 }
             )
             continue
@@ -377,6 +463,13 @@ def build_publish_batch(target_date: str) -> tuple[list[dict[str, Any]], list[st
     return items, skips
 
 
+def strip_internal_fields(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    cleaned: list[dict[str, Any]] = []
+    for item in items:
+        cleaned.append({key: value for key, value in item.items() if not key.startswith("_")})
+    return cleaned
+
+
 def publish_items(items: list[dict[str, Any]], id_token: str, retries: int) -> dict[str, Any]:
     last_error: Exception | None = None
     for endpoint in FUNCTION_ENDPOINTS:
@@ -422,18 +515,33 @@ def main() -> int:
 
     api_key = extract_api_key()
     id_token = ""
+    exit_code = 0
     try:
         id_token, _ = create_temp_firebase_user(api_key, args.http_retries)
-        response = publish_items(items, id_token, args.http_retries)
+        response = publish_items(strip_internal_fields(items), id_token, args.http_retries)
         report["publish_response"] = response
         report["published_ids"] = [str(item["id"]) for item in items]
+        sheet_publications = build_sheet_publication_map(items)
+        if sheet_publications:
+            report["local_publish_state"] = persist_local_publish_state(sheet_publications)
+            try:
+                report["google_sheets_sync"] = mark_published_entries(
+                    args.sheet_id,
+                    args.sheet_gid,
+                    sheet_publications,
+                )
+            except GoogleSheetsRegistryError as error:
+                report["google_sheets_sync_error"] = str(error)
+    except Exception as error:
+        report["publish_error"] = str(error)
+        exit_code = 1
     finally:
         if id_token:
             delete_temp_firebase_user(api_key, id_token, args.http_retries)
+        save_json(RUN_REPORT_PATH, report)
 
-    save_json(RUN_REPORT_PATH, report)
     print(json.dumps(report, ensure_ascii=False, indent=2))
-    return 0
+    return exit_code
 
 
 if __name__ == "__main__":

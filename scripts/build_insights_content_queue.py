@@ -16,7 +16,7 @@ DEFAULT_OUTPUT_JSON = "build/insights/insights_content_queue.json"
 DEFAULT_OUTPUT_MD = "build/insights/insights_content_queue.md"
 DEFAULT_QUEUE_LENGTH = 21
 TYPE_WEIGHTS = {"short": 0.6, "image": 0.25, "video": 0.15}
-LANG_WEIGHTS = {"uk": 0.35, "ru": 0.25, "en": 0.20, "es": 0.20}
+LANG_WEIGHTS = {"uk": 0.4, "ru": 0.3, "en": 0.3}
 RECENT_ORIGIN_WINDOW = 4
 MAX_CONSECUTIVE_ORIGIN_ITEMS = 2
 
