@@ -1,3 +1,4 @@
+---
 name: insights-publisher
 description: Safe way to publish or update Insight posts via the Cloud Function upsertInsightsBatch. Use when you need to push one or more posts (image/video/text) to Firestore, including multi-language batches.
 ---
