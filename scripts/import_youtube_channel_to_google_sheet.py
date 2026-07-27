@@ -9,6 +9,7 @@ from typing import Any
 from export_youtube_source_catalog import (
     DEFAULT_YT_DLP,
     detect_language,
+    fetch_video_metadata,
     load_channel_entries,
     normalize_video_url,
 )
@@ -84,7 +85,13 @@ def build_rows(specs: list[tuple[str, str, str]], yt_dlp: str) -> list[dict[str,
             source_ref = normalize_video_url(entry, source_type)
             if not source_ref or source_ref in seen_refs:
                 continue
-            source_title = str(entry.get("title") or "").strip()
+            listing_title = str(entry.get("title") or "").strip()
+            video_metadata = (
+                fetch_video_metadata(source_ref)
+                if source_origin.startswith("odesa")
+                else {}
+            )
+            source_title = str(video_metadata.get("title") or listing_title).strip()
             if not source_title:
                 continue
             language_info = detect_language(source_title)
@@ -96,7 +103,14 @@ def build_rows(specs: list[tuple[str, str, str]], yt_dlp: str) -> list[dict[str,
                     "source_type": source_type,
                     "source_ref": source_ref,
                     "source_title": source_title,
-                    "source_language": str(language_info["source_language"]),
+                    "source_language": (
+                        str(language_info["source_language"])
+                        if (
+                            not source_origin.startswith("odesa")
+                            or float(language_info["language_confidence"]) >= 0.78
+                        )
+                        else ""
+                    ),
                     "author_name": SOURCE_AUTHORS.get(source_origin, "ICOC Insights"),
                     "channel_url": channel_url,
                     "description": "",

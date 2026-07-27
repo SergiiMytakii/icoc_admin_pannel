@@ -188,25 +188,44 @@ def build_catalog(
         description = row.get("description", "")
         keywords = row.get("keywords", "")
         source_language = normalize_language(row.get("source_language", ""))
-        needs_video_metadata = not source_title or source_language not in DEFAULT_ALLOWED_LANGUAGES
+        recheck_odesa_english = source_origin.startswith("odesa") and source_language == "en"
+        needs_video_metadata = (
+            not source_title
+            or source_language not in DEFAULT_ALLOWED_LANGUAGES
+            or recheck_odesa_english
+        )
         video_metadata = fetch_video_metadata(source_ref) if needs_video_metadata else {}
         source_title = source_title or video_metadata.get("title", "")
         if not source_title:
             continue
 
+        canonical_language_info: dict[str, Any] | None = None
+        canonical_metadata_unavailable = False
+        if recheck_odesa_english and video_metadata.get("title"):
+            canonical_title = video_metadata["title"]
+            source_title = canonical_title
+            source_language = ""
+            canonical_language_info = detect_language(canonical_title)
+        elif recheck_odesa_english:
+            source_language = ""
+            canonical_metadata_unavailable = True
+
         if source_language not in DEFAULT_ALLOWED_LANGUAGES:
-            language_probe = "\n".join(
-                part
-                for part in (
-                    source_title,
-                    description,
-                    video_metadata.get("description", ""),
-                    keywords,
-                    video_metadata.get("keywords", ""),
+            if canonical_language_info is not None:
+                language_info = canonical_language_info
+            else:
+                language_probe = "\n".join(
+                    part
+                    for part in (
+                        source_title,
+                        description,
+                        video_metadata.get("description", ""),
+                        keywords,
+                        video_metadata.get("keywords", ""),
+                    )
+                    if part
                 )
-                if part
-            )
-            language_info = detect_language(language_probe or source_title)
+                language_info = detect_language(language_probe or source_title)
             source_language = language_info["source_language"]
             language_confidence = language_info["language_confidence"]
             language_reason = language_info["language_reason"]
@@ -214,6 +233,17 @@ def build_catalog(
             language_confidence = 1.0
             language_reason = "google_sheets_explicit"
 
+        eligible_for_auto_post = (
+            not canonical_metadata_unavailable
+            and source_language in {"uk", "ru", "en"}
+            and language_confidence >= 0.78
+        )
+        if eligible_for_auto_post:
+            review_reason = None
+        elif canonical_metadata_unavailable:
+            review_reason = "canonical_metadata_unavailable"
+        else:
+            review_reason = "low_language_confidence"
         author_name = row.get("author_name", "").strip()
         seen_refs.add(source_ref)
         items.append(
@@ -228,7 +258,9 @@ def build_catalog(
                 "source_language": source_language,
                 "language_confidence": language_confidence,
                 "language_reason": language_reason,
-                "eligible_for_auto_post": source_language in {"uk", "ru", "en"},
+                "eligible_for_auto_post": eligible_for_auto_post,
+                "review_required": not eligible_for_auto_post,
+                "review_reason": review_reason,
                 "author_name": author_name,
                 "published": False,
             }

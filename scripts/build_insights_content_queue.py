@@ -72,7 +72,7 @@ def build_sources(
                 source_language=str(item.get("source_language", "und")),
                 language_confidence=float(item.get("language_confidence", 0.0)),
                 eligible_for_auto_post=bool(item.get("eligible_for_auto_post", False)),
-                review_reason=None,
+                review_reason=str(item.get("review_reason") or "") or None,
             ),
         )
 
@@ -112,7 +112,13 @@ def target_count(weights: dict[str, float], total: int) -> dict[str, int]:
 
 def choose_post_language(source: QueueSource, current_lang_counts: Counter[str]) -> tuple[str, bool, str | None]:
     if source.source_language in LANG_WEIGHTS:
-        return source.source_language, True, None
+        if source.eligible_for_auto_post:
+            return source.source_language, True, None
+        return (
+            source.source_language,
+            False,
+            source.review_reason or "requires_manual_language_review",
+        )
 
     target_lang_counts = target_count(LANG_WEIGHTS, max(sum(current_lang_counts.values()) + 1, 1))
     target_language = min(
