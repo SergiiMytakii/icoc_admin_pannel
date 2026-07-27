@@ -116,7 +116,12 @@ class _InsightsScreenState extends State<InsightsScreen> {
                                           'Select a post to preview it',
                                         ),
                                       )
-                                    : _buildDetails(selectedPost),
+                                    : KeyedSubtree(
+                                        key: ValueKey<String>(
+                                          'insight-details-${selectedPost.id}',
+                                        ),
+                                        child: _buildDetails(selectedPost),
+                                      ),
                               ),
                             ],
                           );
@@ -318,19 +323,29 @@ class _InsightsScreenState extends State<InsightsScreen> {
       }
       return ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: AspectRatio(
-          aspectRatio: post.aspectRatioForIndex(
-            0,
-            fallback:
-                (post.articleUrl ?? '').contains('/shorts/') ? 9 / 16 : 16 / 9,
-          ),
-          child: Image.network(
-            thumbnailUrl,
-            fit: BoxFit.cover,
-            webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
-            errorBuilder: (_, __, ___) => const ColoredBox(
-              color: Color(0x11000000),
-              child: Center(child: Icon(Icons.broken_image_outlined)),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: 640,
+              maxHeight: 360,
+            ),
+            child: AspectRatio(
+              aspectRatio: post.aspectRatioForIndex(
+                0,
+                fallback: (post.articleUrl ?? '').contains('/shorts/')
+                    ? 9 / 16
+                    : 16 / 9,
+              ),
+              child: Image.network(
+                thumbnailUrl,
+                key: ValueKey<String>('${post.id}:$thumbnailUrl'),
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => const ColoredBox(
+                  color: Color(0x11000000),
+                  child: Center(child: Icon(Icons.broken_image_outlined)),
+                ),
+              ),
             ),
           ),
         ),
@@ -364,15 +379,27 @@ class _InsightsScreenState extends State<InsightsScreen> {
         if (post.primaryMediaUrl != null)
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
-            child: AspectRatio(
-              aspectRatio: post.aspectRatioForIndex(0),
-              child: Image.network(
-                post.primaryMediaUrl!,
-                fit: BoxFit.cover,
-                webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
-                errorBuilder: (_, __, ___) => const ColoredBox(
-                  color: Color(0x11000000),
-                  child: Center(child: Icon(Icons.broken_image_outlined)),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 640,
+                  maxHeight: 360,
+                ),
+                child: AspectRatio(
+                  aspectRatio: post.aspectRatioForIndex(0),
+                  child: Image.network(
+                    post.primaryMediaUrl!,
+                    key: ValueKey<String>(
+                      '${post.id}:${post.primaryMediaUrl}',
+                    ),
+                    fit: BoxFit.cover,
+                    webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
+                    errorBuilder: (_, __, ___) => const ColoredBox(
+                      color: Color(0x11000000),
+                      child: Center(child: Icon(Icons.broken_image_outlined)),
+                    ),
+                  ),
                 ),
               ),
             ),
